@@ -1,0 +1,126 @@
+<?php
+
+namespace zenogames\managers;
+
+use zenogames\utils\ids\MapIds;
+use pocketmine\entity\Location;
+use pocketmine\player\Player;
+use pocketmine\Server;
+use pocketmine\utils\SingletonTrait;
+use pocketmine\world\Position;
+
+final class MapManager {
+
+    use SingletonTrait;
+
+    /**
+     * @var array
+     */
+    private array $mapPositions = [
+        MapIds::CARGO => [
+            1 => [76.5, 9, -12.5, 45, 0],
+            2 => [52.5, 9, 63.5, 225, 0]
+        ],
+        MapIds::LEBRONZE => [
+            1 => [154.5, 13, 184.5, 90, 0],
+            2 => [80.5, 13, 170.5, 270, 0]
+        ],
+        MapIds::MARZIPAN => [
+            1 => [106.5, 7, 54.5, 180, 0],
+            2 => [106.5, 7, -45.5, 0, 0]
+        ],
+        MapIds::PADDINGTON => [
+            1 => [10.5, 12, -36.5, 135, 0],
+            2 => [-9.5, 12, 37.5, 315, 0]
+        ],
+        MapIds::ULTRAVIOLET => [
+            1 => [133.5, 14, 16.5, 225, 0],
+            2 => [183.5, 14, -33.5, 45, 0]
+        ],
+        MapIds::TOPAZ => [
+            1 => [-85.5, 10, -33.5, 360, 0],
+            2 => [-140.5, 10, 21.5, 270, 0]
+        ]
+    ];
+
+    /**
+     * @param Player $player
+     * @return void
+     */
+    public function teleportToTeamSpawn(Player $player): void {
+        $gameApi = GameManager::getInstance();
+        $playerTeam = $gameApi->getPlayerTeam($player);
+        $map = $gameApi->getMap();
+        $position = $this->getMapSpawnPosition($map, $playerTeam);
+        $yaw = $this->getMapPositionYaw($map, $playerTeam);
+        $pitch = $this->getMapPositionPitch($map, $playerTeam);
+        $player->teleport($position, $yaw, $pitch);
+    }
+
+    /**
+     * @param string $map
+     * @param int $team
+     * @return Location
+     */
+    public function getMapSpawnPosition(string $map, int $team): Position {
+        $mapPosition = $this->mapPositions[$map][$team];
+        return new Position($mapPosition[0], $mapPosition[1], $mapPosition[2], Server::getInstance()->getWorldManager()->getWorldByName($map));
+    }
+
+    /**
+     * @param string $map
+     * @param int $team
+     * @return float
+     */
+    public function getMapPositionYaw(string $map, int $team): float {
+        $mapPosition = $this->mapPositions[$map][$team];
+        return floatval($mapPosition[3]);
+    }
+
+    /**
+     * @param string $map
+     * @param int $team
+     * @return float
+     */
+    public function getMapPositionPitch(string $map, int $team): float {
+        $mapPosition = $this->mapPositions[$map][$team];
+        return floatval($mapPosition[4]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRandomMap(): string {
+        return $this->getMaps()[array_rand($this->getMaps())];
+    }
+
+    /**
+     * @param string $map
+     * @return int
+     */
+    public function getMapIdByMap(string $map): int {
+        return match ($map) {
+            MapIds::CARGO => 0,
+            MapIds::LEBRONZE => 1,
+            MapIds::MARZIPAN => 2,
+            MapIds::PADDINGTON => 3,
+            MapIds::ULTRAVIOLET => 4,
+            MapIds::TOPAZ => 5
+        };
+    }
+
+    /**
+     * @return array
+     */
+    public function getMapCleanName(): array {
+        return array_map('ucfirst', $this->getMaps());
+    }
+
+    /**
+     * @return array
+     */
+    public function getMaps(): array {
+        return MapIds::ALL_MAPS;
+    }
+
+}

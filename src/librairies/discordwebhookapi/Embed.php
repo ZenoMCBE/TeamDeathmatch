@@ -27,15 +27,15 @@ final class Embed {
      * @param string|null $iconURL
      * @return void
      */
-    public function setAuthor(string $name, string $url = null, string $iconURL = null): void{
+    public function setAuthor(string $name, ?string $url = null, ?string $iconURL = null): void {
         if (!isset($this->data["author"])) {
             $this->data["author"] = [];
         }
         $this->data["author"]["name"] = $name;
-        if ($url !== null) {
+        if (!is_null($url)) {
             $this->data["author"]["url"] = $url;
         }
-        if ($iconURL !== null) {
+        if (!is_null($iconURL)) {
             $this->data["author"]["icon_url"] = $iconURL;
         }
     }
@@ -108,7 +108,7 @@ final class Embed {
      * @param string|null $iconURL
      * @return void
      */
-    public function setFooter(string $text, string $iconURL = null): void {
+    public function setFooter(string $text, ?string $iconURL = null): void {
         if (!isset($this->data["footer"])) {
             $this->data["footer"] = [];
         }
@@ -126,4 +126,5 @@ final class Embed {
         $timestamp->setTimezone(new DateTimeZone("UTC"));
         $this->data["timestamp"] = $timestamp->format("Y-m-d\TH:i:s.v\Z");
     }
+
 }

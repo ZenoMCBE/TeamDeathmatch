@@ -34,12 +34,12 @@ final class CustomBow extends Bow {
      */
     public function onReleaseUsing(Player $player, array &$returnedItems): ItemUseResult {
         $arrow = VanillaItems::ARROW();
-        $inventory = match(true){
+        $inventory = match (true) {
             $player->getOffHandInventory()->contains($arrow) => $player->getOffHandInventory(),
             $player->getInventory()->contains($arrow) => $player->getInventory(),
             default => null
         };
-        if ($player->hasFiniteResources() && $inventory === null) {
+        if ($player->hasFiniteResources() && is_null($inventory)) {
             return ItemUseResult::FAIL();
         }
         $diff = $player->getItemUseDuration();

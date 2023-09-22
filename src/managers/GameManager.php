@@ -2,6 +2,7 @@
 
 namespace zenogames\managers;
 
+use zenogames\tasks\GappleGeneratorTask;
 use zenogames\tasks\RestartTask;
 use zenogames\Zeno;
 use zenogames\librairies\invmenu\InvMenu;
@@ -30,8 +31,8 @@ use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
-use pocketmine\world\sound\DoorCrashSound;
 use pocketmine\world\sound\EntityAttackSound;
+use zenostats\ZenoStats;
 
 final class GameManager {
 
@@ -40,6 +41,11 @@ final class GameManager {
     public const WAITING_STATUS = 0;
     public const LAUNCH_STATUS = 1;
     public const END_STATUS = 2;
+
+    /**
+     * @var string|null
+     */
+    private ?string $gameId = null;
 
     /**
      * @var array
@@ -85,7 +91,7 @@ final class GameManager {
     /**
      * @var int
      */
-    private int $teamLimit = 4;
+    private int $teamLimit = 5;
 
     /**
      * @var int|null
@@ -106,9 +112,10 @@ final class GameManager {
         $this->setStatus(self::WAITING_STATUS);
         $this->setGoal(50);
         $this->setRemainingTime(600);
-        $this->setTeamPlayersLimit(4);
+        $this->setTeamPlayersLimit(5);
         $this->setWinnerTeam(null);
         $this->setMap(MapManager::getInstance()->getRandomMap());
+        $this->setGameId($this->generateGameId());
     }
 
     /**
@@ -116,6 +123,7 @@ final class GameManager {
      * @noinspection PhpDeprecationInspection
      */
     public function start(): void {
+        $scheduler = Zeno::getInstance()->getScheduler();
         $gamePlayers = array_merge($this->getTeamPlayers(1), $this->getTeamPlayers(2));
         foreach ($gamePlayers as $gamePlayer) {
             $player = Server::getInstance()->getPlayerByPrefix(Utils::getPlayerName($gamePlayer, false));
@@ -126,15 +134,16 @@ final class GameManager {
                 $player->sendMessage("§r§l§q» §r§aInformations de la partie §l§q«");
                 $player->sendMessage("§l§q| §r§fChrono§7: §a" . intval($this->getRemainingTime() / 60) . " minute(s)");
                 $player->sendMessage("§l§q| §r§fMap§7: §a" . ucfirst($this->getMap()));
-                Zeno::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+                $scheduler->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
                     $player->sendTitle("§r§l§q» §r§aTeam Deathmatch §l§q«");
                     $player->sendSubTitle("§7Votre objectif est de tuer " . $this->getGoal() . " joueur(s) avec votre équipe !");
                 }), 3);
             }
         }
         $this->setStatus(self::LAUNCH_STATUS);
-        Zeno::getInstance()->getScheduler()->scheduleRepeatingTask(new GameTask(), 20);
-        Zeno::getInstance()->getScheduler()->scheduleRepeatingTask(new AssistTask(), 20);
+        $scheduler->scheduleRepeatingTask(new GameTask(), 20);
+        $scheduler->scheduleRepeatingTask(new AssistTask(), 20);
+        $scheduler->scheduleDelayedRepeatingTask(new GappleGeneratorTask($this->getMap()), 20*30, 20*30);
     }
 
     /**
@@ -143,7 +152,9 @@ final class GameManager {
      * @noinspection PhpDeprecationInspection
      */
     public function end(?int $team): void {
+        $permanentStatsApi = Zeno::getInstance()->getStatsApi();
         $statsApi = StatsManager::getInstance();
+        $discordWebhookApi = DiscordWebhookManager::getInstance();
         $statsApi->generatePlayersScore();
         $gamePlayers = array_merge($this->getTeamPlayers(1), $this->getTeamPlayers(2));
         $this->setWinnerTeam($team);
@@ -158,6 +169,10 @@ final class GameManager {
             $title = "§r§l§8» §r§7Égalité §l§8«";
             $subTitle = "§7Aucune équipe ne ressort vainqueur de cette partie !";
         }
+        $firstAverageTeamScore = $statsApi->calculateAverageTeamScore(1);
+        $secondAverageTeamScore = $statsApi->calculateAverageTeamScore(2);
+        $firstTeamAverageTeamLeague = $this->getAverageTeamLeague(1);
+        $secondTeamAverageTeamLeague = $this->getAverageTeamLeague(2);
         foreach ($gamePlayers as $gamePlayer) {
             $player = Server::getInstance()->getPlayerByPrefix(Utils::getPlayerName($gamePlayer, false));
             if ($player instanceof Player) {
@@ -167,9 +182,30 @@ final class GameManager {
                 KitManager::getInstance()->send($player, KitIds::END);
                 ScoreboardManager::getInstance()->sendScoreboard($player, ScoreboardTypeIds::ENDED);
                 $statsApi->showScoreMessage($player);
+                $playerTeam = $this->getPlayerTeam($player);
+                $result = (!is_null($team)) ? ($this->getWinnerTeam() === $playerTeam) : null;
+                $permanentStatsApi->getStatsManager()->update($player, $statsApi->getPlayerScore($player), $statsApi->getAll($player), $result);
+                $averageTeamScore = $playerTeam === 1 ? $firstAverageTeamScore : $secondAverageTeamScore;
+                $averageTeamLeague = $playerTeam === 1 ? $firstTeamAverageTeamLeague : $secondTeamAverageTeamLeague;
+                $permanentStatsApi->getEloManager()->update($player, $statsApi->getPlayerScore($player), $averageTeamScore, $averageTeamLeague, $result);
                 Utils::playSound($player, "mob.enderdragon.growl");
             }
         }
+        $individualResultElos = [];
+        $firstTeamColorName = $this->getColorNameByColorId($this->getTeamColor(1));
+        $secondTeamColorName = $this->getColorNameByColorId($this->getTeamColor(2));
+        foreach ($permanentStatsApi->getEloManager()->getResultElo() as $player => $resultElo) {
+            $playerTeam = $this->getPlayerTeam($player) - 1;
+            $individualResultElos[$playerTeam][$player] = $permanentStatsApi->getEloManager()->getStringResultElo($player);
+        }
+        foreach ($individualResultElos as &$individualResultElo) {
+            ksort($individualResultElo);
+        }
+        $discordWebhookApi->sendMatchSummary($this->getGameId(), $this->getMap(), $this->getWinnerTeam(), [$firstTeamColorName, $secondTeamColorName], $individualResultElos);
+        $firstTeamIndividualPlayersStats = $statsApi->getIndividualPlayersTeamStats(1);
+        $secondTeamIndividualPlayersStats = $statsApi->getIndividualPlayersTeamStats(2);
+        $discordWebhookApi->sendStatsSummary($this->getGameId(), $this->getMap(), $this->getWinnerTeam(), [$firstTeamColorName, $secondTeamColorName], [$firstTeamIndividualPlayersStats, $secondTeamIndividualPlayersStats]);
+        $this->setGameId(null);
         Zeno::getInstance()->getScheduler()->scheduleRepeatingTask(new RestartTask(), 20);
     }
 
@@ -189,14 +225,17 @@ final class GameManager {
         $this->setStatus(self::WAITING_STATUS);
         $this->setGoal(50);
         $this->setRemainingTime(600);
-        $this->setTeamPlayersLimit(4);
+        $this->setTeamPlayersLimit(5);
         $this->setWinnerTeam(null);
         $this->setMap(MapManager::getInstance()->getRandomMap());
+        $this->setGameId($this->generateGameId());
         $assistApi = AssistManager::getInstance();
         $scoreboardApi = ScoreboardManager::getInstance();
         $statsApi = StatsManager::getInstance();
+        $permanentStatsApi = Zeno::getInstance()->getStatsApi();
         $assistApi->reset();
         $statsApi->reset();
+        $permanentStatsApi->getEloManager()->resetResultElo();
         $this->playersTeam = [];
         foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
             $this->setPlayerTeam($onlinePlayer, 0);
@@ -280,6 +319,29 @@ final class GameManager {
         Zeno::getInstance()->getScheduler()->scheduleRepeatingTask(new DeathTask($entity), 20);
     }
 
+
+    /**
+     * @return string|null
+     */
+    public function getGameId(): ?string {
+        return $this->gameId;
+    }
+
+    /**
+     * @param string|null $gameId
+     * @return void
+     */
+    public function setGameId(?string $gameId): void {
+        $this->gameId = $gameId;
+    }
+
+    /**
+     * @return string
+     */
+    public function generateGameId(): string {
+        return uniqid("tdm-");
+    }
+
     /**
      * @param string|Player $player
      * @param int $team
@@ -329,6 +391,32 @@ final class GameManager {
     }
 
     /**
+     * @param int $team
+     * @return int
+     */
+    public function countTeamPlayers(int $team): int {
+        return count($this->getTeamPlayers($team));
+    }
+
+    /**
+     * @param int $team
+     * @return string
+     */
+    public function getAverageTeamLeague(int $team): string {
+        $globalElo = 0;
+        $permanentStatsApi = Zeno::getInstance()->getStatsApi();
+        $eloApi = $permanentStatsApi->getEloManager();
+        $leagueApi = $permanentStatsApi->getLeagueManager();
+        $teamPlayers = $this->getTeamPlayers($team);
+        foreach ($teamPlayers as $teamPlayer) {
+            $playerElo = $eloApi->get($teamPlayer);
+            $globalElo += $playerElo;
+        }
+        $averageElo = intval($globalElo / $this->countTeamPlayers($team));
+        return $leagueApi->getLeagueByNecessaryElo($averageElo);
+    }
+
+    /**
      * @return void
      */
     public function randomizeTeam(): void {
@@ -340,8 +428,8 @@ final class GameManager {
         $this->playersTeam = $finalPlayersTeam;
         foreach ($finalPlayersTeam as $player => $team) {
             $this->playersTeam[$player] = 0;
-            $firstTeamPlayersCount = count($this->getTeamPlayers(1));
-            $secondTeamPlayersCount = count($this->getTeamPlayers(2));
+            $firstTeamPlayersCount = $this->countTeamPlayers(1);
+            $secondTeamPlayersCount = $this->countTeamPlayers(2);
             $randomTeam = ($firstTeamPlayersCount !== $secondTeamPlayersCount)
                 ? ($firstTeamPlayersCount < $secondTeamPlayersCount ? 1 : 2)
                 : mt_rand(1, 2);
@@ -530,6 +618,9 @@ final class GameManager {
         foreach ($this->playersTeam as $player => $team) {
             $this->playersTeam[$player] = 0;
         }
+        foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
+            $this->updateNametag($onlinePlayer);
+        }
     }
 
     /**
@@ -711,8 +802,10 @@ final class GameManager {
      * @return string
      */
     public function formatChatMessage(Player $player, string $message): string {
+        $leagueApi = Zeno::getInstance()->getStatsApi()->getLeagueManager();
         if ($this->hasPlayerTeam($player)) {
             $opTag = Server::getInstance()->isOp($player->getName()) ? "§8[§cOP§8]§r" : "";
+            $formattedLeague = !$this->isLaunched() ? "§8[" . $leagueApi->formatLeague($player) . "§8]§r" : "";
             $team = $this->getPlayerTeam($player);
             $teamColor = $this->getTeamColor($team);
             $colorName = $this->getColorNameByColorId($teamColor);
@@ -720,14 +813,15 @@ final class GameManager {
             return str_replace(
                 ["{OP_TAG}", "{COLOR}", "{TEAM}", "{PLAYER}", "{MESSAGE}"],
                 [$opTag, $minecraftColor, $colorName, $player->getName(), $message],
-                "{OP_TAG}§8[{COLOR}{TEAM}§8] {COLOR}{PLAYER} §l§8» §r§7{MESSAGE}"
+                $formattedLeague . "{OP_TAG}§8[{COLOR}{TEAM}§8] {COLOR}{PLAYER} §l§8» §r§7{MESSAGE}"
             );
         } else {
             $opTag = Server::getInstance()->isOp($player->getName()) ? "§8[§cOP§8]§r " : "";
+            $formattedLeague = !$this->isLaunched() ? "§8[" . $leagueApi->formatLeague($player) . "§8]§r" . (Server::getInstance()->isOp($player->getName()) ? "" : " ") : "";
             return str_replace(
                 ["{OP_TAG}", "{PLAYER}", "{MESSAGE}"],
                 [$opTag, $player->getName(), $message],
-                "{OP_TAG}§7{PLAYER} §l§8» §r§7{MESSAGE}"
+                $formattedLeague . "{OP_TAG}§7{PLAYER} §l§8» §r§7{MESSAGE}"
             );
         }
     }

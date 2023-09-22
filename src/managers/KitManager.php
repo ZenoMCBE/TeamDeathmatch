@@ -31,9 +31,14 @@ final class KitManager {
             case KitIds::WAITING:
                 $teamSelector = VanillaItems::COMPASS()->setCustomName("§r§l§q» §r§aSélecteur d'équipe §l§q«");
                 $gameManagement = VanillaItems::NETHER_STAR()->setCustomName("§r§l§q» §r§aGestion de la partie §l§q«");
-                $player->getInventory()->setItem(0, $teamSelector);
+                $permanentStats = VanillaItems::EMERALD()->setCustomName("§r§l§q» §r§aStatistiques/Classements §l§q«");
+
+                $playerInventory = $player->getInventory();
+
+                $playerInventory->setItem(0, $teamSelector);
+                $playerInventory->setItem(8, $permanentStats);
                 if (Server::getInstance()->isOp($player->getName())) {
-                    $player->getInventory()->setItem(4, $gameManagement);
+                    $playerInventory->setItem(4, $gameManagement);
                 }
                 break;
             case KitIds::GAME:

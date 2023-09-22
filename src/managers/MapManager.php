@@ -44,6 +44,18 @@ final class MapManager {
     ];
 
     /**
+     * @var array|array[]
+     */
+    private array $gappleGeneratorMapPosition = [
+        MapIds::CARGO => [64.5, 19, 25.5],
+        MapIds::LEBRONZE => [117.5, 12, 177.5],
+        MapIds::MARZIPAN => [106.5, 11, 4.5],
+        MapIds::PADDINGTON => [0.5, 6, 0.5],
+        MapIds::ULTRAVIOLET => [124.5, 12, -12.5],
+        MapIds::TOPAZ => [-97.5, 8, 9.5]
+    ];
+
+    /**
      * @param Player $player
      * @return void
      */
@@ -85,6 +97,15 @@ final class MapManager {
     public function getMapPositionPitch(string $map, int $team): float {
         $mapPosition = $this->mapPositions[$map][$team];
         return floatval($mapPosition[4]);
+    }
+
+    /**
+     * @param string $map
+     * @return Position
+     */
+    public function getGappleGeneratorMapPosition(string $map): Position {
+        $gappleGeneratorMapPosition = $this->gappleGeneratorMapPosition[$map];
+        return new Position($gappleGeneratorMapPosition[0], $gappleGeneratorMapPosition[1], $gappleGeneratorMapPosition[2], Server::getInstance()->getWorldManager()->getWorldByName($map));
     }
 
     /**

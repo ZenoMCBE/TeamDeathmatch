@@ -37,6 +37,7 @@ use pocketmine\item\GoldenApple;
 use pocketmine\item\ItemTypeIds;
 use pocketmine\player\chat\LegacyRawChatFormatter;
 use pocketmine\Server;
+use zenogames\Zeno;
 
 final class PlayerListeners implements Listener {
 
@@ -48,14 +49,15 @@ final class PlayerListeners implements Listener {
         $playerInfo = $event->getPlayerInfo();
         $server = Server::getInstance();
         $gameApi = GameManager::getInstance();
+        $playerName = $playerInfo->getUsername();
         if ($server->getNetwork()->getValidConnectionCount() > $server->getQueryInformation()->getMaxPlayerCount()) {
             $event->setKickFlag(PlayerPreLoginEvent::KICK_FLAG_SERVER_FULL, "§l§q» §r§aLa partie est pleine §l§q«");
         }
-        if (!$server->isWhitelisted($playerInfo->getUsername())) {
+        if (!$server->isWhitelisted($playerName)) {
             $event->setKickFlag(PlayerPreLoginEvent::KICK_FLAG_SERVER_WHITELISTED, "§l§q» §r§aServeur sous liste blanche §l§q«");
         }
         if (
-            ($gameApi->isLaunched() && !$gameApi->hasPlayerTeam($playerInfo->getUsername())) ||
+            ($gameApi->isLaunched() && !$gameApi->hasPlayerTeam($playerName)) ||
             $gameApi->isEnded()
         ) {
             $event->setKickFlag(PlayerPreLoginEvent::KICK_FLAG_PLUGIN, "§l§q» §r§aUne partie est déjà en cours §l§q«");
@@ -100,6 +102,9 @@ final class PlayerListeners implements Listener {
         $gameApi = GameManager::getInstance();
         $scoreboardApi = ScoreboardManager::getInstance();
         $statsApi = StatsManager::getInstance();
+        $permanentStatsApi = Zeno::getInstance()->getStatsApi();
+        $permanentStatsApi->getEloManager()->setDefaultData($player);
+        $permanentStatsApi->getStatsManager()->setDefaultData($player);
         if ($gameApi->isWaiting()) {
             $gameApi->setPlayerTeam($player, 0);
             $scoreboardApi->sendScoreboard($player, ScoreboardTypeIds::WAITING);
@@ -123,6 +128,7 @@ final class PlayerListeners implements Listener {
     public function onQuit(PlayerQuitEvent $event): void {
         $player = $event->getPlayer();
         $gameApi = GameManager::getInstance();
+        $statsApi = StatsManager::getInstance();
         $scoreboardApi = ScoreboardManager::getInstance();
         switch ($gameApi->getStatus()) {
             case $gameApi::WAITING_STATUS:
@@ -130,6 +136,7 @@ final class PlayerListeners implements Listener {
                     $gameApi->setPlayerTeam($player, 0);
                 }
                 $gameApi->removePlayerTeam($player);
+                $statsApi->delete($player);
                 $scoreboardApi->sendScoreboard($player, ScoreboardTypeIds::WAITING);
                 $scoreboardApi->updateOnlinePlayers(true);
                 $event->setQuitMessage(Constants::PREFIX . "§a" . $player->getName() . " §fa quitté la partie ! §8(§7" . (count(Server::getInstance()->getOnlinePlayers()) - 1) . "/" . Server::getInstance()->getQueryInformation()->getMaxPlayerCount() . "§8)");
@@ -223,6 +230,9 @@ final class PlayerListeners implements Listener {
                 break;
             case ItemTypeIds::NETHER_STAR:
                 $player->sendForm(GameManagementForm::getInstance()->getMainForm());
+                break;
+            case ItemTypeIds::EMERALD:
+                $player->sendForm(Zeno::getInstance()->getStatsApi()->getStatsManager()->getMainLeaderboardForm());
                 break;
             case ItemTypeIds::BOOK:
                 $player->sendForm(MatchSummaryForm::getInstance()->getMainForm());

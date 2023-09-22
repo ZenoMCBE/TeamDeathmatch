@@ -7,6 +7,7 @@ use zenogames\managers\LoadersManager;
 use zenogames\utils\Constants;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
+use zenostats\ZenoStats;
 
 final class Zeno extends PluginBase {
 
@@ -41,6 +42,13 @@ final class Zeno extends PluginBase {
     protected function onDisable(): void {
         LoadersManager::getInstance()->unloadAll();
         $this->getLogger()->notice("Zeno TDM a été désactivé avec succès !");
+    }
+
+    /**
+     * @return ZenoStats
+     */
+    public function getStatsApi(): ZenoStats {
+        return ZenoStats::getInstance();
     }
 
 }

@@ -37,6 +37,7 @@ final class StatsManager {
                 StatsIds::BEST_KILLSTREAK => 0,
                 StatsIds::ARROW_SHOT => 0,
                 StatsIds::ARROW_HIT => 0,
+                StatsIds::ARROW_BOOST => 0,
                 StatsIds::DAMAGE_DEALED => 0,
                 StatsIds::DAMAGE_TAKEN => 0,
                 StatsIds::GOLDEN_APPLE_EATEN => 0,
@@ -70,6 +71,15 @@ final class StatsManager {
     public function get(string|Player $player, string $stats): int {
         $playerName = Utils::getPlayerName($player, true);
         return intval($this->stats[$playerName][$stats]);
+    }
+
+    /**
+     * @param string|Player $player
+     * @return array
+     */
+    public function getAll(string|Player $player): array {
+        $playerName = Utils::getPlayerName($player, true);
+        return $this->stats[$playerName];
     }
 
     /**
@@ -146,6 +156,56 @@ final class StatsManager {
             : 0;
     }
 
+    /*public function getIndividualPlayersTeamScore(int $team): array {
+        $scores = [];
+        $gameApi = GameManager::getInstance();
+        foreach ($this->scores as $player => $score) {
+            $playerTeam = $gameApi->getPlayerTeam($player);
+            if ($playerTeam === $team) {
+                $scores[$player] = $score;
+            }
+        }
+        ksort($scores);
+        return $scores;
+    }*/
+
+    /**
+     * @param int $team
+     * @return array
+     */
+    public function getIndividualPlayersTeamStats(int $team): array {
+        $individualStats = [];
+        $gameApi = GameManager::getInstance();
+        foreach ($this->stats as $player => $stats) {
+            $playerTeam = $gameApi->getPlayerTeam($player);
+            if ($playerTeam === $team) {
+                foreach ($stats as $stat => $amount) {
+                    if (in_array($stat, [StatsIds::KILL, StatsIds::ASSIST, StatsIds::DEATH, StatsIds::KILLSTREAK, StatsIds::BEST_KILLSTREAK, StatsIds::DAMAGE_DEALED])) {
+                        $individualStats[$player][$stat] = $amount;
+                    }
+                }
+            }
+        }
+        ksort($individualStats);
+        return $individualStats;
+    }
+
+    /**
+     * @param int $team
+     * @return int
+     */
+    public function calculateAverageTeamScore(int $team): int {
+        $score = 0;
+        $gameApi = GameManager::getInstance();
+        foreach ($this->scores as $player => $score) {
+            $playerTeam = $gameApi->getPlayerTeam($player);
+            if ($playerTeam === $team) {
+                $score += $score;
+            }
+        }
+        return intval($score / $gameApi->countTeamPlayers($team)) ?? 0;
+    }
+
     /**
      * @param Player $player
      * @return void
@@ -160,6 +220,10 @@ final class StatsManager {
         $player->sendPopup("§r§l§8» §r§fK§7: §a" . $kill . " §8| §fA§7: §b" . $assist . " §8| §fD§7: §c" . $death . " §8| §fKS§7: §a" . $killstreak . " §8| §fBKS§7: §a" . $bestKillstreak . " §l§8«");
     }
 
+    /**
+     * @param string $statsId
+     * @return array
+     */
     public function getTopStats(string $statsId): array {
         $array = [];
         foreach ($this->stats as $player => $stat) {
@@ -286,6 +350,7 @@ final class StatsManager {
             StatsIds::BEST_KILLSTREAK => "Meilleure série de kill(s)",
             StatsIds::ARROW_SHOT => "Flèche(s) tirée(s)",
             StatsIds::ARROW_HIT => "Flèche(s) touchée(s)",
+            StatsIds::ARROW_BOOST => "Boost(s) à l'arc",
             StatsIds::DAMAGE_DEALED => "Dégât(s) infligé(s)",
             StatsIds::DAMAGE_TAKEN => "Dégât(s) subit(s)",
             StatsIds::GOLDEN_APPLE_EATEN => "Gapple(s) mangée(s)",

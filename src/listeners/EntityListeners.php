@@ -146,6 +146,7 @@ final class EntityListeners implements Listener {
         $child = $event->getChild();
         if ($entity instanceof Player && $damager instanceof Player) {
             $gameApi = GameManager::getInstance();
+            $statsApi = StatsManager::getInstance();
             if (
                 $gameApi->isInSameTeam($entity, $damager) ||
                 !$gameApi->isLaunched() ||
@@ -156,7 +157,6 @@ final class EntityListeners implements Listener {
             }
             if (!$event->isCancelled()) {
                 $assistApi = AssistManager::getInstance();
-                $statsApi = StatsManager::getInstance();
                 if ($child instanceof Arrow) {
                     $hurtAnimation = new HurtAnimation($entity);
                     $projectileMotion = $child->getMotion();
@@ -206,6 +206,7 @@ final class EntityListeners implements Listener {
                             $multiplier = $child->getPunchKnockback() * 1.6 / $horizontalSpeed;
                             $entity->setMotion($entity->getMotion()->add($projectileMotion->x * $multiplier, 0.22, $projectileMotion->z * $multiplier));
                         }
+                        $statsApi->add($damager, StatsIds::ARROW_BOOST);
                     }
                 }
             }

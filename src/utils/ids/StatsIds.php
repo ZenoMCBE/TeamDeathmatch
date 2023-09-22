@@ -11,6 +11,7 @@ interface StatsIds {
     public const BEST_KILLSTREAK = "best-killstreak";
     public const ARROW_SHOT = "arrow-shot";
     public const ARROW_HIT = "arrow-hit";
+    public const ARROW_BOOST = "arrow-boost";
     public const DAMAGE_DEALED = "damage-dealed";
     public const DAMAGE_TAKEN = "damage-taken";
     public const GOLDEN_APPLE_EATEN = "golden-apple-eaten";
@@ -24,6 +25,7 @@ interface StatsIds {
         self::BEST_KILLSTREAK,
         self::ARROW_SHOT,
         self::ARROW_HIT,
+        self::ARROW_BOOST,
         self::DAMAGE_DEALED,
         self::DAMAGE_TAKEN,
         self::GOLDEN_APPLE_EATEN,

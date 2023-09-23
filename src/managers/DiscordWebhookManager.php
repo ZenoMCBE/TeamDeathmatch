@@ -43,7 +43,7 @@ final class DiscordWebhookManager {
             $fieldContent = "";
             foreach ($resultElos[$i] as $player => $resultElo) {
                 $playerElo = Zeno::getInstance()->getStatsApi()->getEloManager()->get($player);
-                $fieldContent .= Utils::getPlayerName($player, false) . " → " . $playerElo . " (" . $resultElos[$i][$player] . ")";
+                $fieldContent .= Utils::getPlayerName($player, false) . " → " . $playerElo . " (" . $resultElos[$i][$player] . ")\n";
             }
             $embed->addField(ucfirst($teamColors[$i]) . " (" . $gameApi->getAverageTeamLeague($i + 1) . ")", $fieldContent);
         }

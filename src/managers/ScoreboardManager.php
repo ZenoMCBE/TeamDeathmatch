@@ -57,9 +57,12 @@ final class ScoreboardManager {
      */
     public function sendScoreboard(Player $player, int $type): void {
         $gameApi = GameManager::getInstance();
+        $rankApi = RankManager::getInstance();
         switch ($type) {
             case ScoreboardTypeIds::WAITING:
                 $playersCount = count(Server::getInstance()->getOnlinePlayers());
+                $playerRank = $rankApi->get($player);
+                $playerRankCleanName = $rankApi->getRankColorByRank($playerRank) . $rankApi->getCleanRankNameByRank($playerRank);
                 $playerTeam = $gameApi->hasPlayerTeam($player)
                     ? $gameApi->getFormattedColorNameByColorId($gameApi->getPlayerTeam($player))
                     : "§7Aucune";
@@ -67,12 +70,13 @@ final class ScoreboardManager {
                 $this->changeTitle($player, $this->formatWordToGlyph("zeno"));
                 $this->changeLine($player, 1, self::SEPARATOR);
                 $this->changeLine($player, 2, " §l§q" . $player->getName());
-                $this->changeLine($player, 3, " " . self::MINI_SEPARATOR . " §fÉquipe§7: " . $playerTeam);
-                $this->changeLine($player, 4, "  ");
-                $this->changeLine($player, 5, " §l§qInfos");
-                $this->changeLine($player, 6, " " . self::MINI_SEPARATOR . " §fMode§7: §aTDM");
-                $this->changeLine($player, 7, " " . self::MINI_SEPARATOR . " §fJoueur(s)§7: §c" . $playersCount);
-                $this->changeLine($player, 8, "§r" . self::SEPARATOR);
+                $this->changeLine($player, 3, " " . self::MINI_SEPARATOR . " §fGrade§7: " . $playerRankCleanName);
+                $this->changeLine($player, 4, " " . self::MINI_SEPARATOR . " §fÉquipe§7: " . $playerTeam);
+                $this->changeLine($player, 5, "  ");
+                $this->changeLine($player, 6, " §l§qInfos");
+                $this->changeLine($player, 7, " " . self::MINI_SEPARATOR . " §fMode§7: §aTDM");
+                $this->changeLine($player, 8, " " . self::MINI_SEPARATOR . " §fJoueur(s)§7: §c" . $playersCount);
+                $this->changeLine($player, 9, "§r" . self::SEPARATOR);
                 break;
             case ScoreboardTypeIds::LAUNCH:
                 $firstTeamPoints = $gameApi->getTeamPoints(1);
@@ -143,8 +147,19 @@ final class ScoreboardManager {
     public function updateOnlinePlayers(bool $disconnect): void {
         $onlinePlayers = Server::getInstance()->getOnlinePlayers();
         foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
-            $this->changeLine($onlinePlayer, 7, " " . self::MINI_SEPARATOR . " §fJoueur(s)§7: §c" . ($disconnect ? (count($onlinePlayers) - 1) : count($onlinePlayers)));
+            $this->changeLine($onlinePlayer, 8, " " . self::MINI_SEPARATOR . " §fJoueur(s)§7: §c" . ($disconnect ? (count($onlinePlayers) - 1) : count($onlinePlayers)));
         }
+    }
+
+    /**
+     * @param Player $player
+     * @return void
+     */
+    public function updateRank(Player $player): void {
+        $rankApi = RankManager::getInstance();
+        $playerRank = $rankApi->get($player);
+        $playerRankCleanName = $rankApi->getRankColorByRank($playerRank) . $rankApi->getCleanRankNameByRank($playerRank);
+        $this->changeLine($player, 3, " " . self::MINI_SEPARATOR . " §fGrade§7: " . $playerRankCleanName);
     }
 
     /**
@@ -157,13 +172,13 @@ final class ScoreboardManager {
             $playerTeam = $gameApi->hasPlayerTeam($player)
                 ? $gameApi->getFormattedColorNameByColorId($gameApi->getPlayerTeam($player))
                 : "§7Aucune";
-            $this->changeLine($player, 3, " " . self::MINI_SEPARATOR . " §fÉquipe§7: " . $playerTeam);
+            $this->changeLine($player, 4, " " . self::MINI_SEPARATOR . " §fÉquipe§7: " . $playerTeam);
         } else {
             foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
                 $playerTeam = $gameApi->hasPlayerTeam($onlinePlayer)
                     ? $gameApi->getFormattedColorNameByColorId($gameApi->getPlayerTeam($onlinePlayer))
                     : "§7Aucune";
-                $this->changeLine($onlinePlayer, 3, " " . self::MINI_SEPARATOR . " §fÉquipe§7: " . $playerTeam);
+                $this->changeLine($onlinePlayer, 4, " " . self::MINI_SEPARATOR . " §fÉquipe§7: " . $playerTeam);
             }
         }
     }

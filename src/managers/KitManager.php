@@ -37,7 +37,7 @@ final class KitManager {
 
                 $playerInventory->setItem(0, $teamSelector);
                 $playerInventory->setItem(8, $permanentStats);
-                if (Server::getInstance()->isOp($player->getName())) {
+                if (RankManager::getInstance()->isHoster($player)) {
                     $playerInventory->setItem(4, $gameManagement);
                 }
                 break;

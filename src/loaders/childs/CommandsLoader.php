@@ -6,6 +6,7 @@ use zenogames\commands\player\PingCommand;
 use zenogames\commands\player\TpsCommand;
 use zenogames\commands\staff\ExactCoordsCommand;
 use zenogames\commands\staff\match\MatchCommand;
+use zenogames\commands\staff\SetRankCommand;
 use zenogames\Zeno;
 use zenogames\librairies\commando\BaseCommand;
 use zenogames\loaders\Loader;
@@ -32,6 +33,7 @@ final class CommandsLoader implements Loader {
             new ExactCoordsCommand(),
             new MatchCommand(),
             new PingCommand(),
+            new SetRankCommand(),
             new TpsCommand()
         ];
         $commandMap = Zeno::getInstance()->getServer()->getCommandMap();

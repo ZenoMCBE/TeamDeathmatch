@@ -2,6 +2,7 @@
 
 namespace zenogames\commands\staff;
 
+use zenogames\managers\RankManager;
 use zenogames\Zeno;
 use zenogames\librairies\commando\BaseCommand;
 use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
@@ -36,7 +37,7 @@ final class ExactCoordsCommand extends BaseCommand {
      */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void {
         assert($sender instanceof Player);
-        if (Server::getInstance()->isOp($sender->getName())) {
+        if (RankManager::getInstance()->hasPermission($sender, 2)) {
             $location = $sender->getLocation();
             $coordinates = [
                 "X" => round($location->getX(), 2),

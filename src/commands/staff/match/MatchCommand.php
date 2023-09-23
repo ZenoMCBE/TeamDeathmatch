@@ -10,6 +10,7 @@ use zenogames\commands\staff\match\subs\MatchRestartSubCommand;
 use zenogames\commands\staff\match\subs\MatchStopSubCommand;
 use zenogames\librairies\commando\BaseCommand;
 use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
+use zenogames\managers\RankManager;
 use zenogames\utils\Constants;
 use zenogames\Zeno;
 
@@ -40,7 +41,7 @@ final class MatchCommand extends BaseCommand {
      */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void {
         assert($sender instanceof Player);
-        if (Server::getInstance()->isOp($sender->getName())) {
+        if (RankManager::getInstance()->isHoster($sender)) {
             $sender->sendMessage("§l§q» §r§aCommandes de gestion de la partie §l§q«§r");
             $sender->sendMessage("§l§q| §r§a/match restart §8- §fRéinitialiser la partie");
             $sender->sendMessage("§l§q| §r§a/match stop §8- §fArrêter de force la partie");

@@ -9,6 +9,7 @@ use pocketmine\Server;
 use zenogames\librairies\commando\BaseSubCommand;
 use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
 use zenogames\managers\GameManager;
+use zenogames\managers\RankManager;
 use zenogames\utils\Constants;
 use zenogames\Zeno;
 
@@ -37,7 +38,7 @@ final class MatchStopSubCommand extends BaseSubCommand {
      */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void {
         assert($sender instanceof Player);
-        if (Server::getInstance()->isOp($sender->getName())) {
+        if (RankManager::getInstance()->isHoster($sender)) {
             $gameApi = GameManager::getInstance();
             if ($gameApi->isLaunched()) {
                 $firstTeamPoints = $gameApi->getTeamPoints(1);

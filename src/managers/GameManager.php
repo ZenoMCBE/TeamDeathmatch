@@ -652,7 +652,7 @@ final class GameManager {
         foreach ($playersTeam as $playerTeam) {
             $teamPlayer = Server::getInstance()->getPlayerByPrefix(Utils::getPlayerName($playerTeam, false));
             if ($teamPlayer instanceof Player) {
-                $teamPlayer->sendMessage("§8[§aÉquipe§8]" . $this->formatChatMessage($player, $message));
+                $teamPlayer->sendMessage("§8[§aÉquipe§8]" . RankManager::getInstance()->formatChatMessage($player, $message));
             }
         }
     }
@@ -794,36 +794,6 @@ final class GameManager {
      */
     public function isDeath(Player $player): bool {
         return $player->hasNoClientPredictions();
-    }
-
-    /**
-     * @param Player $player
-     * @param string $message
-     * @return string
-     */
-    public function formatChatMessage(Player $player, string $message): string {
-        $leagueApi = Zeno::getInstance()->getStatsApi()->getLeagueManager();
-        if ($this->hasPlayerTeam($player)) {
-            $opTag = Server::getInstance()->isOp($player->getName()) ? "§8[§cOP§8]§r" : "";
-            $formattedLeague = !$this->isLaunched() ? "§8[" . $leagueApi->formatLeague($player) . "§8]§r" : "";
-            $team = $this->getPlayerTeam($player);
-            $teamColor = $this->getTeamColor($team);
-            $colorName = $this->getColorNameByColorId($teamColor);
-            $minecraftColor = $this->getMinecraftColorByColorId($teamColor);
-            return str_replace(
-                ["{OP_TAG}", "{COLOR}", "{TEAM}", "{PLAYER}", "{MESSAGE}"],
-                [$opTag, $minecraftColor, $colorName, $player->getName(), $message],
-                $formattedLeague . "{OP_TAG}§8[{COLOR}{TEAM}§8] {COLOR}{PLAYER} §l§8» §r§7{MESSAGE}"
-            );
-        } else {
-            $opTag = Server::getInstance()->isOp($player->getName()) ? "§8[§cOP§8]§r " : "";
-            $formattedLeague = !$this->isLaunched() ? "§8[" . $leagueApi->formatLeague($player) . "§8]§r" . (Server::getInstance()->isOp($player->getName()) ? "" : " ") : "";
-            return str_replace(
-                ["{OP_TAG}", "{PLAYER}", "{MESSAGE}"],
-                [$opTag, $player->getName(), $message],
-                $formattedLeague . "{OP_TAG}§7{PLAYER} §l§8» §r§7{MESSAGE}"
-            );
-        }
     }
 
     /**

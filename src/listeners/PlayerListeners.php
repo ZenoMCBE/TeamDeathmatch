@@ -10,6 +10,7 @@ use zenogames\managers\ChatManager;
 use zenogames\managers\GameManager;
 use zenogames\managers\KitManager;
 use zenogames\managers\MapManager;
+use zenogames\managers\RankManager;
 use zenogames\managers\ScoreboardManager;
 use zenogames\managers\StatsManager;
 use zenogames\utils\Constants;
@@ -72,6 +73,8 @@ final class PlayerListeners implements Listener {
         $player = $event->getPlayer();
         $kitApi = KitManager::getInstance();
         $gameApi = GameManager::getInstance();
+        $rankApi = RankManager::getInstance();
+        $rankApi->setDefaultData($player);
         switch ($gameApi->getStatus()) {
             case $gameApi::WAITING_STATUS:
                 Utils::teleportToWaitingMap($player);
@@ -163,6 +166,7 @@ final class PlayerListeners implements Listener {
         $message = $event->getMessage();
         $chatApi = ChatManager::getInstance();
         $gameApi = GameManager::getInstance();
+        $rankApi = RankManager::getInstance();
         if (!$chatApi->isInAntiSpam($player)) {
             if ($chatApi->hasSavedMessage($player)) {
                 if ($chatApi->isSameMessage($player, $message)) {
@@ -177,13 +181,13 @@ final class PlayerListeners implements Listener {
             switch ($gameApi->getStatus()) {
                 case $gameApi::WAITING_STATUS:
                 case $gameApi::END_STATUS:
-                    $event->setFormatter(new LegacyRawChatFormatter(GameManager::getInstance()->formatChatMessage($player, $message)));
+                    $event->setFormatter(new LegacyRawChatFormatter($rankApi->formatChatMessage($player, $message)));
                     break;
                 case $gameApi::LAUNCH_STATUS:
                     if ($gameApi->hasPlayerTeam($player)) {
                         $playerTeam = $gameApi->getPlayerTeam($player);
                         if (str_starts_with($message, "@")) {
-                            $event->setFormatter(new LegacyRawChatFormatter("§8[§bGlobal§8]" . GameManager::getInstance()->formatChatMessage($player, substr($message, 1))));
+                            $event->setFormatter(new LegacyRawChatFormatter("§8[§bGlobal§8]" . $rankApi->formatChatMessage($player, substr($message, 1))));
                         } else {
                             $gameApi->sendMessageToAllTeamPlayers($playerTeam, $player, $message);
                             $event->cancel();

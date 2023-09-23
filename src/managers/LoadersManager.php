@@ -2,11 +2,13 @@
 
 namespace zenogames\managers;
 
+use zenogames\loaders\childs\DatasLoader;
 use zenogames\Zeno;
 use zenogames\loaders\childs\CommandsLoader;
 use zenogames\loaders\childs\EnchantmentsLoader;
 use zenogames\loaders\childs\HooksLoader;
 use zenogames\loaders\childs\ListenersLoader;
+use zenogames\loaders\childs\ProvidersLoader;
 use zenogames\loaders\childs\WorldsLoader;
 use zenogames\loaders\Loader;
 use pocketmine\utils\SingletonTrait;
@@ -24,7 +26,9 @@ final class LoadersManager {
             new EnchantmentsLoader(),
             new HooksLoader(),
             new ListenersLoader(),
-            new WorldsLoader()
+            new ProvidersLoader(),
+            new WorldsLoader(),
+            new DatasLoader()
         ];
         foreach ($loaders as $loader) {
             if (isset(class_implements($loader)[Loader::class])) {
@@ -39,7 +43,8 @@ final class LoadersManager {
      */
     public function unloadAll(): void {
         $loaders = [
-            new WorldsLoader()
+            new WorldsLoader(),
+            new DatasLoader()
         ];
         foreach ($loaders as $loader) {
             if (isset(class_implements($loader)[Loader::class])) {

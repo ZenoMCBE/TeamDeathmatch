@@ -220,8 +220,9 @@ final class GameManagementForm {
                     1 => MapIds::LEBRONZE,
                     2 => MapIds::MARZIPAN,
                     3 => MapIds::PADDINGTON,
-                    4 => MapIds::ULTRAVIOLET,
-                    5 => MapIds::TOPAZ,
+                    4 => MapIds::REVOLUTION,
+                    5 => MapIds::ULTRAVIOLET,
+                    6 => MapIds::TOPAZ,
                     default => null
                 };
                 if (

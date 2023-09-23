@@ -23,6 +23,7 @@ final class WorldsLoader implements Loader {
             MapIds::LEBRONZE,
             MapIds::MARZIPAN,
             MapIds::PADDINGTON,
+            MapIds::REVOLUTION,
             MapIds::ULTRAVIOLET,
             MapIds::TOPAZ
         ];

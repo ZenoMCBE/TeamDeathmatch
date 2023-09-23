@@ -8,6 +8,7 @@ interface MapIds {
     public const LEBRONZE = "lebronze";
     public const MARZIPAN = "marzipan";
     public const PADDINGTON = "paddington";
+    public const REVOLUTION = "revolution";
     public const ULTRAVIOLET = "ultraviolet";
     public const TOPAZ = "topaz";
 
@@ -16,6 +17,7 @@ interface MapIds {
         self::LEBRONZE,
         self::MARZIPAN,
         self::PADDINGTON,
+        self::REVOLUTION,
         self::ULTRAVIOLET,
         self::TOPAZ
     ];

@@ -33,6 +33,10 @@ final class MapManager {
             1 => [10.5, 12, -36.5, 135, 0],
             2 => [-9.5, 12, 37.5, 315, 0]
         ],
+        MapIds::REVOLUTION => [
+            1 => [-111, 15, 70.5, 270, 0],
+            2 => [-24, 15, 70.5, 90, 0]
+        ],
         MapIds::ULTRAVIOLET => [
             1 => [133.5, 14, 16.5, 225, 0],
             2 => [183.5, 14, -33.5, 45, 0]
@@ -51,7 +55,8 @@ final class MapManager {
         MapIds::LEBRONZE => [117.5, 12, 177.5],
         MapIds::MARZIPAN => [106.5, 11, 4.5],
         MapIds::PADDINGTON => [0.5, 6, 0.5],
-        MapIds::ULTRAVIOLET => [124.5, 12, -12.5],
+        MapIds::REVOLUTION => [-67.5, 10, 70.5],
+        MapIds::ULTRAVIOLET => [154.5, 12, -12.5],
         MapIds::TOPAZ => [-97.5, 8, 9.5]
     ];
 
@@ -125,8 +130,9 @@ final class MapManager {
             MapIds::LEBRONZE => 1,
             MapIds::MARZIPAN => 2,
             MapIds::PADDINGTON => 3,
-            MapIds::ULTRAVIOLET => 4,
-            MapIds::TOPAZ => 5
+            MapIds::REVOLUTION => 4,
+            MapIds::ULTRAVIOLET => 5,
+            MapIds::TOPAZ => 6
         };
     }
 

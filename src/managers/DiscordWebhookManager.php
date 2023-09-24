@@ -78,11 +78,19 @@ final class DiscordWebhookManager {
         $embed->setDescription("**ID**: " . $gameId . "\n**Gagnant**: " . (!is_null($winnerTeam) ? ucfirst(($gameApi->getColorNameByColorId($gameApi->getTeamColor($winnerTeam)))) : "Égalité")  . " (**" . $gameApi->getTeamPoints(1) . "**・**" . $gameApi->getTeamPoints(2) . "**)\n**Map**: " . ucfirst($map));
         $embed->setColor(!is_null($winnerTeam) ? $this->getHexColorByColorId($gameApi->getTeamColor($winnerTeam)) : 0xAAAAAA);
 
+        $sortedScore = [];
+        $individualStats = [];
+
         for ($i = 0; $i <= 1; $i++) {
             $fieldContent = "";
             foreach ($stats[$i] as $player => $statList) {
                 $playerStatsValues = array_values($statList);
-                $fieldContent .= Utils::getPlayerName($player, false) . " → " . StatsManager::getInstance()->getPlayerScore($player) . " (" . implode(" | ", $playerStatsValues) . ")\n";
+                $sortedScore[$player] = StatsManager::getInstance()->getPlayerScore($player);
+                $individualStats[$player] = $playerStatsValues;
+            }
+            arsort($sortedScore);
+            foreach ($sortedScore as $player => $score) {
+                $fieldContent .= Utils::getPlayerName($player, false) . " → " . $score . " (" . implode(" | ", $individualStats[$player]) . ")\n";
             }
             $embed->addField(ucfirst($teamColors[$i]) . " [" . GameManager::getInstance()->getAverageTeamLeague($i + 1) . "]", $fieldContent);
         }

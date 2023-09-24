@@ -2,6 +2,7 @@
 
 namespace zenogames\managers;
 
+use pocketmine\world\World;
 use zenogames\tasks\GappleGeneratorTask;
 use zenogames\tasks\RestartTask;
 use zenogames\Zeno;
@@ -159,6 +160,17 @@ final class GameManager {
         $gamePlayers = array_merge($this->getTeamPlayers(1), $this->getTeamPlayers(2));
         $this->setWinnerTeam($team);
         $this->setStatus(self::END_STATUS);
+        $mapWorld = Server::getInstance()->getWorldManager()->getWorldByName($this->getMap());
+        if ($mapWorld instanceof World) {
+            foreach ($mapWorld->getEntities() as $entity) {
+                if (
+                    !$entity instanceof Player &&
+                    !$entity->isFlaggedForDespawn()
+                ) {
+                    $entity->close();
+                }
+            }
+        }
         if (!is_null($team)) {
             $teamColor = $this->getTeamColor($team);
             $teamColorName = $this->getColorNameByColorId($teamColor);

@@ -2,6 +2,7 @@
 
 namespace zenogames\listeners;
 
+use pocketmine\block\BaseSign;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
@@ -212,7 +213,11 @@ final class PlayerListeners implements Listener {
     public function onInteract(PlayerInteractEvent $event): void {
         $block = $event->getBlock();
         $player = $event->getPlayer();
-        if ($block instanceof Trapdoor || $block instanceof FenceGate) {
+        if (
+            $block instanceof Trapdoor ||
+            $block instanceof FenceGate ||
+            $block instanceof BaseSign
+        ) {
             if ($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
                 if (
                     !Server::getInstance()->isOp($player->getName()) &&

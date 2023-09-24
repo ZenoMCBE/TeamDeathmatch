@@ -7,6 +7,7 @@ use pocketmine\event\server\DataPacketDecodeEvent;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\event\server\QueryRegenerateEvent;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\OpenSignPacket;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\network\mcpe\protocol\SetTimePacket;
 use pocketmine\network\mcpe\protocol\StartGamePacket;
@@ -51,6 +52,9 @@ final class ServerListeners implements Listener {
                     ) {
                         $event->cancel();
                     }
+                    break;
+                case $packet instanceof OpenSignPacket:
+                    $event->cancel();
                     break;
                 case $packet instanceof StartGamePacket:
                     $packet->levelSettings->muteEmoteAnnouncements = true;

@@ -2,6 +2,8 @@
 
 namespace zenogames\listeners;
 
+use pocketmine\block\inventory\BlockInventory;
+use pocketmine\event\inventory\InventoryOpenEvent;
 use zenogames\managers\GameManager;
 use pocketmine\event\inventory\CraftItemEvent;
 use pocketmine\event\inventory\InventoryTransactionEvent;
@@ -21,6 +23,17 @@ final class InventoryListeners implements Listener {
      */
     public function onCraftItem(CraftItemEvent $event): void {
         $event->cancel();
+    }
+
+    /**
+     * @param InventoryOpenEvent $event
+     * @return void
+     */
+    public function onOpen(InventoryOpenEvent $event): void {
+        $inventory = $event->getInventory();
+        if (isset(class_implements($inventory)[BlockInventory::class])) {
+            $event->cancel();
+        }
     }
 
     /**

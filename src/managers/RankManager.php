@@ -116,7 +116,7 @@ final class RankManager implements DataCache, DefaultDataCache {
      */
     public function getChatFormatByRank(string $rank): string {
         return match ($rank) {
-            RankIds::PLAYER => " {COLOR}{PLAYER} §l§8» §r§7{MSG}",
+            RankIds::PLAYER => "{COLOR}{PLAYER} §l§8» §r§7{MSG}",
             RankIds::HOSTER => "§8[§sHoster§8] {COLOR}{PLAYER} §l§8» §r§7{MSG}",
             RankIds::ADMIN => "§8[§cAdmin§8] {COLOR}{PLAYER} §l§8» §r§7{MSG}"
         };

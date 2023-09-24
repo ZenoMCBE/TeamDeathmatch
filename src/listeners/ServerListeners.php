@@ -22,7 +22,7 @@ final class ServerListeners implements Listener {
      * @return void
      */
     public function onDataPacketDecode(DataPacketDecodeEvent $event): void {
-        $origin = $event->getOrigin();
+        // $origin = $event->getOrigin();
         $packetId = $event->getPacketId();
         $packetBuffer = $event->getPacketBuffer();
         if (
@@ -46,7 +46,8 @@ final class ServerListeners implements Listener {
                 case $packet instanceof LevelSoundEventPacket:
                     if (
                         $packet->sound === LevelSoundEvent::ATTACK_NODAMAGE ||
-                        $packet->sound === LevelSoundEvent::ATTACK_STRONG
+                        $packet->sound === LevelSoundEvent::ATTACK_STRONG ||
+                        $packet->sound === LevelSoundEvent::AMBIENT
                     ) {
                         $event->cancel();
                     }

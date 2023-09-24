@@ -30,6 +30,7 @@ final class GappleGeneratorTask extends Task {
             if ($worldMap instanceof World) {
                 $gappleGeneratorPosition = $mapApi->getGappleGeneratorMapPosition($this->map);
                 $gappleGeneratorVector3 = $gappleGeneratorPosition->asVector3();
+                $worldMap->dropItem($gappleGeneratorVector3, VanillaItems::GOLDEN_APPLE()->setCount(1));
                 $angleIncrement = 360 / 8;
                 for ($i = 0; $i < 8; $i++) {
                     $angle = $i * $angleIncrement * pi() / 180.0;
@@ -40,7 +41,6 @@ final class GappleGeneratorTask extends Task {
                     $particlePosition = new Vector3($x, $y, $z);
                     $worldMap->addParticle($particlePosition, new HeartParticle(2));
                 }
-                $worldMap->dropItem($gappleGeneratorVector3, VanillaItems::GOLDEN_APPLE()->setCount(1));
                 $worldMap->addSound($gappleGeneratorVector3, new XpLevelUpSound(5));
             }
         } else {

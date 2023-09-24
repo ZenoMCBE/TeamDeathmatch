@@ -57,41 +57,45 @@ final class EntityListeners implements Listener {
         $entity = $event->getEntity();
         if ($entity instanceof Player) {
             $gameApi = GameManager::getInstance();
-            if ($gameApi->isWaiting()) {
-                if ($cause === $event::CAUSE_VOID) {
-                    Utils::teleportToWaitingMap($entity);
-                }
-                $event->cancel();
-            } else if ($gameApi->isEnded()) {
-                if ($cause === $event::CAUSE_VOID) {
-                    Utils::teleportToEndedMap($entity);
-                }
-                $event->cancel();
-            } else {
-                if ($cause === $event::CAUSE_VOID) {
-                    $lastDamageCause = $entity->getLastDamageCause();
-                    if (!is_null($lastDamageCause)) {
-                        switch ($lastDamageCause) {
-                            case $lastDamageCause instanceof EntityDamageByEntityEvent:
-                            case $lastDamageCause instanceof EntityDamageByChildEntityEvent:
-                                if (!is_null($lastDamageCause->getDamager())) {
-                                    $damager = $lastDamageCause->getDamager();
-                                    if ($damager instanceof Player) {
-                                        $entity->attack(new EntityDamageByEntityEvent($damager, $entity, $lastDamageCause::CAUSE_CUSTOM, 100.0));
-                                    }
-                                }
-                                break;
-                            default:
-                                MapManager::getInstance()->teleportToTeamSpawn($entity);
-                                break;
-                        }
-                    } else {
-                        MapManager::getInstance()->teleportToTeamSpawn($entity);
+            switch ($gameApi->getStatus()) {
+                case $gameApi::WAITING_STATUS:
+                    if ($cause === $event::CAUSE_VOID) {
+                        Utils::teleportToWaitingMap($entity);
                     }
                     $event->cancel();
-                } else if ($cause === $event::CAUSE_FALL) {
+                    break;
+                case $gameApi::LAUNCH_STATUS:
+                    if ($cause === $event::CAUSE_VOID) {
+                        $lastDamageCause = $entity->getLastDamageCause();
+                        if (!is_null($lastDamageCause)) {
+                            switch ($lastDamageCause) {
+                                case $lastDamageCause instanceof EntityDamageByEntityEvent:
+                                case $lastDamageCause instanceof EntityDamageByChildEntityEvent:
+                                    if (!is_null($lastDamageCause->getDamager())) {
+                                        $damager = $lastDamageCause->getDamager();
+                                        if ($damager instanceof Player) {
+                                            $entity->attack(new EntityDamageByEntityEvent($damager, $entity, $lastDamageCause::CAUSE_CUSTOM, 100.0));
+                                        }
+                                    }
+                                    break;
+                                default:
+                                    MapManager::getInstance()->teleportToTeamSpawn($entity);
+                                    break;
+                            }
+                        } else {
+                            MapManager::getInstance()->teleportToTeamSpawn($entity);
+                        }
+                        $event->cancel();
+                    } else if ($cause === $event::CAUSE_FALL) {
+                        $event->cancel();
+                    }
+                    break;
+                case $gameApi::END_STATUS:
+                    if ($cause === $event::CAUSE_VOID) {
+                        Utils::teleportToEndedMap($entity);
+                    }
                     $event->cancel();
-                }
+                    break;
             }
         }
     }

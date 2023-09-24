@@ -2,7 +2,10 @@
 
 namespace zenogames\listeners;
 
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
+use pocketmine\item\enchantment\ItemFlags;
 use zenogames\forms\GameManagementForm;
 use zenogames\forms\MatchSummaryForm;
 use zenogames\managers\AssistManager;
@@ -285,6 +288,21 @@ final class PlayerListeners implements Listener {
         $player = $event->getPlayer();
         $player->getHungerManager()->setFood($player->getHungerManager()->getMaxFood());
         $event->cancel();
+    }
+
+    /***
+     * @param PlayerMoveEvent $event
+     * @return void
+     */
+    public function onMove(PlayerMoveEvent $event): void {
+        $gameApi = GameManager::getInstance();
+        $player = $event->getPlayer();
+        $to = $event->getTo();
+        if ($gameApi->isLaunched()) {
+            if ($to->y <= 0) {
+                $player->attack(new EntityDamageEvent($player, EntityDamageEvent::CAUSE_VOID, 100.0));
+            }
+        }
     }
 
     /**

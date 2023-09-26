@@ -9,6 +9,7 @@ use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\item\enchantment\ItemFlags;
 use zenogames\forms\GameManagementForm;
 use zenogames\forms\MatchSummaryForm;
+use zenogames\forms\VoteForms;
 use zenogames\managers\AssistManager;
 use zenogames\managers\ChatManager;
 use zenogames\managers\GameManager;
@@ -239,6 +240,9 @@ final class PlayerListeners implements Listener {
         switch ($item->getTypeId()) {
             case ItemTypeIds::COMPASS:
                 GameManager::getInstance()->showTeamSelectorMenu($player);
+                break;
+            case ItemTypeIds::PAPER:
+                $player->sendForm(VoteForms::getInstance()->getMainForm());
                 break;
             case ItemTypeIds::NETHER_STAR:
                 $player->sendForm(GameManagementForm::getInstance()->getMainForm());

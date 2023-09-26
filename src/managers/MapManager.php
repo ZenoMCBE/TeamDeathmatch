@@ -114,10 +114,12 @@ final class MapManager {
     }
 
     /**
+     * @param array $excludedMaps
      * @return string
      */
-    public function getRandomMap(): string {
-        return $this->getMaps()[array_rand($this->getMaps())];
+    public function getRandomMap(array $excludedMaps = []): string {
+        $availableMaps = array_diff($this->getMaps(), $excludedMaps);
+        return $availableMaps[array_rand($availableMaps)];
     }
 
     /**

@@ -7,6 +7,7 @@ use zenogames\librairies\formapi\SimpleForm;
 use zenogames\managers\GameManager;
 use zenogames\managers\MapManager;
 use zenogames\managers\ScoreboardManager;
+use zenogames\managers\VoteManager;
 use zenogames\utils\Constants;
 use zenogames\utils\ids\ColorIds;
 use zenogames\utils\ids\MapIds;
@@ -29,7 +30,7 @@ final class GameManagementForm {
                     0 => $this->getGoalManagementForm(),
                     1 => $this->getTimeManagementForm(),
                     2 => $this->getTeamManagementForm(),
-                    3 => $this->selectMapForm(),
+                    3 => $this->getMapManagementForm(),
                     4 => $this->getConfirmationLaunchForm(),
                     default => null
                 };
@@ -204,6 +205,41 @@ final class GameManagementForm {
         });
         $form->setTitle("§r§l§q» §r§aLimite de joueurs §l§q«");
         $form->addSlider("Limite de joueurs", 1, 5, default: $gameApi->getTeamPlayersLimit());
+        return $form;
+    }
+
+    /**
+     * @return SimpleForm
+     */
+    public function getMapManagementForm(): SimpleForm {
+        $mapApi = MapManager::getInstance();
+        $gameApi = GameManager::getInstance();
+        $voteApi = VoteManager::getInstance();
+        $form = new SimpleForm(function (Player $player, ?int $data = null) use ($gameApi, $mapApi, $voteApi) {
+            if (is_int($data)) {
+                switch ($data) {
+                    case 0:
+                        $player->sendForm($this->selectMapForm());
+                        break;
+                    case 1:
+                        $gameApi->setMap($mapApi->getRandomMap());
+                        $newMap = ucfirst($gameApi->getMap());
+                        Server::getInstance()->broadcastMessage(Constants::PREFIX . "§fLa map a été sélectionnée aléatoirement pour §a" . $newMap . " §f!");
+                        foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
+                            Utils::playSound($onlinePlayer, "mob.enderdragon.hit");
+                        }
+                        break;
+                    case 2:
+                        $voteApi->start();
+                        break;
+                }
+            }
+        });
+        $form->setTitle("§r§l§q» §r§aGestion de la map §l§q«");
+        $form->setContent(Constants::PREFIX . "§fBienvenue dans le §amenu de gestion de la map §f!");
+        $form->addButton("§8Sélectionner la map");
+        $form->addButton("§8Randomizer la map");
+        $form->addButton("§8Démarrer un vote de map");
         return $form;
     }
 

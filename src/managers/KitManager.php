@@ -2,6 +2,7 @@
 
 namespace zenogames\managers;
 
+use NoLegit\Commands\Vote;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\utils\Limits;
@@ -26,10 +27,12 @@ final class KitManager {
      */
     public function send(Player $player, string $kit): void {
         $gameApi = GameManager::getInstance();
+        $voteApi = VoteManager::getInstance();
         Utils::prepare($player);
         switch ($kit) {
             case KitIds::WAITING:
                 $teamSelector = VanillaItems::COMPASS()->setCustomName("§r§l§q» §r§aSélecteur d'équipe §l§q«");
+                $mapVote = VanillaItems::PAPER()->setCustomName("§r§l§q» §r§aVote de map §l§q«");
                 $gameManagement = VanillaItems::NETHER_STAR()->setCustomName("§r§l§q» §r§aGestion de la partie §l§q«");
                 $permanentStats = VanillaItems::EMERALD()->setCustomName("§r§l§q» §r§aStatistiques/Classements §l§q«");
 
@@ -39,6 +42,11 @@ final class KitManager {
                 $playerInventory->setItem(8, $permanentStats);
                 if (RankManager::getInstance()->isHoster($player)) {
                     $playerInventory->setItem(4, $gameManagement);
+                }
+                if ($voteApi->isActive()) {
+                    if (!$playerInventory->contains(VanillaItems::PAPER())) {
+                        $playerInventory->setItem(1, $mapVote);
+                    }
                 }
                 break;
             case KitIds::GAME:

@@ -57,6 +57,7 @@ final class EntityListeners implements Listener {
         $entity = $event->getEntity();
         if ($entity instanceof Player) {
             $gameApi = GameManager::getInstance();
+            $statsApi = StatsManager::getInstance();
             switch ($gameApi->getStatus()) {
                 case $gameApi::WAITING_STATUS:
                     if ($cause === $event::CAUSE_VOID) {
@@ -75,6 +76,7 @@ final class EntityListeners implements Listener {
                                         $damager = $lastDamageCause->getDamager();
                                         if ($damager instanceof Player) {
                                             $entity->attack(new EntityDamageByEntityEvent($damager, $entity, $lastDamageCause::CAUSE_CUSTOM, 100.0));
+                                            $statsApi->add($entity, StatsIds::VOID_DEATH);
                                         }
                                     }
                                     break;

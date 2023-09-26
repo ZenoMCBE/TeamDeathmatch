@@ -346,6 +346,7 @@ final class StatsManager {
             StatsIds::KILL => "Kill(s)",
             StatsIds::ASSIST => "Assistance(s)",
             StatsIds::DEATH => "Mort(s)",
+            StatsIds::VOID_DEATH => "Mort(s) dans le vide",
             StatsIds::KILLSTREAK => "Série de kill(s) actuel",
             StatsIds::BEST_KILLSTREAK => "Meilleure série de kill(s)",
             StatsIds::ARROW_SHOT => "Flèche(s) tirée(s)",

@@ -57,8 +57,6 @@ final class SetRankCommand extends BaseCommand {
                         Server::getInstance()->broadcastMessage(Constants::PREFIX . "§c§k!§r§6§k!§r§e§k!§r§a§k!§r§9§k!§r §a" . $targetRealName . " §fvient de recevoir le grade §a" . $rankApi->getCleanRankNameByRank($args["grade"]) . " §f! §9§k!§r§a§k!§r§e§k!§r§6§k!§r§c§k!");
                         $target = Server::getInstance()->getPlayerByPrefix($targetName);
                         if ($target instanceof Player) {
-                            $targetVraiNom = $target->getName();
-                            $sender->sendMessage("{$target->getName()}");
                             ScoreboardManager::getInstance()->updateRank($target);
                         }
                     } else {

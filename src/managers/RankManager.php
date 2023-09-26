@@ -96,29 +96,36 @@ final class RankManager implements DataCache, DefaultDataCache {
             $colorName = $gameApi->getColorNameByColorId($teamColor);
             $minecraftColor = $gameApi->getMinecraftColorByColorId($teamColor);
             return str_replace(
-                ["{LEAGUE}", "{COLOR}", "{TEAM}", "{PLAYER}", "{MSG}"],
-                [$formattedLeague, $minecraftColor, $colorName, $player->getName(), TextFormat::clean($message)],
-                $formattedLeague . "§8[{COLOR}{TEAM}§8]" . $this->getChatFormatByRank($playerRank)
+                ["{COLOR}", "{TEAM}", "{PLAYER}", "{MSG}"],
+                [$minecraftColor, $colorName, $player->getName(), TextFormat::clean($message)],
+                $formattedLeague . "§8[{COLOR}{TEAM}§8]" . $this->getPrefixFormatByRank($playerRank) . $this->getChatFormat()
             );
         } else {
             $formattedLeague = !$gameApi->isLaunched() ? "§8[" . $leagueApi->formatLeague($player) . "§8]§r" . (Server::getInstance()->isOp($player->getName()) ? "" : " ") : "";
             return str_replace(
-                ["{LEAGUE}", "{COLOR}", "{PLAYER}", "{MSG}"],
-                [$formattedLeague, $this->getRankColorByRank($playerRank), $player->getName(), TextFormat::clean($message)],
-                $formattedLeague . $this->getChatFormatByRank($playerRank)
+                ["{COLOR}", "{PLAYER}", "{MSG}"],
+                [$this->getRankColorByRank($playerRank), $player->getName(), TextFormat::clean($message)],
+                $formattedLeague . $this->getPrefixFormatByRank($playerRank) . $this->getChatFormat()
             );
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getChatFormat(): string {
+        return " {COLOR}{PLAYER} §l§8» §r§7{MSG}";
     }
 
     /**
      * @param string $rank
      * @return string
      */
-    public function getChatFormatByRank(string $rank): string {
+    public function getPrefixFormatByRank(string $rank): string {
         return match ($rank) {
-            RankIds::PLAYER => "{COLOR}{PLAYER} §l§8» §r§7{MSG}",
-            RankIds::HOSTER => "§8[§sHoster§8] {COLOR}{PLAYER} §l§8» §r§7{MSG}",
-            RankIds::ADMIN => "§8[§cAdmin§8] {COLOR}{PLAYER} §l§8» §r§7{MSG}"
+            RankIds::PLAYER => "",
+            RankIds::HOSTER => "§8[§sHoster§8]",
+            RankIds::ADMIN => "§8[§cAdmin§8]"
         };
     }
 

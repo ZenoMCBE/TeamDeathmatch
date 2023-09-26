@@ -78,11 +78,10 @@ final class DiscordWebhookManager {
         $embed->setDescription("**ID**: " . $gameId . "\n**Gagnant**: " . (!is_null($winnerTeam) ? ucfirst(($gameApi->getColorNameByColorId($gameApi->getTeamColor($winnerTeam)))) : "Égalité")  . " (**" . $gameApi->getTeamPoints(1) . "**・**" . $gameApi->getTeamPoints(2) . "**)\n**Map**: " . ucfirst($map));
         $embed->setColor(!is_null($winnerTeam) ? $this->getHexColorByColorId($gameApi->getTeamColor($winnerTeam)) : 0xAAAAAA);
 
-        $sortedScore = [];
-        $individualStats = [];
-
         for ($i = 0; $i <= 1; $i++) {
             $fieldContent = "";
+            $sortedScore = [];
+            $individualStats = [];
             foreach ($stats[$i] as $player => $statList) {
                 $playerStatsValues = array_values($statList);
                 $sortedScore[$player] = StatsManager::getInstance()->getPlayerScore($player);

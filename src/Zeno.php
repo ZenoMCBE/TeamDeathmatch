@@ -16,6 +16,7 @@ final class Zeno extends PluginBase {
     /**
      * TODO :
      * - Trouver une alternative pour l'animation de mort
+     * - Optimiser l'affichage des scores en fin de partie (changer pour un broadcast global)
      */
 
     /**
@@ -24,7 +25,6 @@ final class Zeno extends PluginBase {
     protected function onLoad(): void {
         self::setInstance($this);
         $this->getServer()->getNetwork()->setName(Constants::NAME);
-        $this->getServer()->getNetwork()->unblockAddress("184.162.26.115");
     }
 
     /**

@@ -33,6 +33,7 @@ final class StatsManager {
                 StatsIds::KILL => 0,
                 StatsIds::ASSIST => 0,
                 StatsIds::DEATH => 0,
+                StatsIds::VOID_DEATH => 0,
                 StatsIds::KILLSTREAK => 0,
                 StatsIds::BEST_KILLSTREAK => 0,
                 StatsIds::ARROW_SHOT => 0,

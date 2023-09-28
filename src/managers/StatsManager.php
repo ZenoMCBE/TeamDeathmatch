@@ -332,7 +332,7 @@ final class StatsManager {
         return match ($stats) {
             StatsIds::KILL, StatsIds::BEST_KILLSTREAK => 10,
             StatsIds::ASSIST, StatsIds::KILLSTREAK => 5,
-            StatsIds::ARROW_HIT, StatsIds::CRIT => 2,
+            StatsIds::ARROW_HIT => 2,
             StatsIds::DAMAGE_DEALED => 1.5,
             default => null
         };

@@ -66,6 +66,7 @@ final class DiscordWebhookManager {
         date_default_timezone_set('Europe/Paris');
 
         $gameApi = GameManager::getInstance();
+        $statsApi = StatsManager::getInstance();
 
         $webhook = new Webhook(WebhookIds::STATS_SUMMARY);
         $message = new Message();
@@ -91,7 +92,8 @@ final class DiscordWebhookManager {
             foreach ($sortedScore as $player => $score) {
                 $fieldContent .= Utils::getPlayerName($player, false) . " → " . $score . " (" . implode(" | ", $individualStats[$player]) . ")\n";
             }
-            $embed->addField(ucfirst($teamColors[$i]) . " [" . GameManager::getInstance()->getAverageTeamLeague($i + 1) . "]", $fieldContent);
+            $team = $i + 1;
+            $embed->addField(ucfirst($teamColors[$i]) . " (" . $gameApi->getAverageTeamLeague($team) . ") [" . $statsApi->calculateAverageTeamScore($team) . "]", $fieldContent);
         }
 
         $embed->setFooter("Zeno Ranked・" . date('d/m/Y à H:i:s'), "https://cdn.discordapp.com/attachments/1082834006162284615/1091804806403854386/A0193870-0E0D-4919-A98B-3CB157CAA111.jpg");

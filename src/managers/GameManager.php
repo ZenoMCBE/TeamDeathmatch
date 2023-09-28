@@ -33,7 +33,6 @@ use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
 use pocketmine\world\sound\EntityAttackSound;
-use zenostats\ZenoStats;
 
 final class GameManager {
 
@@ -124,8 +123,10 @@ final class GameManager {
      * @noinspection PhpDeprecationInspection
      */
     public function start(): void {
+        $webApi = WebApiManager::getInstance();
         $scheduler = Zeno::getInstance()->getScheduler();
-        $gamePlayers = array_merge($this->getTeamPlayers(1), $this->getTeamPlayers(2));
+        [$firstTeamPlayers, $secondTeamPlayers] = [$this->getTeamPlayers(1), $this->getTeamPlayers(2)];
+        $gamePlayers = array_merge($firstTeamPlayers, $secondTeamPlayers);
         foreach ($gamePlayers as $gamePlayer) {
             $player = Server::getInstance()->getPlayerByPrefix(Utils::getPlayerName($gamePlayer, false));
             if ($player instanceof Player) {
@@ -139,6 +140,16 @@ final class GameManager {
                     $player->sendTitle("§r§l§q» §r§aTeam Deathmatch §l§q«");
                     $player->sendSubTitle("§7Votre objectif est de tuer " . $this->getGoal() . " joueur(s) avec votre équipe !");
                 }), 3);
+            }
+        }
+        $teamsData = [
+            ["teamOne" => $firstTeamPlayers],
+            ["teamTwo" => $secondTeamPlayers],
+        ];
+        foreach ($teamsData as $teamData) {
+            foreach ($teamData as $teamName => $players) {
+                $formattedPlayers = array_map(fn ($player) => Utils::getPlayerName($player, false), $players);
+                $webApi->sendTeamToServer($formattedPlayers, $teamName);
             }
         }
         $this->setStatus(self::LAUNCH_STATUS);
@@ -260,6 +271,7 @@ final class GameManager {
             KitManager::getInstance()->send($onlinePlayer, KitIds::WAITING);
             Utils::playSound($onlinePlayer, "portal.travel");
         }
+        WebApiManager::getInstance()->clearGame();
     }
 
     /**
@@ -675,6 +687,12 @@ final class GameManager {
      */
     public function setStatus(int $status): void {
         $this->status = $status;
+        $formattedStatus = match ($status) {
+            self::WAITING_STATUS => "false",
+            self::LAUNCH_STATUS => "true",
+            self::END_STATUS => "ended"
+        };
+        WebApiManager::getInstance()->setGameStatus($formattedStatus);
     }
 
     /**
@@ -770,6 +788,7 @@ final class GameManager {
      */
     public function setTeamPlayersLimit(int $teamLimit): void {
         $this->teamLimit = $teamLimit;
+        WebApiManager::getInstance()->setMaxPlayers($teamLimit);
     }
 
     /**

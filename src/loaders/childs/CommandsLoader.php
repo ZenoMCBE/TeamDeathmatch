@@ -4,6 +4,7 @@ namespace zenogames\loaders\childs;
 
 use zenogames\commands\player\PingCommand;
 use zenogames\commands\player\TpsCommand;
+use zenogames\commands\staff\DiscordCommand;
 use zenogames\commands\staff\ExactCoordsCommand;
 use zenogames\commands\staff\match\MatchCommand;
 use zenogames\commands\staff\SetRankCommand;
@@ -30,6 +31,7 @@ final class CommandsLoader implements Loader {
      */
     public function onLoad(): void {
         $commands = [
+            new DiscordCommand(),
             new ExactCoordsCommand(),
             new MatchCommand(),
             new PingCommand(),

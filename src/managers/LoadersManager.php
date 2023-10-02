@@ -3,6 +3,7 @@
 namespace zenogames\managers;
 
 use zenogames\loaders\childs\DatasLoader;
+use zenogames\loaders\childs\GameLoader;
 use zenogames\Zeno;
 use zenogames\loaders\childs\CommandsLoader;
 use zenogames\loaders\childs\EnchantmentsLoader;
@@ -24,6 +25,7 @@ final class LoadersManager {
         $loaders = [
             new CommandsLoader(),
             new EnchantmentsLoader(),
+            new GameLoader(),
             new HooksLoader(),
             new ListenersLoader(),
             new ProvidersLoader(),
@@ -43,6 +45,7 @@ final class LoadersManager {
      */
     public function unloadAll(): void {
         $loaders = [
+            new GameLoader(),
             new WorldsLoader(),
             new DatasLoader()
         ];

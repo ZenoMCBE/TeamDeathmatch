@@ -33,7 +33,6 @@ final class Zeno extends PluginBase {
      */
     protected function onEnable(): void {
         LoadersManager::getInstance()->loadAll();
-        GameManager::getInstance()->loadDefaultParameters();
         $this->getLogger()->notice("Zeno TDM a été activé avec succès !");
     }
 
@@ -41,10 +40,7 @@ final class Zeno extends PluginBase {
      * @return void
      */
     protected function onDisable(): void {
-        $webApi = WebApiManager::getInstance();
         LoadersManager::getInstance()->unloadAll();
-        $webApi->setGameStatus("ended");
-        $webApi->clearGame();
         $this->getLogger()->notice("Zeno TDM a été désactivé avec succès !");
     }
 

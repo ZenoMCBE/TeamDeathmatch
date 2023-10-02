@@ -17,7 +17,7 @@ final class HooksLoader implements Loader {
      * @throws HookAlreadyRegistered
      * @throws ReflectionException
      */
-    public function onLoad() : void {
+    public function onLoad(): void {
         $plugin = Zeno::getInstance();
         if (!PacketHooker::isRegistered()) {
             PacketHooker::register($plugin);

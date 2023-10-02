@@ -5,6 +5,7 @@ namespace zenogames\managers;
 use pocketmine\world\World;
 use zenogames\tasks\GappleGeneratorTask;
 use zenogames\tasks\RestartTask;
+use zenogames\utils\ids\GameStatusIds;
 use zenogames\Zeno;
 use zenogames\librairies\invmenu\InvMenu;
 use zenogames\librairies\invmenu\transaction\DeterministicInvMenuTransaction;
@@ -686,9 +687,9 @@ final class GameManager {
     public function setStatus(int $status): void {
         $this->status = $status;
         $formattedStatus = match ($status) {
-            self::WAITING_STATUS => "false",
-            self::LAUNCH_STATUS => "true",
-            self::END_STATUS => "ended"
+            self::WAITING_STATUS => GameStatusIds::FALSE,
+            self::LAUNCH_STATUS => GameStatusIds::TRUE,
+            self::END_STATUS => GameStatusIds::ENDED
         };
         WebApiManager::getInstance()->setGameStatus($formattedStatus);
     }

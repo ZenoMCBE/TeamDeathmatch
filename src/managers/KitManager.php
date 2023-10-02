@@ -2,7 +2,6 @@
 
 namespace zenogames\managers;
 
-use NoLegit\Commands\Vote;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\utils\Limits;
@@ -13,7 +12,6 @@ use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\enchantment\VanillaEnchantments;
 use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
-use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
 
 final class KitManager {

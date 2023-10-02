@@ -123,7 +123,6 @@ final class GameManager {
      * @noinspection PhpDeprecationInspection
      */
     public function start(): void {
-        $webApi = WebApiManager::getInstance();
         $scheduler = Zeno::getInstance()->getScheduler();
         [$firstTeamPlayers, $secondTeamPlayers] = [$this->getTeamPlayers(1), $this->getTeamPlayers(2)];
         $gamePlayers = array_merge($firstTeamPlayers, $secondTeamPlayers);
@@ -143,15 +142,10 @@ final class GameManager {
             }
         }
         $teamsData = [
-            ["teamOne" => $firstTeamPlayers],
-            ["teamTwo" => $secondTeamPlayers],
+            "teamOne" => array_map(fn ($player) => Utils::getPlayerName($player, false), $firstTeamPlayers),
+            "teamTwo" => array_map(fn ($player) => Utils::getPlayerName($player, false), $secondTeamPlayers),
         ];
-        foreach ($teamsData as $teamData) {
-            foreach ($teamData as $teamName => $players) {
-                $formattedPlayers = array_map(fn ($player) => Utils::getPlayerName($player, false), $players);
-                $webApi->sendTeamToServer($formattedPlayers, $teamName);
-            }
-        }
+        WebApiManager::getInstance()->sendTeamToServer($teamsData);
         $this->setStatus(self::LAUNCH_STATUS);
         $scheduler->scheduleRepeatingTask(new GameTask(), 20);
         $scheduler->scheduleRepeatingTask(new AssistTask(), 20);
@@ -278,10 +272,11 @@ final class GameManager {
      * @param Player $entity
      * @param Player $damager
      * @param EntityDamageByEntityEvent|EntityDamageByChildEntityEvent $event
+     * @param bool $void
      * @return void
      * @noinspection PhpDeprecationInspection
      */
-    public function onDeath(Player $entity, Player $damager, EntityDamageByEntityEvent|EntityDamageByChildEntityEvent $event): void {
+    public function onDeath(Player $entity, Player $damager, EntityDamageByEntityEvent|EntityDamageByChildEntityEvent $event, bool $void = false): void {
         $finalDamage = $event->getFinalDamage();
         $assistApi = AssistManager::getInstance();
         $statsApi = StatsManager::getInstance();
@@ -294,6 +289,9 @@ final class GameManager {
         $statsApi->add($damager, StatsIds::DAMAGE_DEALED, intval($finalDamage));
         if ($statsApi->get($damager, StatsIds::BEST_KILLSTREAK) < $statsApi->get($damager, StatsIds::KILLSTREAK)) {
             $statsApi->set($damager, StatsIds::BEST_KILLSTREAK, $statsApi->get($damager, StatsIds::KILLSTREAK));
+        }
+        if ($void) {
+            $statsApi->add($entity, StatsIds::VOID_DEATH);
         }
         $statsApi->showStatsPopup($damager);
         $entity->setHealth($entity->getMaxHealth());

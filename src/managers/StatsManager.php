@@ -196,15 +196,15 @@ final class StatsManager {
      * @return int
      */
     public function calculateAverageTeamScore(int $team): int {
-        $score = 0;
+        $finalScore = 0;
         $gameApi = GameManager::getInstance();
         foreach ($this->scores as $player => $score) {
             $playerTeam = $gameApi->getPlayerTeam($player);
             if ($playerTeam === $team) {
-                $score += $score;
+                $finalScore += $score;
             }
         }
-        return intval($score / $gameApi->countTeamPlayers($team)) ?? 0;
+        return intval($finalScore / $gameApi->countTeamPlayers($team)) ?? 0;
     }
 
     /**

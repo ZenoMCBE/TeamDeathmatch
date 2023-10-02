@@ -3,10 +3,13 @@
 namespace zenogames\listeners;
 
 use pocketmine\block\BaseSign;
+use pocketmine\event\entity\EntityDamageByChildEntityEvent;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\item\enchantment\ItemFlags;
+use pocketmine\player\Player;
 use zenogames\forms\GameManagementForm;
 use zenogames\forms\MatchSummaryForm;
 use zenogames\forms\VoteForms;
@@ -304,12 +307,31 @@ final class PlayerListeners implements Listener {
      * @return void
      */
     public function onMove(PlayerMoveEvent $event): void {
+        $mapApi = MapManager::getInstance();
         $gameApi = GameManager::getInstance();
         $player = $event->getPlayer();
         $to = $event->getTo();
         if ($gameApi->isLaunched()) {
             if ($to->y <= 0) {
-                $player->attack(new EntityDamageEvent($player, EntityDamageEvent::CAUSE_VOID, 100.0));
+                $lastDamageCause = $player->getLastDamageCause();
+                if (!is_null($lastDamageCause)) {
+                    switch ($lastDamageCause) {
+                        case $lastDamageCause instanceof EntityDamageByEntityEvent:
+                        case $lastDamageCause instanceof EntityDamageByChildEntityEvent:
+                            if (!is_null($lastDamageCause->getDamager())) {
+                                $damager = $lastDamageCause->getDamager();
+                                if ($damager instanceof Player) {
+                                    $gameApi->onDeath($player, $damager, $lastDamageCause, true);
+                                }
+                            }
+                            break;
+                        default:
+                            $mapApi->teleportToTeamSpawn($player);
+                            break;
+                    }
+                } else {
+                    $mapApi->teleportToTeamSpawn($player);
+                }
             }
         }
     }

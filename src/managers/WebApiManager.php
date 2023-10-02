@@ -11,28 +11,29 @@ final class WebApiManager {
     use SingletonTrait;
 
     /**
-     * @param array $teamMembers
-     * @param string $teamName
+     * @param array $teamsData
      * @return void
      */
-    public function sendTeamToServer(array $teamMembers, string $teamName): void {
-        if ($teamName == "teamOne" || $teamName == "teamTwo") {
-            $data = [$teamName => $teamMembers];
+    public function sendTeamToServer(array $teamsData): void {
+        $logger = Zeno::getInstance()->getLogger();
+        foreach ($teamsData as $teamName => $players) {
+            $data = [
+                "teamMembers" => $players
+            ];
+            $serverUrl = Constants::WEB_API_URL . str_replace("{team}", ucfirst($teamName),Constants::WEB_ADD_PLAYER_TEAM_ENDPOINT);
             $jsonData = json_encode($data);
-            $url = Constants::WEB_API_URL . str_replace("{team}", ucfirst($teamName), Constants::WEB_ADD_PLAYER_TEAM_ENDPOINT);
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-            $response = curl_exec($ch);
-            $logger = Zeno::getInstance()->getLogger();
-            if (curl_errno($ch)) {
-                $logger->notice("Erreur curl : " . curl_error($ch));
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $serverUrl);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonData);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            $response = curl_exec($curl);
+            if (curl_errno($curl)) {
+                $logger->notice("Erreur curl : " . curl_error($curl));
             } else {
                 $logger->notice("Réponse du serveur : " . $response);
             }
-            curl_close($ch);
+            curl_close($curl);
         }
     }
 

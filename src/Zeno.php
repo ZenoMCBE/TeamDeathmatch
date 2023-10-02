@@ -4,6 +4,7 @@ namespace zenogames;
 
 use zenogames\managers\GameManager;
 use zenogames\managers\LoadersManager;
+use zenogames\managers\WebApiManager;
 use zenogames\utils\Constants;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
@@ -40,7 +41,10 @@ final class Zeno extends PluginBase {
      * @return void
      */
     protected function onDisable(): void {
+        $webApi = WebApiManager::getInstance();
         LoadersManager::getInstance()->unloadAll();
+        $webApi->setGameStatus("ended");
+        $webApi->clearGame();
         $this->getLogger()->notice("Zeno TDM a été désactivé avec succès !");
     }
 

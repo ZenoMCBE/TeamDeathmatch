@@ -50,7 +50,7 @@ final class DiscordCommand extends BaseCommand {
                 if ($target instanceof Player) {
                     if (is_int($args["id"])) {
                         WebApiManager::getInstance()->addDiscordUser($target->getName(), $args["id"]);
-                        $sender->sendMessage(Constants::PREFIX . "§fVous venez de relier le joueur §a" . $target->getName() . " §fau compte Discord appartenant à l'ID §a" . $args["joueur"] . " §f!");
+                        $sender->sendMessage(Constants::PREFIX . "§fVous venez de relier le joueur §a" . $target->getName() . " §fau compte Discord appartenant à l'ID §a" . $args["id"] . " §f!");
                     } else {
                         $sender->sendMessage(Constants::PREFIX . "§cL'ID " . $args["id"] . " est invalide.");
                     }

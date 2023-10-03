@@ -92,13 +92,11 @@ final class RankManager implements DataCache, DefaultDataCache {
         if ($gameApi->hasPlayerTeam($player)) {
             $formattedLeague = !$gameApi->isLaunched() ? "§8[" . $leagueApi->formatLeague($player) . "§8]§r" : "";
             $team = $gameApi->getPlayerTeam($player);
-            $teamColor = $gameApi->getTeamColor($team);
-            $colorName = $gameApi->getColorNameByColorId($teamColor);
-            $minecraftColor = $gameApi->getMinecraftColorByColorId($teamColor);
+            $formattedTeamName = $gameApi->getFormattedColorNameByColorId($team);
             return str_replace(
-                ["{COLOR}", "{TEAM}", "{PLAYER}", "{MSG}"],
-                [$minecraftColor, $colorName, $player->getName(), TextFormat::clean($message)],
-                $formattedLeague . "§8[{COLOR}{TEAM}§8]" . $this->getPrefixFormatByRank($playerRank) . $this->getChatFormat()
+                ["{TEAM}", "{PLAYER}", "{MSG}"],
+                [$formattedTeamName, $player->getName(), TextFormat::clean($message)],
+                $formattedLeague . "§8[{TEAM}§8]" . $this->getPrefixFormatByRank($playerRank) . $this->getChatFormat()
             );
         } else {
             $formattedLeague = !$gameApi->isLaunched() ? "§8[" . $leagueApi->formatLeague($player) . "§8]§r" . (Server::getInstance()->isOp($player->getName()) ? "" : " ") : "";

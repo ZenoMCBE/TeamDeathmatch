@@ -12,7 +12,7 @@ use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
 use zenogames\managers\GameManager;
 use zenogames\managers\RankManager;
 use zenogames\utils\Constants;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class MatchRestartSubCommand extends BaseSubCommand {
 
@@ -20,7 +20,7 @@ final class MatchRestartSubCommand extends BaseSubCommand {
      * CONSTRUCT
      */
     public function __construct() {
-        parent::__construct(Zeno::getInstance(), "restart", "Réinitialiser la partie", []);
+        parent::__construct(TeamDeathmatch::getInstance(), "restart", "Réinitialiser la partie", []);
         $this->setPermission(DefaultPermissions::ROOT_USER);
     }
 

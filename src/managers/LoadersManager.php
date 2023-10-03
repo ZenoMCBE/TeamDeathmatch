@@ -4,7 +4,7 @@ namespace zenogames\managers;
 
 use zenogames\loaders\childs\DatasLoader;
 use zenogames\loaders\childs\GameLoader;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 use zenogames\loaders\childs\CommandsLoader;
 use zenogames\loaders\childs\EnchantmentsLoader;
 use zenogames\loaders\childs\HooksLoader;
@@ -37,7 +37,7 @@ final class LoadersManager {
                 $loader->onLoad();
             }
         }
-        Zeno::getInstance()->getLogger()->notice("[Loader] " . count($loaders) ." loader(s) chargé(s) !");
+        TeamDeathmatch::getInstance()->getLogger()->notice("[Loader] " . count($loaders) ." loader(s) chargé(s) !");
     }
 
     /**
@@ -54,7 +54,7 @@ final class LoadersManager {
                 $loader->onUnload();
             }
         }
-        Zeno::getInstance()->getLogger()->notice("[Loader] " . count($loaders) ." loader(s) déchargé(s) !");
+        TeamDeathmatch::getInstance()->getLogger()->notice("[Loader] " . count($loaders) ." loader(s) déchargé(s) !");
     }
 
 }

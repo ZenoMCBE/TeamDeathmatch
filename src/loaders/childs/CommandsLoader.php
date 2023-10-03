@@ -8,7 +8,7 @@ use zenogames\commands\staff\DiscordCommand;
 use zenogames\commands\staff\ExactCoordsCommand;
 use zenogames\commands\staff\match\MatchCommand;
 use zenogames\commands\staff\SetRankCommand;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 use zenogames\librairies\commando\BaseCommand;
 use zenogames\loaders\Loader;
 use pocketmine\command\Command;
@@ -38,14 +38,14 @@ final class CommandsLoader implements Loader {
             new SetRankCommand(),
             new TpsCommand()
         ];
-        $commandMap = Zeno::getInstance()->getServer()->getCommandMap();
+        $commandMap = TeamDeathmatch::getInstance()->getServer()->getCommandMap();
         foreach ($this->commandsToUnregister as $commandToUnregister) {
             $defaultCommand = $commandMap->getCommand($commandToUnregister);
             if ($defaultCommand instanceof Command) {
                 $commandMap->unregister($defaultCommand);
             }
         }
-        Zeno::getInstance()->getLogger()->notice("[Command] " . count($this->commandsToUnregister) . " commande(s) par défaut retirée(s) !");
+        TeamDeathmatch::getInstance()->getLogger()->notice("[Command] " . count($this->commandsToUnregister) . " commande(s) par défaut retirée(s) !");
         foreach ($commands as $command) {
             if (is_subclass_of($command, BaseCommand::class)) {
                 foreach ($commandMap->getCommands() as $newCommand) {
@@ -56,7 +56,7 @@ final class CommandsLoader implements Loader {
                 $commandMap->register($command->getName(), $command);
             }
         }
-        Zeno::getInstance()->getLogger()->notice("[Command] " . count($commands) . " nouvelle(s) commande(s) ajoutée(s) !");
+        TeamDeathmatch::getInstance()->getLogger()->notice("[Command] " . count($commands) . " nouvelle(s) commande(s) ajoutée(s) !");
     }
 
     /**

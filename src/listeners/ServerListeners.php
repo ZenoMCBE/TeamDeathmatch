@@ -14,7 +14,7 @@ use pocketmine\network\mcpe\protocol\StartGamePacket;
 use pocketmine\network\mcpe\protocol\types\LevelSoundEvent;
 use pocketmine\world\World;
 use zenogames\managers\GameManager;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class ServerListeners implements Listener {
 
@@ -30,7 +30,7 @@ final class ServerListeners implements Listener {
             strlen($packetBuffer) > 1492 &&
             $packetId != ProtocolInfo::LOGIN_PACKET
         ) {
-            Zeno::getInstance()->getLogger()->critical("Undecoded PacketID: " . $packetId . " (" . strlen($packetBuffer) . ")");
+            TeamDeathmatch::getInstance()->getLogger()->critical("Undecoded PacketID: " . $packetId . " (" . strlen($packetBuffer) . ")");
             // Server::getInstance()->getNetwork()->blockAddress($origin->getIp(), Limits::INT32_MAX);
             $event->cancel();
         }

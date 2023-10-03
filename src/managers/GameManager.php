@@ -6,7 +6,7 @@ use pocketmine\world\World;
 use zenogames\tasks\GappleGeneratorTask;
 use zenogames\tasks\RestartTask;
 use zenogames\utils\ids\GameStatusIds;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 use zenogames\librairies\invmenu\InvMenu;
 use zenogames\librairies\invmenu\transaction\DeterministicInvMenuTransaction;
 use zenogames\librairies\invmenu\type\InvMenuTypeIds;
@@ -124,7 +124,7 @@ final class GameManager {
      * @noinspection PhpDeprecationInspection
      */
     public function start(): void {
-        $scheduler = Zeno::getInstance()->getScheduler();
+        $scheduler = TeamDeathmatch::getInstance()->getScheduler();
         [$firstTeamPlayers, $secondTeamPlayers] = [$this->getTeamPlayers(1), $this->getTeamPlayers(2)];
         $gamePlayers = array_merge($firstTeamPlayers, $secondTeamPlayers);
         foreach ($gamePlayers as $gamePlayer) {
@@ -159,7 +159,7 @@ final class GameManager {
      * @noinspection PhpDeprecationInspection
      */
     public function end(?int $team): void {
-        $permanentStatsApi = Zeno::getInstance()->getStatsApi();
+        $permanentStatsApi = TeamDeathmatch::getInstance()->getStatsApi();
         $statsApi = StatsManager::getInstance();
         $discordWebhookApi = DiscordWebhookManager::getInstance();
         $statsApi->generatePlayersScore();
@@ -224,7 +224,7 @@ final class GameManager {
         $secondTeamIndividualPlayersStats = $statsApi->getIndividualPlayersTeamStats(2);
         $discordWebhookApi->sendStatsSummary($this->getGameId(), $this->getMap(), $this->getWinnerTeam(), [$firstTeamColorName, $secondTeamColorName], [$firstTeamIndividualPlayersStats, $secondTeamIndividualPlayersStats]);
         $this->setGameId(null);
-        Zeno::getInstance()->getScheduler()->scheduleRepeatingTask(new RestartTask(), 20);
+        TeamDeathmatch::getInstance()->getScheduler()->scheduleRepeatingTask(new RestartTask(), 20);
     }
 
     /**
@@ -250,7 +250,7 @@ final class GameManager {
         $assistApi = AssistManager::getInstance();
         $scoreboardApi = ScoreboardManager::getInstance();
         $statsApi = StatsManager::getInstance();
-        $permanentStatsApi = Zeno::getInstance()->getStatsApi();
+        $permanentStatsApi = TeamDeathmatch::getInstance()->getStatsApi();
         $assistApi->reset();
         $statsApi->reset();
         $permanentStatsApi->getEloManager()->resetResultElo();
@@ -339,7 +339,7 @@ final class GameManager {
             }
         }
         $assistApi->reinitialize($entity);
-        Zeno::getInstance()->getScheduler()->scheduleRepeatingTask(new DeathTask($entity), 20);
+        TeamDeathmatch::getInstance()->getScheduler()->scheduleRepeatingTask(new DeathTask($entity), 20);
     }
 
 
@@ -427,7 +427,7 @@ final class GameManager {
      */
     public function getAverageTeamLeague(int $team): string {
         $globalElo = 0;
-        $permanentStatsApi = Zeno::getInstance()->getStatsApi();
+        $permanentStatsApi = TeamDeathmatch::getInstance()->getStatsApi();
         $eloApi = $permanentStatsApi->getEloManager();
         $leagueApi = $permanentStatsApi->getLeagueManager();
         $teamPlayers = $this->getTeamPlayers($team);

@@ -3,7 +3,7 @@
 namespace zenogames\loaders\childs;
 
 use zenogames\listeners\PluginListeners;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 use zenogames\listeners\BlockListeners;
 use zenogames\listeners\EntityListeners;
 use zenogames\listeners\InventoryListeners;
@@ -29,12 +29,12 @@ final class ListenersLoader implements Loader {
             new WorldListeners()
         ];
         foreach ($listeners as $listener) {
-            $plugin = Zeno::getInstance();
+            $plugin = TeamDeathmatch::getInstance();
             if (isset(class_implements($listener)[Listener::class])) {
                 $plugin->getServer()->getPluginManager()->registerEvents($listener, $plugin);
             }
         }
-        Zeno::getInstance()->getLogger()->notice("[Listener] " . count($listeners) . " listener(s) enregistré(s) !");
+        TeamDeathmatch::getInstance()->getLogger()->notice("[Listener] " . count($listeners) . " listener(s) enregistré(s) !");
     }
 
     /**

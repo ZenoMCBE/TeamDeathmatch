@@ -12,7 +12,7 @@ use zenogames\datas\DataCache;
 use zenogames\datas\DefaultDataCache;
 use zenogames\utils\ids\RankIds;
 use zenogames\utils\Utils;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class RankManager implements DataCache, DefaultDataCache {
 
@@ -87,7 +87,7 @@ final class RankManager implements DataCache, DefaultDataCache {
      */
     public function formatChatMessage(Player $player, string $message): string {
         $gameApi = GameManager::getInstance();
-        $leagueApi = Zeno::getInstance()->getStatsApi()->getLeagueManager();
+        $leagueApi = TeamDeathmatch::getInstance()->getStatsApi()->getLeagueManager();
         $playerRank = $this->get($player);
         if ($gameApi->hasPlayerTeam($player)) {
             $formattedLeague = !$gameApi->isLaunched() ? "§8[" . $leagueApi->formatLeague($player) . "§8]§r" : "";

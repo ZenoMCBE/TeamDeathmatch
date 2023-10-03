@@ -4,7 +4,7 @@ namespace zenogames\managers;
 
 use pocketmine\utils\SingletonTrait;
 use zenogames\utils\Constants;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class WebApiManager {
 
@@ -15,7 +15,7 @@ final class WebApiManager {
      * @return void
      */
     public function sendTeamToServer(array $teamsData): void {
-        $logger = Zeno::getInstance()->getLogger();
+        $logger = TeamDeathmatch::getInstance()->getLogger();
         foreach ($teamsData as $teamName => $players) {
             $data = [
                 "teamMembers" => $players
@@ -43,7 +43,7 @@ final class WebApiManager {
      * @return void
      */
     public function addDiscordUser(string $username, int $idDiscord): void {
-        $logger = Zeno::getInstance()->getLogger();
+        $logger = TeamDeathmatch::getInstance()->getLogger();
         $encodedUsername = urlencode($username);
         $url = Constants::WEB_API_URL . str_replace(["{name}", "{id}"], [$encodedUsername, $idDiscord], Constants::WEB_ADD_PLAYER_ENDPOINT);
         $ch = curl_init($url);
@@ -62,7 +62,7 @@ final class WebApiManager {
      * @return void
      */
     public function setMaxPlayers(int $maxPlayers): void {
-        $logger = Zeno::getInstance()->getLogger();
+        $logger = TeamDeathmatch::getInstance()->getLogger();
         $url = Constants::WEB_API_URL . str_replace("{count}", $maxPlayers, Constants::WEB_SET_MAX_PLAYERS_ENDPOINT);
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -85,7 +85,7 @@ final class WebApiManager {
             $status == 'false' ||
             $status == 'ended'
         ) {
-            $logger = Zeno::getInstance()->getLogger();
+            $logger = TeamDeathmatch::getInstance()->getLogger();
             $url = Constants::WEB_API_URL . str_replace("{status}", $status, Constants::WEB_GAME_STATUS_ENDPOINT);
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -103,7 +103,7 @@ final class WebApiManager {
      * @return void
      */
     public function clearGame(): void {
-        $logger = Zeno::getInstance()->getLogger();
+        $logger = TeamDeathmatch::getInstance()->getLogger();
         $url = Constants::WEB_API_URL . Constants::WEB_RESET_GAME_ENDPOINT;
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

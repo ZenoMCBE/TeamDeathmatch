@@ -4,7 +4,7 @@ namespace zenogames\managers;
 
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class ProvidersManager {
 
@@ -19,7 +19,7 @@ final class ProvidersManager {
      * @return void
      */
     public function loadProviders(): void {
-        $pluginDataFolder = Zeno::getInstance()->getDataFolder();
+        $pluginDataFolder = TeamDeathmatch::getInstance()->getDataFolder();
         $this->addProvider("Rank", new Config($pluginDataFolder . "Rank.json", Config::JSON));
     }
 

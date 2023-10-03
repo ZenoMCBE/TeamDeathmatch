@@ -6,7 +6,7 @@ use JsonException;
 use zenogames\datas\DataCache;
 use zenogames\loaders\Loader;
 use zenogames\managers\RankManager;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class DatasLoader implements Loader {
 
@@ -22,7 +22,7 @@ final class DatasLoader implements Loader {
                 $class->loadCache();
             }
         }
-        Zeno::getInstance()->getLogger()->notice("[Data] " . count($classes) . " fichier(s) de donnée(s) chargé(s) !");
+        TeamDeathmatch::getInstance()->getLogger()->notice("[Data] " . count($classes) . " fichier(s) de donnée(s) chargé(s) !");
     }
 
     /**
@@ -38,7 +38,7 @@ final class DatasLoader implements Loader {
                 $class->unloadCache();
             }
         }
-        Zeno::getInstance()->getLogger()->notice("[Data] " . count($classes) . " fichier(s) de donnée(s) déchargé(s) !");
+        TeamDeathmatch::getInstance()->getLogger()->notice("[Data] " . count($classes) . " fichier(s) de donnée(s) déchargé(s) !");
     }
 
 }

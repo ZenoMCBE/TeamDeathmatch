@@ -11,7 +11,7 @@ use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
 use zenogames\managers\GameManager;
 use zenogames\managers\RankManager;
 use zenogames\utils\Constants;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class MatchStopSubCommand extends BaseSubCommand {
 
@@ -19,7 +19,7 @@ final class MatchStopSubCommand extends BaseSubCommand {
      * CONSTRUCT
      */
     public function __construct() {
-        parent::__construct(Zeno::getInstance(), "stop", "Forcer l'arrêt de la partie", []);
+        parent::__construct(TeamDeathmatch::getInstance(), "stop", "Forcer l'arrêt de la partie", []);
         $this->setPermission(DefaultPermissions::ROOT_USER);
     }
 

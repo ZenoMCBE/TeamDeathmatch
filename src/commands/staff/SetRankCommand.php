@@ -15,7 +15,7 @@ use zenogames\managers\RankManager;
 use zenogames\managers\ScoreboardManager;
 use zenogames\utils\Constants;
 use zenogames\utils\Utils;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class SetRankCommand extends BaseCommand {
 
@@ -23,7 +23,7 @@ final class SetRankCommand extends BaseCommand {
      * CONSTRUCT
      */
     public function __construct() {
-        parent::__construct(Zeno::getInstance(), "setrank", "Définir un grade à un joueur", []);
+        parent::__construct(TeamDeathmatch::getInstance(), "setrank", "Définir un grade à un joueur", []);
         $this->setPermission(DefaultPermissions::ROOT_USER);
     }
 

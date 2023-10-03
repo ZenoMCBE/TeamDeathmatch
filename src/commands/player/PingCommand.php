@@ -11,7 +11,7 @@ use zenogames\librairies\commando\BaseCommand;
 use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
 use zenogames\librairies\commando\exception\ArgumentOrderException;
 use zenogames\utils\Constants;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class PingCommand extends BaseCommand {
 
@@ -19,7 +19,7 @@ final class PingCommand extends BaseCommand {
      * CONSTRUCT
      */
     public function __construct() {
-        parent::__construct(Zeno::getInstance(), "ping", "Connaître la latence d'un joueur", []);
+        parent::__construct(TeamDeathmatch::getInstance(), "ping", "Connaître la latence d'un joueur", []);
         $this->setPermission(DefaultPermissions::ROOT_USER);
     }
 

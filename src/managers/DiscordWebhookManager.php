@@ -9,7 +9,7 @@ use zenogames\librairies\discordwebhookapi\Webhook;
 use zenogames\utils\ids\ColorIds;
 use zenogames\utils\ids\WebhookIds;
 use zenogames\utils\Utils;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class DiscordWebhookManager {
 
@@ -42,7 +42,7 @@ final class DiscordWebhookManager {
         for ($i = 0; $i <= 1; $i++) {
             $fieldContent = "";
             foreach ($resultElos[$i] as $player => $resultElo) {
-                $playerElo = Zeno::getInstance()->getStatsApi()->getEloManager()->get($player);
+                $playerElo = TeamDeathmatch::getInstance()->getStatsApi()->getEloManager()->get($player);
                 $fieldContent .= Utils::getPlayerName($player, false) . " → " . $playerElo . " (" . $resultElos[$i][$player] . ")\n";
             }
             $embed->addField(ucfirst($teamColors[$i]) . " (" . $gameApi->getAverageTeamLeague($i + 1) . ")", $fieldContent);

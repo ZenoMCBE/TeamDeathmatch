@@ -6,7 +6,7 @@ use zenogames\loaders\Loader;
 use zenogames\managers\GameManager;
 use zenogames\managers\WebApiManager;
 use zenogames\utils\ids\GameStatusIds;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class GameLoader implements Loader {
 
@@ -15,7 +15,7 @@ final class GameLoader implements Loader {
      */
     public function onLoad(): void {
         GameManager::getInstance()->loadDefaultParameters();
-        Zeno::getInstance()->getLogger()->notice("[Game] Paramètre(s) par défaut chargées !");
+        TeamDeathmatch::getInstance()->getLogger()->notice("[Game] Paramètre(s) par défaut chargées !");
     }
 
     /**
@@ -25,7 +25,7 @@ final class GameLoader implements Loader {
         $webApi = WebApiManager::getInstance();
         $webApi->setGameStatus(GameStatusIds::ENDED);
         $webApi->clearGame();
-        Zeno::getInstance()->getLogger()->notice("[Game] Paramètre(s) par défaut chargées !");
+        TeamDeathmatch::getInstance()->getLogger()->notice("[Game] Paramètre(s) par défaut chargées !");
     }
 
 }

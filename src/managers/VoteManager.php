@@ -10,7 +10,7 @@ use zenogames\forms\VoteForms;
 use zenogames\tasks\VoteTask;
 use zenogames\utils\Constants;
 use zenogames\utils\Utils;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class VoteManager {
 
@@ -51,7 +51,7 @@ final class VoteManager {
         }
         $this->setActive(true);
         Server::getInstance()->broadcastMessage(Constants::PREFIX . "§fUn vote de map vient d'être lancé ! Vous avez §a1 minute §fpour voter parmis ces maps suivantes : §a" . implode(", ", array_map('ucfirst', $this->getMaps())) . " §f!");
-        Zeno::getInstance()->getScheduler()->scheduleRepeatingTask(new VoteTask(), 20);
+        TeamDeathmatch::getInstance()->getScheduler()->scheduleRepeatingTask(new VoteTask(), 20);
     }
 
     /**

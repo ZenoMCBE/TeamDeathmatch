@@ -4,7 +4,7 @@ namespace zenogames\loaders\childs;
 
 use ReflectionException;
 use zenogames\managers\CustomItemManager;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 use zenogames\librairies\commando\exception\HookAlreadyRegistered;
 use zenogames\librairies\commando\PacketHooker;
 use zenogames\librairies\invmenu\InvMenuHandler;
@@ -18,7 +18,7 @@ final class HooksLoader implements Loader {
      * @throws ReflectionException
      */
     public function onLoad(): void {
-        $plugin = Zeno::getInstance();
+        $plugin = TeamDeathmatch::getInstance();
         if (!PacketHooker::isRegistered()) {
             PacketHooker::register($plugin);
         }

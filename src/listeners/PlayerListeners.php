@@ -46,7 +46,7 @@ use pocketmine\item\GoldenApple;
 use pocketmine\item\ItemTypeIds;
 use pocketmine\player\chat\LegacyRawChatFormatter;
 use pocketmine\Server;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class PlayerListeners implements Listener {
 
@@ -113,7 +113,7 @@ final class PlayerListeners implements Listener {
         $gameApi = GameManager::getInstance();
         $scoreboardApi = ScoreboardManager::getInstance();
         $statsApi = StatsManager::getInstance();
-        $permanentStatsApi = Zeno::getInstance()->getStatsApi();
+        $permanentStatsApi = TeamDeathmatch::getInstance()->getStatsApi();
         $permanentStatsApi->getEloManager()->setDefaultData($player);
         $permanentStatsApi->getStatsManager()->setDefaultData($player);
         if ($gameApi->isWaiting()) {
@@ -251,7 +251,7 @@ final class PlayerListeners implements Listener {
                 $player->sendForm(GameManagementForm::getInstance()->getMainForm());
                 break;
             case ItemTypeIds::EMERALD:
-                $player->sendForm(Zeno::getInstance()->getStatsApi()->getStatsManager()->getMainLeaderboardForm());
+                $player->sendForm(TeamDeathmatch::getInstance()->getStatsApi()->getStatsManager()->getMainLeaderboardForm());
                 break;
             case ItemTypeIds::BOOK:
                 $player->sendForm(MatchSummaryForm::getInstance()->getMainForm());

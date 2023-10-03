@@ -6,7 +6,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\Server;
 use zenogames\librairies\commando\BaseCommand;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class TpsCommand extends BaseCommand {
 
@@ -14,7 +14,7 @@ final class TpsCommand extends BaseCommand {
      * CONSTRUCT
      */
     public function __construct() {
-        parent::__construct(Zeno::getInstance(), "tps", "Visualiser le TPS du serveur", []);
+        parent::__construct(TeamDeathmatch::getInstance(), "tps", "Visualiser le TPS du serveur", []);
         $this->setPermission(DefaultPermissions::ROOT_USER);
     }
 

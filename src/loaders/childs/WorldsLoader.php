@@ -2,7 +2,7 @@
 
 namespace zenogames\loaders\childs;
 
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 use zenogames\loaders\Loader;
 use zenogames\utils\Constants;
 use zenogames\utils\ids\MapIds;
@@ -33,7 +33,7 @@ final class WorldsLoader implements Loader {
                 $worldManager->loadWorld($worldName, true);
             }
         }
-        Zeno::getInstance()->getLogger()->notice("[World] " . count($worldsName) . " monde(s) chargé(s) !");
+        TeamDeathmatch::getInstance()->getLogger()->notice("[World] " . count($worldsName) . " monde(s) chargé(s) !");
     }
 
     /**
@@ -60,7 +60,7 @@ final class WorldsLoader implements Loader {
                 }
             }
         }
-        Zeno::getInstance()->getLogger()->notice("[World] " . count($worldsName) . " monde(s) déchargé(s) !");
+        TeamDeathmatch::getInstance()->getLogger()->notice("[World] " . count($worldsName) . " monde(s) déchargé(s) !");
     }
 
 }

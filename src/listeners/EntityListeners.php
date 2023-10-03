@@ -30,7 +30,7 @@ use pocketmine\event\Listener;
 use pocketmine\network\mcpe\NetworkBroadcastUtils;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class EntityListeners implements Listener {
 
@@ -240,7 +240,7 @@ final class EntityListeners implements Listener {
     public function onSpawn(EntitySpawnEvent $event): void {
         $entity = $event->getEntity();
         if ($entity instanceof Arrow) {
-            Zeno::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($entity): void {
+            TeamDeathmatch::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($entity): void {
                 if (!$entity->isFlaggedForDespawn()) {
                     $entity->close();
                 }

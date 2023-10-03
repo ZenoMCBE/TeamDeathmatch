@@ -12,7 +12,7 @@ use zenogames\librairies\commando\BaseCommand;
 use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
 use zenogames\managers\RankManager;
 use zenogames\utils\Constants;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class MatchCommand extends BaseCommand {
 
@@ -20,7 +20,7 @@ final class MatchCommand extends BaseCommand {
      * CONSTRUCT
      */
     public function __construct() {
-        parent::__construct(Zeno::getInstance(), "match", "Gérer le match", []);
+        parent::__construct(TeamDeathmatch::getInstance(), "match", "Gérer le match", []);
         $this->setPermission(DefaultPermissions::ROOT_USER);
     }
 

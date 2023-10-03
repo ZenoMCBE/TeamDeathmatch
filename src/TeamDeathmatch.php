@@ -2,15 +2,13 @@
 
 namespace zenogames;
 
-use zenogames\managers\GameManager;
 use zenogames\managers\LoadersManager;
-use zenogames\managers\WebApiManager;
 use zenogames\utils\Constants;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use zenostats\ZenoStats;
 
-final class Zeno extends PluginBase {
+final class TeamDeathmatch extends PluginBase {
 
     use SingletonTrait;
 

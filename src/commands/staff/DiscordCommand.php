@@ -14,7 +14,7 @@ use zenogames\librairies\commando\exception\ArgumentOrderException;
 use zenogames\managers\RankManager;
 use zenogames\managers\WebApiManager;
 use zenogames\utils\Constants;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class DiscordCommand extends BaseCommand {
 
@@ -22,7 +22,7 @@ final class DiscordCommand extends BaseCommand {
      * CONSTRUCT
      */
     public function __construct() {
-        parent::__construct(Zeno::getInstance(), "discord", "Relier le compte d'un joueur à son Discord", []);
+        parent::__construct(TeamDeathmatch::getInstance(), "discord", "Relier le compte d'un joueur à son Discord", []);
         $this->setPermission(DefaultPermissions::ROOT_USER);
     }
 

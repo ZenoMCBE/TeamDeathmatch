@@ -4,7 +4,7 @@ namespace zenogames\loaders\childs;
 
 use zenogames\loaders\Loader;
 use zenogames\managers\ProvidersManager;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 
 final class ProvidersLoader implements Loader {
 
@@ -14,7 +14,7 @@ final class ProvidersLoader implements Loader {
     public function onLoad(): void {
         $providerApi = ProvidersManager::getInstance();
         $providerApi->loadProviders();
-        Zeno::getInstance()->getLogger()->notice("[Provider] " . $providerApi->getProviderCount() . " structure(s) de donnée(s) chargée(s) !");
+        TeamDeathmatch::getInstance()->getLogger()->notice("[Provider] " . $providerApi->getProviderCount() . " structure(s) de donnée(s) chargée(s) !");
     }
 
     /**

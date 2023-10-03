@@ -3,7 +3,7 @@
 namespace zenogames\commands\staff;
 
 use zenogames\managers\RankManager;
-use zenogames\Zeno;
+use zenogames\TeamDeathmatch;
 use zenogames\librairies\commando\BaseCommand;
 use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
 use zenogames\utils\Constants;
@@ -18,7 +18,7 @@ final class ExactCoordsCommand extends BaseCommand {
      * CONSTRUCT
      */
     public function __construct() {
-        parent::__construct(Zeno::getInstance(), "exactcoords", "Connaître sa position exacte", []);
+        parent::__construct(TeamDeathmatch::getInstance(), "exactcoords", "Connaître sa position exacte", []);
         $this->setPermission(DefaultPermissions::ROOT_USER);
     }
 

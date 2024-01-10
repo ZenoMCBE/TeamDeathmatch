@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\util\builder;
+namespace tdm\librairies\invmenu\type\util\builder;
 
 use LogicException;
 

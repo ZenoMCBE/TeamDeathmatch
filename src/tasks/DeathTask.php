@@ -1,13 +1,10 @@
 <?php
 
-namespace zenogames\tasks;
+namespace tdm\tasks;
 
-use zenogames\managers\GameManager;
-use zenogames\managers\KitManager;
-use zenogames\utils\ids\KitIds;
-use zenogames\utils\Utils;
-use pocketmine\entity\effect\EffectInstance;
-use pocketmine\entity\effect\VanillaEffects;
+use tdm\managers\GameManager;
+use tdm\utils\Utils;
+use pocketmine\entity\effect\{EffectInstance, VanillaEffects};
 use pocketmine\player\Player;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
@@ -41,7 +38,6 @@ final class DeathTask extends Task {
                     if ($this->player->getEffects()->has(VanillaEffects::BLINDNESS())) {
                         $this->player->getEffects()->remove(VanillaEffects::BLINDNESS());
                     }
-                    KitManager::getInstance()->send($this->player, KitIds::GAME);
                     foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
                         if ($onlinePlayer instanceof Player) {
                             $onlinePlayer->showPlayer($this->player);
@@ -67,7 +63,6 @@ final class DeathTask extends Task {
                     }
                 }
                 Utils::teleportToEndedMap($this->player);
-                KitManager::getInstance()->send($this->player, KitIds::END);
                 $this->getHandler()?->cancel();
             }
         } else {

@@ -1,12 +1,12 @@
 <?php
 
-namespace zenogames\commands\player;
+namespace tdm\commands\player;
 
 use pocketmine\command\CommandSender;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\Server;
-use zenogames\librairies\commando\BaseCommand;
-use zenogames\TeamDeathmatch;
+use tdm\librairies\commando\BaseCommand;
+use tdm\TeamDeathmatch;
 
 final class TpsCommand extends BaseCommand {
 

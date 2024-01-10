@@ -26,7 +26,7 @@
  *
  */
 
-namespace zenogames\librairies\commando\exception;
+namespace tdm\librairies\commando\exception;
 
 class HookAlreadyRegistered extends CommandoException
 {

@@ -1,19 +1,17 @@
 <?php
 
-namespace zenogames\items\childs;
+namespace tdm\items\childs;
 
 use pocketmine\entity\Location;
-use pocketmine\entity\projectile\Arrow;
-use pocketmine\entity\projectile\Projectile;
-use pocketmine\event\entity\EntityShootBowEvent;
-use pocketmine\event\entity\ProjectileLaunchEvent;
-use pocketmine\item\Bow;
-use pocketmine\item\enchantment\ItemEnchantmentTags as EnchantmentTags;
-use pocketmine\item\enchantment\VanillaEnchantments;
-use pocketmine\item\ItemIdentifier;
-use pocketmine\item\ItemTypeIds;
-use pocketmine\item\ItemUseResult;
-use pocketmine\item\VanillaItems;
+use pocketmine\entity\projectile\{Arrow, Projectile};
+use pocketmine\event\entity\{EntityShootBowEvent, ProjectileLaunchEvent};
+use pocketmine\item\{Bow,
+    enchantment\ItemEnchantmentTags as EnchantmentTags,
+    enchantment\VanillaEnchantments,
+    ItemIdentifier,
+    ItemTypeIds,
+    ItemUseResult,
+    VanillaItems};
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\world\sound\BowShootSound;
@@ -66,30 +64,27 @@ final class CustomBow extends Bow {
         if ($this->hasEnchantment(VanillaEnchantments::FLAME())) {
             $entity->setOnFire(intdiv($entity->getFireTicks(), 20) + 100);
         }
-        $ev = new EntityShootBowEvent($player, $this, $entity, $baseForce * 3);
-        if ($baseForce < 0.1 || $diff < 5 || $player->isSpectator()) {
-            $ev->cancel();
-        }
-        $ev->call();
-        $entity = $ev->getProjectile();
-        $entity->setMotion($entity->getMotion()->multiply($ev->getForce()));
-        if ($entity instanceof Projectile) {
-            $projectileEv = new ProjectileLaunchEvent($entity);
-            $projectileEv->call();
-            if ($projectileEv->isCancelled()) {
-                $ev->getProjectile()->flagForDespawn();
-                return ItemUseResult::FAIL();
+        ($ev = new EntityShootBowEvent($player, $this, $entity, $baseForce * 3))->call();
+        if (!$ev->isCancelled()) {
+            $entity = $ev->getProjectile();
+            $entity->setMotion($entity->getMotion()->multiply($ev->getForce()));
+            if ($entity instanceof Projectile) {
+                $projectileEv = new ProjectileLaunchEvent($entity);
+                $projectileEv->call();
+                if ($projectileEv->isCancelled()) {
+                    $ev->getProjectile()->flagForDespawn();
+                    return ItemUseResult::FAIL();
+                }
+                $ev->getProjectile()->spawnToAll();
+                $location->getWorld()->addSound($location, new BowShootSound());
+            } else {
+                $entity->spawnToAll();
             }
-            $ev->getProjectile()->spawnToAll();
-            $location->getWorld()->addSound($location, new BowShootSound());
-        } else {
-            $entity->spawnToAll();
-        }
-        if ($player->hasFiniteResources()) {
-            if (!$infinity) {
-                $inventory?->removeItem($arrow);
+            if ($player->hasFiniteResources()) {
+                if (!$infinity) {
+                    $inventory?->removeItem($arrow);
+                }
             }
-            $this->applyDamage(1);
         }
         return ItemUseResult::SUCCESS();
     }

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\util\builder;
+namespace tdm\librairies\invmenu\type\util\builder;
 
-use zenogames\librairies\invmenu\type\graphic\network\ActorInvMenuGraphicNetworkTranslator;
+use tdm\librairies\invmenu\type\graphic\network\ActorInvMenuGraphicNetworkTranslator;
 use pocketmine\entity\Entity;
 use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataCollection;

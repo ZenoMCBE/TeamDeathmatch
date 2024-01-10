@@ -1,6 +1,6 @@
 <?php
 
-namespace zenogames\utils\ids;
+namespace tdm\utils\ids;
 
 interface RankIds {
 

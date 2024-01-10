@@ -1,18 +1,15 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
 use JsonException;
 use pocketmine\player\Player;
 use pocketmine\Server;
-use pocketmine\utils\Config;
-use pocketmine\utils\SingletonTrait;
-use pocketmine\utils\TextFormat;
-use zenogames\datas\DataCache;
-use zenogames\datas\DefaultDataCache;
-use zenogames\utils\ids\RankIds;
-use zenogames\utils\Utils;
-use zenogames\TeamDeathmatch;
+use pocketmine\utils\{Config, SingletonTrait, TextFormat};
+use tdm\datas\{DataCache, DefaultDataCache};
+use tdm\TeamDeathmatch;
+use tdm\utils\ids\RankIds;
+use tdm\utils\Utils;
 
 final class RankManager implements DataCache, DefaultDataCache {
 
@@ -93,9 +90,11 @@ final class RankManager implements DataCache, DefaultDataCache {
             $formattedLeague = !$gameApi->isLaunched() ? "§8[" . $leagueApi->formatLeague($player) . "§8]§r" : "";
             $team = $gameApi->getPlayerTeam($player);
             $formattedTeamName = $gameApi->getFormattedColorNameByColorId($team);
+            $teamColor = $gameApi->getTeamColor($team);
+            $teamMinecraftColor = $gameApi->getMinecraftColorByColorId($teamColor);
             return str_replace(
-                ["{TEAM}", "{PLAYER}", "{MSG}"],
-                [$formattedTeamName, $player->getName(), TextFormat::clean($message)],
+                ["{TEAM}", "{COLOR}", "{PLAYER}", "{MSG}"],
+                [$formattedTeamName, $teamMinecraftColor, $player->getName(), TextFormat::clean($message)],
                 $formattedLeague . "§8[{TEAM}§8]" . $this->getPrefixFormatByRank($playerRank) . $this->getChatFormat()
             );
         } else {

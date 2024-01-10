@@ -27,7 +27,7 @@
  *
  */
 
-namespace zenogames\librairies\commando\args;
+namespace tdm\librairies\commando\args;
 
 use pocketmine\command\CommandSender;
 

@@ -3,7 +3,7 @@
 
 declare(strict_types = 1);
 
-namespace zenogames\librairies\discordwebhookapi;
+namespace tdm\librairies\discordwebhookapi;
 
 use JsonSerializable;
 

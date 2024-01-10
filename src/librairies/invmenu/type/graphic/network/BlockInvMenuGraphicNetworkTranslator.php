@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\graphic\network;
+namespace tdm\librairies\invmenu\type\graphic\network;
 
 use InvalidArgumentException;
-use zenogames\librairies\invmenu\session\InvMenuInfo;
-use zenogames\librairies\invmenu\session\PlayerSession;
-use zenogames\librairies\invmenu\type\graphic\PositionedInvMenuGraphic;
+use tdm\librairies\invmenu\session\InvMenuInfo;
+use tdm\librairies\invmenu\session\PlayerSession;
+use tdm\librairies\invmenu\type\graphic\PositionedInvMenuGraphic;
 use pocketmine\network\mcpe\protocol\ContainerOpenPacket;
 use pocketmine\network\mcpe\protocol\types\BlockPosition;
 

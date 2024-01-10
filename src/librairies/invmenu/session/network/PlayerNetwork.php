@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\session\network;
+namespace tdm\librairies\invmenu\session\network;
 
 use Closure;
 use InvalidArgumentException;
-use zenogames\librairies\invmenu\session\InvMenuInfo;
-use zenogames\librairies\invmenu\session\network\handler\PlayerNetworkHandler;
-use zenogames\librairies\invmenu\session\PlayerSession;
+use tdm\librairies\invmenu\session\InvMenuInfo;
+use tdm\librairies\invmenu\session\network\handler\PlayerNetworkHandler;
+use tdm\librairies\invmenu\session\PlayerSession;
 use pocketmine\block\inventory\BlockInventory;
 use pocketmine\inventory\Inventory;
 use pocketmine\network\mcpe\NetworkSession;

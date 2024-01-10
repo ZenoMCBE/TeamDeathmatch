@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\util\builder;
+namespace tdm\librairies\invmenu\type\util\builder;
 
-use zenogames\librairies\invmenu\type\BlockFixedInvMenuType;
-use zenogames\librairies\invmenu\type\graphic\network\BlockInvMenuGraphicNetworkTranslator;
+use tdm\librairies\invmenu\type\BlockFixedInvMenuType;
+use tdm\librairies\invmenu\type\graphic\network\BlockInvMenuGraphicNetworkTranslator;
 
 final class BlockFixedInvMenuTypeBuilder implements InvMenuTypeBuilder{
 	use BlockInvMenuTypeBuilderTrait;

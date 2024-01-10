@@ -27,7 +27,7 @@
  *
  */
 
-namespace zenogames\librairies\commando\constraint;
+namespace tdm\librairies\commando\constraint;
 
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;

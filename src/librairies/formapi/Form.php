@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace zenogames\librairies\formapi;
+namespace tdm\librairies\formapi;
 
 use pocketmine\form\Form as IForm;
 use pocketmine\player\Player;

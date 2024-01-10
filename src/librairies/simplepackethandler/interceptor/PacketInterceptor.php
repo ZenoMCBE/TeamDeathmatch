@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\simplepackethandler\interceptor;
+namespace tdm\librairies\simplepackethandler\interceptor;
 
 use Closure;
 use pocketmine\plugin\Plugin;

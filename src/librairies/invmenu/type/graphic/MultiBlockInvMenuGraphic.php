@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\graphic;
+namespace tdm\librairies\invmenu\type\graphic;
 
 use LogicException;
-use zenogames\librairies\invmenu\type\graphic\network\InvMenuGraphicNetworkTranslator;
+use tdm\librairies\invmenu\type\graphic\network\InvMenuGraphicNetworkTranslator;
 use pocketmine\inventory\Inventory;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;

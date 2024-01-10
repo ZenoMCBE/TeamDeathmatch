@@ -1,10 +1,9 @@
 <?php
 
-namespace zenogames\tasks;
+namespace tdm\tasks;
 
-use zenogames\managers\GameManager;
-use zenogames\managers\ScoreboardManager;
-use zenogames\utils\ids\ScoreboardTypeIds;
+use tdm\managers\{GameManager, ScoreboardManager};
+use tdm\utils\ids\ScoreboardTypeIds;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
 

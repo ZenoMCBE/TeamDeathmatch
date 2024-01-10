@@ -1,15 +1,12 @@
 <?php
 
-namespace zenogames\forms;
+namespace tdm\forms;
 
-use zenogames\librairies\formapi\Form;
-use zenogames\librairies\formapi\ModalForm;
-use zenogames\librairies\formapi\SimpleForm;
-use zenogames\managers\GameManager;
-use zenogames\managers\StatsManager;
-use zenogames\utils\Constants;
-use zenogames\utils\ids\StatsIds;
-use zenogames\utils\Utils;
+use tdm\librairies\formapi\{Form, ModalForm, SimpleForm};
+use tdm\managers\{GameManager, StatsManager};
+use tdm\utils\Constants;
+use tdm\utils\ids\StatsIds;
+use tdm\utils\Utils;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
 

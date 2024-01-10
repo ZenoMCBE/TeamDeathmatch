@@ -1,6 +1,6 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
 use Closure;
 use InvalidArgumentException;
@@ -12,8 +12,8 @@ use pocketmine\utils\SingletonTrait;
 use pocketmine\world\format\io\GlobalItemDataHandlers;
 use ReflectionException;
 use ReflectionProperty;
-use zenogames\items\CustomItems;
-use zenogames\utils\Serializable;
+use tdm\items\CustomItems;
+use tdm\utils\Serializable;
 
 final class CustomItemManager {
 

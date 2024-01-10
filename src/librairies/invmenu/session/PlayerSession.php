@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\session;
+namespace tdm\librairies\invmenu\session;
 
 use Closure;
-use zenogames\librairies\invmenu\session\network\PlayerNetwork;
+use tdm\librairies\invmenu\session\network\PlayerNetwork;
 use pocketmine\player\Player;
 use function spl_object_id;
 

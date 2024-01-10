@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\util\builder;
+namespace tdm\librairies\invmenu\type\util\builder;
 
-use zenogames\librairies\invmenu\type\InvMenuType;
+use tdm\librairies\invmenu\type\InvMenuType;
 
 interface InvMenuTypeBuilder{
 

@@ -1,15 +1,28 @@
 <?php
 
-namespace zenogames\utils;
+namespace tdm\utils;
 
+use pocketmine\entity\animation\HurtAnimation;
+use pocketmine\entity\projectile\Projectile;
+use pocketmine\network\mcpe\NetworkBroadcastUtils;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
-use pocketmine\player\GameMode;
-use pocketmine\player\Player;
+use pocketmine\player\{GameMode, Player};
 use pocketmine\Server;
-use pocketmine\world\Position;
-use pocketmine\world\World;
+use pocketmine\world\{Position, World};
 
 final class Utils {
+
+    /**
+     * @param Player $player
+     * @param Player $damager
+     * @param Projectile $projectile
+     * @return void
+     */
+    public static function simulateProjectileHit(Player $player, Player $damager, Projectile $projectile): void {
+        NetworkBroadcastUtils::broadcastPackets(array_unique(array_merge($player->getViewers(), $damager->getViewers(), [$player, $damager])), (new HurtAnimation($player))->encode());
+        $projectileMotion = $projectile->getMotion();
+        $player->knockBack($projectileMotion->x, $projectileMotion->z, verticalLimit: 0.5);
+    }
 
     /**
      * @param string|Player $player
@@ -81,6 +94,10 @@ final class Utils {
         $player->getXpManager()->setXpProgress(0.0);
         $player->getHungerManager()->setFood($player->getHungerManager()->getMaxFood());
         $player->getHungerManager()->setSaturation(20);
+
+        foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
+            $onlinePlayer->showPlayer($player);
+        }
     }
 
 }

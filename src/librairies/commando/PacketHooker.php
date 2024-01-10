@@ -27,11 +27,11 @@
  *
  */
 
-namespace zenogames\librairies\commando;
+namespace tdm\librairies\commando;
 
-use zenogames\librairies\commando\exception\HookAlreadyRegistered;
-use zenogames\librairies\commando\store\SoftEnumStore;
-use zenogames\librairies\commando\traits\IArgumentable;
+use tdm\librairies\commando\exception\HookAlreadyRegistered;
+use tdm\librairies\commando\store\SoftEnumStore;
+use tdm\librairies\commando\traits\IArgumentable;
 use pocketmine\command\CommandSender;
 use pocketmine\event\EventPriority;
 use pocketmine\event\Listener;
@@ -43,7 +43,7 @@ use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server;
 use ReflectionClass;
-use zenogames\librairies\simplepackethandler\SimplePacketHandler;
+use tdm\librairies\simplepackethandler\SimplePacketHandler;
 use function count;
 
 class PacketHooker implements Listener {

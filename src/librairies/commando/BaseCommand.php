@@ -27,12 +27,12 @@
  *
  */
 
-namespace zenogames\librairies\commando;
+namespace tdm\librairies\commando;
 
-use zenogames\librairies\commando\constraint\BaseConstraint;
-use zenogames\librairies\commando\exception\InvalidErrorCode;
-use zenogames\librairies\commando\traits\ArgumentableTrait;
-use zenogames\librairies\commando\traits\IArgumentable;
+use tdm\librairies\commando\constraint\BaseConstraint;
+use tdm\librairies\commando\exception\InvalidErrorCode;
+use tdm\librairies\commando\traits\ArgumentableTrait;
+use tdm\librairies\commando\traits\IArgumentable;
 use InvalidArgumentException;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;

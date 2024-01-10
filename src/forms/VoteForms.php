@@ -1,12 +1,12 @@
 <?php
 
-namespace zenogames\forms;
+namespace tdm\forms;
 
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
-use zenogames\librairies\formapi\SimpleForm;
-use zenogames\managers\VoteManager;
-use zenogames\utils\Constants;
+use tdm\librairies\formapi\SimpleForm;
+use tdm\managers\VoteManager;
+use tdm\utils\Constants;
 
 final class VoteForms {
 

@@ -1,8 +1,8 @@
 <?php /* @noinspection PhpDeprecationInspection */
 
-namespace zenogames\loaders\childs;
+namespace tdm\loaders\childs;
 
-use zenogames\loaders\Loader;
+use tdm\loaders\Loader;
 use pocketmine\data\bedrock\EnchantmentIdMap;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\ItemFlags;
@@ -14,7 +14,6 @@ final class EnchantmentsLoader implements Loader {
      * @noinspection PhpDeprecationInspection
      */
     public function onLoad(): void {
-        // TODO: Alternative ?
         EnchantmentIdMap::getInstance()->register(-1, new Enchantment('glow', -1, ItemFlags::ALL, ItemFlags::NONE, 1));
     }
 

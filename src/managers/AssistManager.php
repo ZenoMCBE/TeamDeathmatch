@@ -1,8 +1,8 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
-use zenogames\utils\Utils;
+use tdm\utils\Utils;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
 

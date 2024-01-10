@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\inventory;
+namespace tdm\librairies\invmenu\inventory;
 
 use pocketmine\block\inventory\BlockInventory;
 use pocketmine\inventory\SimpleInventory;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\graphic;
+namespace tdm\librairies\invmenu\type\graphic;
 
 use pocketmine\math\Vector3;
 

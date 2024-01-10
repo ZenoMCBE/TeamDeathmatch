@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\util\builder;
+namespace tdm\librairies\invmenu\type\util\builder;
 
-use zenogames\librairies\invmenu\type\ActorFixedInvMenuType;
+use tdm\librairies\invmenu\type\ActorFixedInvMenuType;
 use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataFlags;
 use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataProperties;
 

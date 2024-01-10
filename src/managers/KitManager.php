@@ -1,13 +1,15 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
+use pocketmine\player\GameMode;
+use pocketmine\Server;
 use pocketmine\utils\Limits;
-use zenogames\items\childs\CustomBow;
-use zenogames\utils\ids\KitIds;
-use zenogames\utils\Utils;
+use tdm\items\childs\CustomBow;
+use tdm\utils\ids\KitIds;
+use tdm\utils\Utils;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\enchantment\VanillaEnchantments;
 use pocketmine\item\VanillaItems;
@@ -24,9 +26,9 @@ final class KitManager {
      * @return void
      */
     public function send(Player $player, string $kit): void {
+        Utils::prepare($player);
         $gameApi = GameManager::getInstance();
         $voteApi = VoteManager::getInstance();
-        Utils::prepare($player);
         switch ($kit) {
             case KitIds::WAITING:
                 $teamSelector = VanillaItems::COMPASS()->setCustomName("§r§l§q» §r§aSélecteur d'équipe §l§q«");
@@ -52,13 +54,19 @@ final class KitManager {
                 $teamColorString = $gameApi->getTeamColor($playerTeam);
                 $teamColor = $gameApi->getColorByColorId($teamColorString);
 
-                $helmet = VanillaItems::IRON_HELMET()->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROJECTILE_PROTECTION(), 3))->setUnbreakable();
+                /*$helmet = VanillaItems::IRON_HELMET()->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROJECTILE_PROTECTION(), 3))->setUnbreakable();
                 $chestplate = VanillaItems::LEATHER_TUNIC()->setCustomColor($teamColor)->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), 2))->setUnbreakable();
                 $leggings = VanillaItems::CHAINMAIL_LEGGINGS()->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROJECTILE_PROTECTION(), 3))->setUnbreakable();
-                $boots = VanillaItems::IRON_BOOTS()->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), 2))->setUnbreakable();
-                $sword = VanillaItems::STONE_SWORD()->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 3))->setUnbreakable();
+                $boots = VanillaItems::IRON_BOOTS()->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), 2))->setUnbreakable();*/
+
+                $helmet = VanillaItems::IRON_HELMET()->setUnbreakable();
+                $chestplate = VanillaItems::LEATHER_TUNIC()->setCustomColor($teamColor)->setUnbreakable();
+                $leggings = VanillaItems::CHAINMAIL_LEGGINGS()->setUnbreakable();
+                $boots = VanillaItems::IRON_BOOTS()->setUnbreakable();
+
+                $sword = VanillaItems::STONE_SWORD()->setUnbreakable();
                 $bow = new CustomBow();
-                $bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 3))->setUnbreakable();
+                $bow->setUnbreakable();
                 $goldenApple = VanillaItems::GOLDEN_APPLE()->setCount(1);
                 $arrows = VanillaItems::ARROW()->setCount(12);
 
@@ -81,6 +89,17 @@ final class KitManager {
                 $matchSummary = VanillaItems::BOOK()->setCustomName("§r§l§q» §r§aRésumé du match §l§q«");
 
                 $player->getInventory()->setItem(4, $matchSummary);
+                break;
+            case KitIds::SPECTATOR:
+                $teleporter = VanillaItems::CLOCK()->setCustomName("§r§l§q» §r§aTéléporteur §l§q«");
+
+                $player->getInventory()->setItem(4, $teleporter);
+
+                foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
+                    $onlinePlayer->hidePlayer($player);
+                }
+
+                $player->setAllowFlight(true);
                 break;
         }
     }

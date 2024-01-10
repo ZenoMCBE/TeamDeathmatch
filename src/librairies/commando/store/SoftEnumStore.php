@@ -1,9 +1,9 @@
 <?php /** @noinspection PhpUnused */
 
-namespace zenogames\librairies\commando\store;
+namespace tdm\librairies\commando\store;
 
 use pocketmine\network\mcpe\NetworkBroadcastUtils;
-use zenogames\librairies\commando\exception\CommandoException;
+use tdm\librairies\commando\exception\CommandoException;
 use pocketmine\network\mcpe\protocol\ClientboundPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\UpdateSoftEnumPacket;

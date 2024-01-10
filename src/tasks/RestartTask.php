@@ -1,12 +1,11 @@
 <?php
 
-namespace zenogames\tasks;
+namespace tdm\tasks;
 
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
-use zenogames\managers\GameManager;
-use zenogames\utils\Constants;
-use zenogames\utils\Utils;
+use tdm\managers\GameManager;
+use tdm\utils\{Constants, Utils};
 
 final class RestartTask extends Task {
 

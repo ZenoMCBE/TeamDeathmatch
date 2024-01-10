@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\simplepackethandler\monitor;
+namespace tdm\librairies\simplepackethandler\monitor;
 
 use Closure;
 use ReflectionException;
-use zenogames\librairies\simplepackethandler\utils\Utils;
+use tdm\librairies\simplepackethandler\utils\Utils;
 use pocketmine\event\EventPriority;
 use pocketmine\event\HandlerListManager;
 use pocketmine\event\RegisteredListener;

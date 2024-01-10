@@ -1,14 +1,14 @@
 <?php
 
-namespace zenogames\loaders\childs;
+namespace tdm\loaders\childs;
 
 use ReflectionException;
-use zenogames\managers\CustomItemManager;
-use zenogames\TeamDeathmatch;
-use zenogames\librairies\commando\exception\HookAlreadyRegistered;
-use zenogames\librairies\commando\PacketHooker;
-use zenogames\librairies\invmenu\InvMenuHandler;
-use zenogames\loaders\Loader;
+use tdm\managers\CustomItemManager;
+use tdm\TeamDeathmatch;
+use tdm\librairies\commando\exception\HookAlreadyRegistered;
+use tdm\librairies\commando\PacketHooker;
+use tdm\librairies\invmenu\InvMenuHandler;
+use tdm\loaders\Loader;
 
 final class HooksLoader implements Loader {
 

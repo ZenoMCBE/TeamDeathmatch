@@ -1,12 +1,11 @@
 <?php /* @noinspection ALL */
 
-namespace zenogames\listeners;
+namespace tdm\listeners;
 
 use pocketmine\data\bedrock\BiomeIds;
 use pocketmine\event\Listener;
 use pocketmine\event\world\ChunkLoadEvent;
-use pocketmine\world\format\SubChunk;
-use pocketmine\world\format\PalettedBlockArray;
+use pocketmine\world\format\{SubChunk, PalettedBlockArray};
 
 final class WorldListeners implements Listener {
 

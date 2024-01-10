@@ -1,10 +1,9 @@
 <?php
 
-namespace zenogames\tasks;
+namespace tdm\tasks;
 
-use zenogames\managers\AssistManager;
-use zenogames\managers\GameManager;
-use zenogames\utils\Utils;
+use tdm\managers\{AssistManager, GameManager};
+use tdm\utils\Utils;
 use pocketmine\player\Player;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;

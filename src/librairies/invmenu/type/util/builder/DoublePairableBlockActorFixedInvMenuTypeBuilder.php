@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\util\builder;
+namespace tdm\librairies\invmenu\type\util\builder;
 
 use LogicException;
-use zenogames\librairies\invmenu\type\DoublePairableBlockActorFixedInvMenuType;
-use zenogames\librairies\invmenu\type\graphic\network\BlockInvMenuGraphicNetworkTranslator;
+use tdm\librairies\invmenu\type\DoublePairableBlockActorFixedInvMenuType;
+use tdm\librairies\invmenu\type\graphic\network\BlockInvMenuGraphicNetworkTranslator;
 
 final class DoublePairableBlockActorFixedInvMenuTypeBuilder implements InvMenuTypeBuilder{
 	use BlockInvMenuTypeBuilderTrait;

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\util;
+namespace tdm\librairies\invmenu\type\util;
 
-use zenogames\librairies\invmenu\type\util\builder\ActorFixedInvMenuTypeBuilder;
-use zenogames\librairies\invmenu\type\util\builder\BlockActorFixedInvMenuTypeBuilder;
-use zenogames\librairies\invmenu\type\util\builder\BlockFixedInvMenuTypeBuilder;
-use zenogames\librairies\invmenu\type\util\builder\DoublePairableBlockActorFixedInvMenuTypeBuilder;
+use tdm\librairies\invmenu\type\util\builder\ActorFixedInvMenuTypeBuilder;
+use tdm\librairies\invmenu\type\util\builder\BlockActorFixedInvMenuTypeBuilder;
+use tdm\librairies\invmenu\type\util\builder\BlockFixedInvMenuTypeBuilder;
+use tdm\librairies\invmenu\type\util\builder\DoublePairableBlockActorFixedInvMenuTypeBuilder;
 
 final class InvMenuTypeBuilders{
 

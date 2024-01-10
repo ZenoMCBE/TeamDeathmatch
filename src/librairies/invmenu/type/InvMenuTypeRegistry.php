@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type;
+namespace tdm\librairies\invmenu\type;
 
-use zenogames\librairies\invmenu\type\util\InvMenuTypeBuilders;
+use tdm\librairies\invmenu\type\util\InvMenuTypeBuilders;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\network\mcpe\protocol\types\inventory\WindowTypes;
 

@@ -26,7 +26,7 @@
  *
  */
 
-namespace zenogames\librairies\commando\args;
+namespace tdm\librairies\commando\args;
 
 use pocketmine\command\CommandSender;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;

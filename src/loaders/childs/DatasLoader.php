@@ -1,12 +1,12 @@
 <?php
 
-namespace zenogames\loaders\childs;
+namespace tdm\loaders\childs;
 
 use JsonException;
-use zenogames\datas\DataCache;
-use zenogames\loaders\Loader;
-use zenogames\managers\RankManager;
-use zenogames\TeamDeathmatch;
+use tdm\datas\DataCache;
+use tdm\loaders\Loader;
+use tdm\managers\RankManager;
+use tdm\TeamDeathmatch;
 
 final class DatasLoader implements Loader {
 

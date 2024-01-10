@@ -1,20 +1,18 @@
 <?php
 
-namespace zenogames\listeners;
+namespace tdm\listeners;
 
 use pocketmine\event\Listener;
-use pocketmine\event\server\DataPacketDecodeEvent;
-use pocketmine\event\server\DataPacketSendEvent;
-use pocketmine\event\server\QueryRegenerateEvent;
-use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
-use pocketmine\network\mcpe\protocol\OpenSignPacket;
-use pocketmine\network\mcpe\protocol\ProtocolInfo;
-use pocketmine\network\mcpe\protocol\SetTimePacket;
-use pocketmine\network\mcpe\protocol\StartGamePacket;
-use pocketmine\network\mcpe\protocol\types\LevelSoundEvent;
+use pocketmine\event\server\{DataPacketDecodeEvent, DataPacketSendEvent, QueryRegenerateEvent};
+use pocketmine\network\mcpe\protocol\{LevelSoundEventPacket,
+    OpenSignPacket,
+    ProtocolInfo,
+    SetTimePacket,
+    StartGamePacket,
+    types\LevelSoundEvent};
 use pocketmine\world\World;
-use zenogames\managers\GameManager;
-use zenogames\TeamDeathmatch;
+use tdm\managers\GameManager;
+use tdm\TeamDeathmatch;
 
 final class ServerListeners implements Listener {
 

@@ -1,17 +1,12 @@
 <?php
 
-namespace zenogames\forms;
+namespace tdm\forms;
 
-use zenogames\librairies\formapi\CustomForm;
-use zenogames\librairies\formapi\SimpleForm;
-use zenogames\managers\GameManager;
-use zenogames\managers\MapManager;
-use zenogames\managers\ScoreboardManager;
-use zenogames\managers\VoteManager;
-use zenogames\utils\Constants;
-use zenogames\utils\ids\ColorIds;
-use zenogames\utils\ids\MapIds;
-use zenogames\utils\Utils;
+use tdm\librairies\formapi\{CustomForm, SimpleForm};
+use tdm\managers\{GameManager, MapManager, ScoreboardManager, VoteManager};
+use tdm\utils\Constants;
+use tdm\utils\ids\{ColorIds, MapIds};
+use tdm\utils\Utils;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;

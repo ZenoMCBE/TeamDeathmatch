@@ -1,21 +1,19 @@
 <?php
 
-namespace zenogames\commands\staff;
+namespace tdm\commands\staff;
 
 use pocketmine\command\CommandSender;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\Player;
 use pocketmine\Server;
-use zenogames\librairies\commando\args\OptionArgument;
-use zenogames\librairies\commando\args\TargetArgument;
-use zenogames\librairies\commando\BaseCommand;
-use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
-use zenogames\librairies\commando\exception\ArgumentOrderException;
-use zenogames\managers\RankManager;
-use zenogames\managers\ScoreboardManager;
-use zenogames\utils\Constants;
-use zenogames\utils\Utils;
-use zenogames\TeamDeathmatch;
+use tdm\librairies\commando\args\OptionArgument;
+use tdm\librairies\commando\args\TargetArgument;
+use tdm\librairies\commando\BaseCommand;
+use tdm\librairies\commando\constraint\InGameRequiredConstraint;
+use tdm\librairies\commando\exception\ArgumentOrderException;
+use tdm\managers\{KitManager, RankManager, ScoreboardManager};
+use tdm\TeamDeathmatch;
+use tdm\utils\{Constants, ids\KitIds, Utils};
 
 final class SetRankCommand extends BaseCommand {
 
@@ -58,6 +56,7 @@ final class SetRankCommand extends BaseCommand {
                         $target = Server::getInstance()->getPlayerByPrefix($targetName);
                         if ($target instanceof Player) {
                             ScoreboardManager::getInstance()->updateRank($target);
+                            KitManager::getInstance()->send($target, KitIds::WAITING);
                         }
                     } else {
                         $sender->sendMessage(Constants::PREFIX . "§cLe grade " . ucfirst($args["grade"]) . " n'existe pas.");

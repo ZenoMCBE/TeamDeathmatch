@@ -1,20 +1,19 @@
 <?php
 
-namespace zenogames\commands\staff;
+namespace tdm\commands\staff;
 
 use pocketmine\command\CommandSender;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\Player;
 use pocketmine\Server;
-use zenogames\librairies\commando\args\IntegerArgument;
-use zenogames\librairies\commando\args\TargetArgument;
-use zenogames\librairies\commando\BaseCommand;
-use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
-use zenogames\librairies\commando\exception\ArgumentOrderException;
-use zenogames\managers\RankManager;
-use zenogames\managers\WebApiManager;
-use zenogames\utils\Constants;
-use zenogames\TeamDeathmatch;
+use tdm\librairies\commando\args\IntegerArgument;
+use tdm\librairies\commando\args\TargetArgument;
+use tdm\librairies\commando\BaseCommand;
+use tdm\librairies\commando\constraint\InGameRequiredConstraint;
+use tdm\librairies\commando\exception\ArgumentOrderException;
+use tdm\managers\RankManager;
+use tdm\TeamDeathmatch;
+use tdm\utils\Constants;
 
 final class DiscordCommand extends BaseCommand {
 
@@ -49,7 +48,7 @@ final class DiscordCommand extends BaseCommand {
                 $target = Server::getInstance()->getPlayerByPrefix($args["joueur"]);
                 if ($target instanceof Player) {
                     if (is_int($args["id"])) {
-                        WebApiManager::getInstance()->addDiscordUser($target->getName(), $args["id"]);
+                        // WebApiManager::getInstance()->addDiscordUser($target->getName(), $args["id"]);
                         $sender->sendMessage(Constants::PREFIX . "§fVous venez de relier le joueur §a" . $target->getName() . " §fau compte Discord appartenant à l'ID §a" . $args["id"] . " §f!");
                     } else {
                         $sender->sendMessage(Constants::PREFIX . "§cL'ID " . $args["id"] . " est invalide.");

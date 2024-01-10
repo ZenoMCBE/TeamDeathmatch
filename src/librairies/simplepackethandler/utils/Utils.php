@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\simplepackethandler\utils;
+namespace tdm\librairies\simplepackethandler\utils;
 
 use Closure;
 use InvalidArgumentException;

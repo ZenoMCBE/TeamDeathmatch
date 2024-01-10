@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\graphic;
+namespace tdm\librairies\invmenu\type\graphic;
 
-use zenogames\librairies\invmenu\type\graphic\network\InvMenuGraphicNetworkTranslator;
+use tdm\librairies\invmenu\type\graphic\network\InvMenuGraphicNetworkTranslator;
 use pocketmine\inventory\Inventory;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\RemoveActorPacket;

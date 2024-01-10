@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\util\builder;
+namespace tdm\librairies\invmenu\type\util\builder;
 
-use zenogames\librairies\invmenu\type\graphic\network\InvMenuGraphicNetworkTranslator;
-use zenogames\librairies\invmenu\type\graphic\network\MultiInvMenuGraphicNetworkTranslator;
-use zenogames\librairies\invmenu\type\graphic\network\WindowTypeInvMenuGraphicNetworkTranslator;
+use tdm\librairies\invmenu\type\graphic\network\InvMenuGraphicNetworkTranslator;
+use tdm\librairies\invmenu\type\graphic\network\MultiInvMenuGraphicNetworkTranslator;
+use tdm\librairies\invmenu\type\graphic\network\WindowTypeInvMenuGraphicNetworkTranslator;
 
 trait GraphicNetworkTranslatableInvMenuTypeBuilderTrait{
 

@@ -1,17 +1,15 @@
 <?php
 
-namespace zenogames\commands\staff\match\subs;
+namespace tdm\commands\staff\match\subs;
 
 use pocketmine\command\CommandSender;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\Player;
-use pocketmine\Server;
-use zenogames\librairies\commando\BaseSubCommand;
-use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
-use zenogames\managers\GameManager;
-use zenogames\managers\RankManager;
-use zenogames\utils\Constants;
-use zenogames\TeamDeathmatch;
+use tdm\librairies\commando\BaseSubCommand;
+use tdm\librairies\commando\constraint\InGameRequiredConstraint;
+use tdm\managers\{GameManager, RankManager};
+use tdm\TeamDeathmatch;
+use tdm\utils\Constants;
 
 final class MatchStopSubCommand extends BaseSubCommand {
 

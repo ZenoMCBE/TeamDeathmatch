@@ -26,9 +26,9 @@
  *
  */
 
-namespace zenogames\librairies\commando;
+namespace tdm\librairies\commando;
 
-use zenogames\librairies\commando\constraint\BaseConstraint;
+use tdm\librairies\commando\constraint\BaseConstraint;
 
 /**
  * Interface IRunnable

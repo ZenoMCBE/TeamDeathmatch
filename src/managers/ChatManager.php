@@ -1,11 +1,10 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
 use pocketmine\player\Player;
-use pocketmine\utils\SingletonTrait;
-use pocketmine\utils\TextFormat;
-use zenogames\utils\Utils;
+use pocketmine\utils\{SingletonTrait, TextFormat};
+use tdm\utils\Utils;
 
 final class ChatManager {
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace zenogames\loaders\childs;
+namespace tdm\loaders\childs;
 
-use zenogames\loaders\Loader;
-use zenogames\managers\ProvidersManager;
-use zenogames\TeamDeathmatch;
+use tdm\loaders\Loader;
+use tdm\managers\ProvidersManager;
+use tdm\TeamDeathmatch;
 
 final class ProvidersLoader implements Loader {
 

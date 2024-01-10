@@ -1,15 +1,12 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
 use pocketmine\utils\SingletonTrait;
-use zenogames\librairies\discordwebhookapi\Embed;
-use zenogames\librairies\discordwebhookapi\Message;
-use zenogames\librairies\discordwebhookapi\Webhook;
-use zenogames\utils\ids\ColorIds;
-use zenogames\utils\ids\WebhookIds;
-use zenogames\utils\Utils;
-use zenogames\TeamDeathmatch;
+use tdm\librairies\discordwebhookapi\{Embed, Message, Webhook};
+use tdm\utils\ids\{ColorIds, WebhookIds};
+use tdm\TeamDeathmatch;
+use tdm\utils\Utils;
 
 final class DiscordWebhookManager {
 

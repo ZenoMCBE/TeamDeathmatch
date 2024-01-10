@@ -1,11 +1,11 @@
 <?php
 
-namespace zenogames\loaders\childs;
+namespace tdm\loaders\childs;
 
-use zenogames\TeamDeathmatch;
-use zenogames\loaders\Loader;
-use zenogames\utils\Constants;
-use zenogames\utils\ids\MapIds;
+use tdm\TeamDeathmatch;
+use tdm\loaders\Loader;
+use tdm\utils\Constants;
+use tdm\utils\ids\MapIds;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\world\World;

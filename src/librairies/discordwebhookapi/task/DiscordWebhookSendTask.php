@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace zenogames\librairies\discordwebhookapi\task;
+namespace tdm\librairies\discordwebhookapi\task;
 
 use pocketmine\scheduler\AsyncTask;
 

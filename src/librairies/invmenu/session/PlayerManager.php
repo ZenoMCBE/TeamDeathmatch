@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\session;
+namespace tdm\librairies\invmenu\session;
 
-use zenogames\librairies\invmenu\session\network\handler\PlayerNetworkHandlerRegistry;
-use zenogames\librairies\invmenu\session\network\PlayerNetwork;
+use tdm\librairies\invmenu\session\network\handler\PlayerNetworkHandlerRegistry;
+use tdm\librairies\invmenu\session\network\PlayerNetwork;
 use pocketmine\event\EventPriority;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -19,7 +19,7 @@ final class PlayerManager{
 
 	/** @var PlayerSession[] */
 	private array $sessions = [];
-	
+
 	public function __construct(Plugin $registrant){
 		$this->network_handler_registry = new PlayerNetworkHandlerRegistry();
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu;
+namespace tdm\librairies\invmenu;
 
-use zenogames\librairies\invmenu\session\network\PlayerNetwork;
-use zenogames\librairies\invmenu\session\PlayerManager;
+use tdm\librairies\invmenu\session\network\PlayerNetwork;
+use tdm\librairies\invmenu\session\PlayerManager;
 use pocketmine\event\inventory\InventoryCloseEvent;
 use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\Listener;
@@ -14,7 +14,7 @@ use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\network\mcpe\protocol\NetworkStackLatencyPacket;
 
 final class InvMenuEventHandler implements Listener{
-	
+
 	public function __construct(
 		readonly private PlayerManager $player_manager
 	){}

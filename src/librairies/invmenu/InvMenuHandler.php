@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu;
+namespace tdm\librairies\invmenu;
 
 use InvalidArgumentException;
 use LogicException;
-use zenogames\librairies\invmenu\session\PlayerManager;
-use zenogames\librairies\invmenu\type\InvMenuTypeRegistry;
+use tdm\librairies\invmenu\session\PlayerManager;
+use tdm\librairies\invmenu\type\InvMenuTypeRegistry;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server;
 

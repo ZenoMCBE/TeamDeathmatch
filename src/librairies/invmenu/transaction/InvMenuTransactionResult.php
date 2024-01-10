@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\transaction;
+namespace tdm\librairies\invmenu\transaction;
 
 use Closure;
 use pocketmine\player\Player;

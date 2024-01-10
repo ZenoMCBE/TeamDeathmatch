@@ -1,17 +1,17 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
-use zenogames\loaders\childs\DatasLoader;
-use zenogames\loaders\childs\GameLoader;
-use zenogames\TeamDeathmatch;
-use zenogames\loaders\childs\CommandsLoader;
-use zenogames\loaders\childs\EnchantmentsLoader;
-use zenogames\loaders\childs\HooksLoader;
-use zenogames\loaders\childs\ListenersLoader;
-use zenogames\loaders\childs\ProvidersLoader;
-use zenogames\loaders\childs\WorldsLoader;
-use zenogames\loaders\Loader;
+use tdm\TeamDeathmatch;
+use tdm\loaders\childs\{DatasLoader,
+    GameLoader,
+    CommandsLoader,
+    EnchantmentsLoader,
+    HooksLoader,
+    ListenersLoader,
+    ProvidersLoader,
+    WorldsLoader};
+use tdm\loaders\Loader;
 use pocketmine\utils\SingletonTrait;
 
 final class LoadersManager {

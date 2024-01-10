@@ -26,12 +26,12 @@
  *
  */
 
-namespace zenogames\librairies\commando\traits;
+namespace tdm\librairies\commando\traits;
 
-use zenogames\librairies\commando\args\BaseArgument;
-use zenogames\librairies\commando\args\TextArgument;
-use zenogames\librairies\commando\BaseCommand;
-use zenogames\librairies\commando\exception\ArgumentOrderException;
+use tdm\librairies\commando\args\BaseArgument;
+use tdm\librairies\commando\args\TextArgument;
+use tdm\librairies\commando\BaseCommand;
+use tdm\librairies\commando\exception\ArgumentOrderException;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 use function array_slice;

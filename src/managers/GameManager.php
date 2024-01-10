@@ -1,32 +1,22 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
 use pocketmine\world\World;
-use zenogames\tasks\GappleGeneratorTask;
-use zenogames\tasks\RestartTask;
-use zenogames\utils\ids\GameStatusIds;
-use zenogames\TeamDeathmatch;
-use zenogames\librairies\invmenu\InvMenu;
-use zenogames\librairies\invmenu\transaction\DeterministicInvMenuTransaction;
-use zenogames\librairies\invmenu\type\InvMenuTypeIds;
-use zenogames\tasks\AssistTask;
-use zenogames\tasks\DeathTask;
-use zenogames\tasks\GameTask;
-use zenogames\utils\Constants;
-use zenogames\utils\ids\ColorIds;
-use zenogames\utils\ids\KitIds;
-use zenogames\utils\ids\ScoreboardTypeIds;
-use zenogames\utils\ids\StatsIds;
-use zenogames\utils\Utils;
+use tdm\librairies\invmenu\InvMenu;
+use tdm\librairies\invmenu\transaction\DeterministicInvMenuTransaction;
+use tdm\librairies\invmenu\type\InvMenuTypeIds;
+use tdm\tasks\{GappleGeneratorTask, RestartTask, AssistTask, DeathTask, GameTask};
+use tdm\TeamDeathmatch;
+use tdm\utils\Constants;
+use tdm\utils\ids\{ColorIds, KitIds, ScoreboardTypeIds, StatsIds};
+use tdm\utils\Utils;
 use pocketmine\block\utils\DyeColor;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\color\Color;
 use pocketmine\data\bedrock\EnchantmentIdMap;
 use pocketmine\entity\animation\CriticalHitAnimation;
-use pocketmine\event\entity\EntityDamageByChildEntityEvent;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\{EntityDamageByChildEntityEvent, EntityDamageByEntityEvent, EntityDamageEvent};
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
@@ -68,6 +58,11 @@ final class GameManager {
      * @var array
      */
     public array $playersTeam = [];
+
+    /**
+     * @var array
+     */
+    public array $spectators = [];
 
     /**
      * @var string
@@ -125,8 +120,7 @@ final class GameManager {
      */
     public function start(): void {
         $scheduler = TeamDeathmatch::getInstance()->getScheduler();
-        [$firstTeamPlayers, $secondTeamPlayers] = [$this->getTeamPlayers(1), $this->getTeamPlayers(2)];
-        $gamePlayers = array_merge($firstTeamPlayers, $secondTeamPlayers);
+        $gamePlayers = $this->getAllPlayersInGame();
         foreach ($gamePlayers as $gamePlayer) {
             $player = Server::getInstance()->getPlayerByPrefix(Utils::getPlayerName($gamePlayer, false));
             if ($player instanceof Player) {
@@ -142,11 +136,12 @@ final class GameManager {
                 }), 3);
             }
         }
+        /* [$firstTeamPlayers, $secondTeamPlayers] = [$this->getTeamPlayers(1), $this->getTeamPlayers(2)];
         $teamsData = [
-            "teamOne" => array_map(fn ($player) => Utils::getPlayerName($player, false), $firstTeamPlayers),
-            "teamTwo" => array_map(fn ($player) => Utils::getPlayerName($player, false), $secondTeamPlayers),
+            "teamOne" => array_map(fn (string $player) => Utils::getPlayerName($player, false), $firstTeamPlayers),
+            "teamTwo" => array_map(fn (string $player) => Utils::getPlayerName($player, false), $secondTeamPlayers),
         ];
-        WebApiManager::getInstance()->sendTeamToServer($teamsData);
+        WebApiManager::getInstance()->sendTeamToServer($teamsData); */
         $this->setStatus(self::LAUNCH_STATUS);
         $scheduler->scheduleRepeatingTask(new GameTask(), 20);
         $scheduler->scheduleRepeatingTask(new AssistTask(), 20);
@@ -163,7 +158,7 @@ final class GameManager {
         $statsApi = StatsManager::getInstance();
         $discordWebhookApi = DiscordWebhookManager::getInstance();
         $statsApi->generatePlayersScore();
-        $gamePlayers = array_merge($this->getTeamPlayers(1), $this->getTeamPlayers(2));
+        $gamePlayers = $this->getAllPlayersInGame();
         $this->setWinnerTeam($team);
         $this->setStatus(self::END_STATUS);
         $mapWorld = Server::getInstance()->getWorldManager()->getWorldByName($this->getMap());
@@ -199,9 +194,8 @@ final class GameManager {
                 Utils::teleportToEndedMap($player);
                 KitManager::getInstance()->send($player, KitIds::END);
                 ScoreboardManager::getInstance()->sendScoreboard($player, ScoreboardTypeIds::ENDED);
-                $statsApi->showScoreMessage($player);
                 $playerTeam = $this->getPlayerTeam($player);
-                $result = (!is_null($team)) ? ($this->getWinnerTeam() === $playerTeam) : null;
+                $result = !is_null($team) ? $this->getWinnerTeam() === $playerTeam : null;
                 $permanentStatsApi->getStatsManager()->update($player, $statsApi->getPlayerScore($player), $statsApi->getAll($player), $result);
                 $averageTeamScore = $playerTeam === 1 ? $firstAverageTeamScore : $secondAverageTeamScore;
                 $averageTeamLeague = $playerTeam === 1 ? $firstTeamAverageTeamLeague : $secondTeamAverageTeamLeague;
@@ -209,6 +203,19 @@ final class GameManager {
                 Utils::playSound($player, "mob.enderdragon.growl");
             }
         }
+        foreach ($this->getSpectators() as $spectator) {
+            $playerSpec = Server::getInstance()->getPlayerByPrefix(Utils::getPlayerName($spectator, false));
+            if ($playerSpec instanceof Player) {
+                $playerSpec->sendTitle($title);
+                $playerSpec->sendSubTitle($subTitle);
+                Utils::teleportToEndedMap($playerSpec);
+                KitManager::getInstance()->send($playerSpec, KitIds::END);
+                ScoreboardManager::getInstance()->sendScoreboard($playerSpec, ScoreboardTypeIds::ENDED);
+                Utils::playSound($playerSpec, "mob.enderdragon.growl");
+            }
+        }
+        $this->clearSpectators();
+        $statsApi->showScoreMessage();
         $individualResultElos = [];
         $firstTeamColorName = $this->getColorNameByColorId($this->getTeamColor(1));
         $secondTeamColorName = $this->getColorNameByColorId($this->getTeamColor(2));
@@ -266,7 +273,7 @@ final class GameManager {
             KitManager::getInstance()->send($onlinePlayer, KitIds::WAITING);
             Utils::playSound($onlinePlayer, "portal.travel");
         }
-        WebApiManager::getInstance()->clearGame();
+        // WebApiManager::getInstance()->clearGame();
     }
 
     /**
@@ -339,6 +346,7 @@ final class GameManager {
             }
         }
         $assistApi->reinitialize($entity);
+        KitManager::getInstance()->send($entity, KitIds::GAME);
         TeamDeathmatch::getInstance()->getScheduler()->scheduleRepeatingTask(new DeathTask($entity), 20);
     }
 
@@ -446,7 +454,7 @@ final class GameManager {
         $this->teams[1]["players"] = [];
         $this->teams[2]["players"] = [];
         $playersTeamKeys = array_keys($this->playersTeam);
-        shuffle($this->playersTeam);
+        shuffle($playersTeamKeys);
         $finalPlayersTeam = array_combine($playersTeamKeys, $this->playersTeam);
         $this->playersTeam = $finalPlayersTeam;
         foreach ($finalPlayersTeam as $player => $team) {
@@ -595,6 +603,14 @@ final class GameManager {
     }
 
     /**
+     * @return array
+     */
+    public function getAllPlayersInGame(): array {
+        [$firstTeamPlayers, $secondTeamPlayers] = [$this->getTeamPlayers(1), $this->getTeamPlayers(2)];
+        return array_merge($firstTeamPlayers, $secondTeamPlayers);
+    }
+
+    /**
      * @param string|Player $player
      * @param int $team
      * @return void
@@ -681,17 +697,73 @@ final class GameManager {
     }
 
     /**
+     * @param Player $player
+     * @return void
+     */
+    public function addSpectator(Player $player): void {
+        $playerName = Utils::getPlayerName($player, true);
+        $this->spectators[] = $playerName;
+    }
+
+    /**
+     * @param Player $player
+     * @return void
+     */
+    public function removeSpectator(Player $player): void {
+        $playerName = Utils::getPlayerName($player, true);
+        unset($this->spectators[array_search($playerName, $this->spectators)]);
+    }
+
+    /**
+     * @return array
+     */
+    public function getSpectators(): array {
+        return $this->spectators;
+    }
+
+    /**
+     * @param Player $player
+     * @return bool
+     */
+    public function isSpectator(Player $player): bool {
+        $playerName = Utils::getPlayerName($player, true);
+        return in_array($playerName, $this->spectators);
+    }
+
+    /**
+     * @return void
+     */
+    public function clearSpectators(): void {
+        $this->spectators = [];
+    }
+
+    /**
+     * @param Player $player
+     * @param string $message
+     * @return void
+     * @noinspection PhpDeprecationInspection
+     */
+    public function sendMessageToAllSpectator(Player $player, string $message): void {
+        foreach ($this->spectators as $playerTeam) {
+            $teamPlayer = Server::getInstance()->getPlayerByPrefix(Utils::getPlayerName($playerTeam, false));
+            if ($teamPlayer instanceof Player) {
+                $teamPlayer->sendMessage("§8[§7Spec§8]" . RankManager::getInstance()->formatChatMessage($player, $message));
+            }
+        }
+    }
+
+    /**
      * @param int $status
      * @return void
      */
     public function setStatus(int $status): void {
         $this->status = $status;
-        $formattedStatus = match ($status) {
+        /* $formattedStatus = match ($status) {
             self::WAITING_STATUS => GameStatusIds::FALSE,
             self::LAUNCH_STATUS => GameStatusIds::TRUE,
             self::END_STATUS => GameStatusIds::ENDED
         };
-        WebApiManager::getInstance()->setGameStatus($formattedStatus);
+        WebApiManager::getInstance()->setGameStatus($formattedStatus); */
     }
 
     /**
@@ -787,7 +859,7 @@ final class GameManager {
      */
     public function setTeamPlayersLimit(int $teamLimit): void {
         $this->teamLimit = $teamLimit;
-        WebApiManager::getInstance()->setMaxPlayers($teamLimit);
+        // WebApiManager::getInstance()->setMaxPlayers($teamLimit);
     }
 
     /**

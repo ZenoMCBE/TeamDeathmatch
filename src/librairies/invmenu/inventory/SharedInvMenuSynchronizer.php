@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\inventory;
+namespace tdm\librairies\invmenu\inventory;
 
-use zenogames\librairies\invmenu\InvMenu;
+use tdm\librairies\invmenu\InvMenu;
 use pocketmine\inventory\Inventory;
 
 final class SharedInvMenuSynchronizer{

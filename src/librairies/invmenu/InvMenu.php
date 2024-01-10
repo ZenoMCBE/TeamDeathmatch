@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu;
+namespace tdm\librairies\invmenu;
 
 use Closure;
 use LogicException;
-use zenogames\librairies\invmenu\inventory\SharedInvMenuSynchronizer;
-use zenogames\librairies\invmenu\session\InvMenuInfo;
-use zenogames\librairies\invmenu\session\network\PlayerNetwork;
-use zenogames\librairies\invmenu\transaction\DeterministicInvMenuTransaction;
-use zenogames\librairies\invmenu\transaction\InvMenuTransaction;
-use zenogames\librairies\invmenu\transaction\InvMenuTransactionResult;
-use zenogames\librairies\invmenu\transaction\SimpleInvMenuTransaction;
-use zenogames\librairies\invmenu\type\InvMenuType;
-use zenogames\librairies\invmenu\type\InvMenuTypeIds;
+use tdm\librairies\invmenu\inventory\SharedInvMenuSynchronizer;
+use tdm\librairies\invmenu\session\InvMenuInfo;
+use tdm\librairies\invmenu\session\network\PlayerNetwork;
+use tdm\librairies\invmenu\transaction\DeterministicInvMenuTransaction;
+use tdm\librairies\invmenu\transaction\InvMenuTransaction;
+use tdm\librairies\invmenu\transaction\InvMenuTransactionResult;
+use tdm\librairies\invmenu\transaction\SimpleInvMenuTransaction;
+use tdm\librairies\invmenu\type\InvMenuType;
+use tdm\librairies\invmenu\type\InvMenuTypeIds;
 use pocketmine\inventory\Inventory;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\inventory\transaction\InventoryTransaction;

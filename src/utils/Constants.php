@@ -1,6 +1,6 @@
 <?php
 
-namespace zenogames\utils;
+namespace tdm\utils;
 
 interface Constants {
 

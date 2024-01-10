@@ -1,6 +1,6 @@
 <?php
 
-namespace zenogames\tasks;
+namespace tdm\tasks;
 
 use pocketmine\item\VanillaItems;
 use pocketmine\math\Vector3;
@@ -9,8 +9,7 @@ use pocketmine\Server;
 use pocketmine\world\particle\HeartParticle;
 use pocketmine\world\sound\XpLevelUpSound;
 use pocketmine\world\World;
-use zenogames\managers\GameManager;
-use zenogames\managers\MapManager;
+use tdm\managers\{GameManager, MapManager};
 
 final class GappleGeneratorTask extends Task {
 

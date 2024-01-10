@@ -1,22 +1,16 @@
 <?php
 
-namespace zenogames;
+namespace tdm;
 
-use zenogames\managers\LoadersManager;
-use zenogames\utils\Constants;
+use stats\Stats;
+use tdm\managers\LoadersManager;
+use tdm\utils\Constants;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
-use zenostats\ZenoStats;
 
 final class TeamDeathmatch extends PluginBase {
 
     use SingletonTrait;
-
-    /**
-     * TODO :
-     * - Trouver une alternative pour l'animation de mort
-     * - Optimiser l'affichage des scores en fin de partie (changer pour un broadcast global)
-     */
 
     /**
      * @return void
@@ -31,22 +25,21 @@ final class TeamDeathmatch extends PluginBase {
      */
     protected function onEnable(): void {
         LoadersManager::getInstance()->loadAll();
-        $this->getLogger()->notice("Zeno TDM a été activé avec succès !");
+        $this->getLogger()->notice("TeamDeathmatch activé.");
     }
 
     /**
      * @return void
      */
     protected function onDisable(): void {
-        LoadersManager::getInstance()->unloadAll();
-        $this->getLogger()->notice("Zeno TDM a été désactivé avec succès !");
+        $this->getLogger()->notice("TeamDeathmatch désactivé.");
     }
 
     /**
-     * @return ZenoStats
+     * @return Stats
      */
-    public function getStatsApi(): ZenoStats {
-        return ZenoStats::getInstance();
+    public function getStatsApi(): Stats {
+        return Stats::getInstance();
     }
 
 }

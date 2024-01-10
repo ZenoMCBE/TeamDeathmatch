@@ -1,17 +1,17 @@
 <?php
 
-namespace zenogames\commands\player;
+namespace tdm\commands\player;
 
 use pocketmine\command\CommandSender;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\Player;
 use pocketmine\Server;
-use zenogames\librairies\commando\args\TargetArgument;
-use zenogames\librairies\commando\BaseCommand;
-use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
-use zenogames\librairies\commando\exception\ArgumentOrderException;
-use zenogames\utils\Constants;
-use zenogames\TeamDeathmatch;
+use tdm\librairies\commando\args\TargetArgument;
+use tdm\librairies\commando\BaseCommand;
+use tdm\librairies\commando\constraint\InGameRequiredConstraint;
+use tdm\librairies\commando\exception\ArgumentOrderException;
+use tdm\TeamDeathmatch;
+use tdm\utils\Constants;
 
 final class PingCommand extends BaseCommand {
 

@@ -1,17 +1,15 @@
 <?php
 
-namespace zenogames\loaders\childs;
+namespace tdm\loaders\childs;
 
-use zenogames\commands\player\PingCommand;
-use zenogames\commands\player\TpsCommand;
-use zenogames\commands\staff\DiscordCommand;
-use zenogames\commands\staff\ExactCoordsCommand;
-use zenogames\commands\staff\match\MatchCommand;
-use zenogames\commands\staff\SetRankCommand;
-use zenogames\TeamDeathmatch;
-use zenogames\librairies\commando\BaseCommand;
-use zenogames\loaders\Loader;
+use tdm\commands\player\{PingCommand, TpsCommand};
+use tdm\commands\staff\ExactCoordsCommand;
+use tdm\commands\staff\match\MatchCommand;
+use tdm\commands\staff\SetRankCommand;
+use tdm\librairies\commando\BaseCommand;
+use tdm\loaders\Loader;
 use pocketmine\command\Command;
+use tdm\TeamDeathmatch;
 
 final class CommandsLoader implements Loader {
 
@@ -30,8 +28,9 @@ final class CommandsLoader implements Loader {
      * @return void
      */
     public function onLoad(): void {
+        $plugin = TeamDeathmatch::getInstance();
         $commands = [
-            new DiscordCommand(),
+            // new DiscordCommand(),
             new ExactCoordsCommand(),
             new MatchCommand(),
             new PingCommand(),
@@ -45,7 +44,7 @@ final class CommandsLoader implements Loader {
                 $commandMap->unregister($defaultCommand);
             }
         }
-        TeamDeathmatch::getInstance()->getLogger()->notice("[Command] " . count($this->commandsToUnregister) . " commande(s) par défaut retirée(s) !");
+        $plugin->getLogger()->notice("[Command] " . count($this->commandsToUnregister) . " commande(s) par défaut retirée(s) !");
         foreach ($commands as $command) {
             if (is_subclass_of($command, BaseCommand::class)) {
                 foreach ($commandMap->getCommands() as $newCommand) {
@@ -56,7 +55,7 @@ final class CommandsLoader implements Loader {
                 $commandMap->register($command->getName(), $command);
             }
         }
-        TeamDeathmatch::getInstance()->getLogger()->notice("[Command] " . count($commands) . " nouvelle(s) commande(s) ajoutée(s) !");
+        $plugin->getLogger()->notice("[Command] " . count($commands) . " nouvelle(s) commande(s) ajoutée(s) !");
     }
 
     /**

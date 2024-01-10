@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\simplepackethandler\interceptor;
+namespace tdm\librairies\simplepackethandler\interceptor;
 
 use Closure;
 use ReflectionException;
-use zenogames\librairies\simplepackethandler\utils\Utils;
+use tdm\librairies\simplepackethandler\utils\Utils;
 use pocketmine\event\HandlerListManager;
 use pocketmine\event\RegisteredListener;
 use pocketmine\event\server\DataPacketReceiveEvent;

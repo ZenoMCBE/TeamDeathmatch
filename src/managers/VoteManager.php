@@ -1,16 +1,15 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
 use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
-use zenogames\forms\VoteForms;
-use zenogames\tasks\VoteTask;
-use zenogames\utils\Constants;
-use zenogames\utils\Utils;
-use zenogames\TeamDeathmatch;
+use tdm\forms\VoteForms;
+use tdm\tasks\VoteTask;
+use tdm\utils\{Constants, Utils};
+use tdm\TeamDeathmatch;
 
 final class VoteManager {
 

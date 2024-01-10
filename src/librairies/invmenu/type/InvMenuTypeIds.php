@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type;
+namespace tdm\librairies\invmenu\type;
 
 interface InvMenuTypeIds{
 

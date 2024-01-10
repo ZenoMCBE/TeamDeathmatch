@@ -1,20 +1,20 @@
 <?php
 
-namespace zenogames\listeners;
+namespace tdm\listeners;
 
-use zenogames\managers\GameManager;
-use pocketmine\event\block\BlockBreakEvent;
-use pocketmine\event\block\BlockBurnEvent;
-use pocketmine\event\block\BlockDeathEvent;
-use pocketmine\event\block\BlockFormEvent;
-use pocketmine\event\block\BlockGrowEvent;
-use pocketmine\event\block\BlockMeltEvent;
-use pocketmine\event\block\BlockPlaceEvent;
-use pocketmine\event\block\BlockSpreadEvent;
-use pocketmine\event\block\BlockUpdateEvent;
-use pocketmine\event\block\LeavesDecayEvent;
-use pocketmine\event\block\SignChangeEvent;
-use pocketmine\event\block\StructureGrowEvent;
+use tdm\managers\GameManager;
+use pocketmine\event\block\{BlockBreakEvent,
+    BlockBurnEvent,
+    BlockDeathEvent,
+    BlockFormEvent,
+    BlockGrowEvent,
+    BlockMeltEvent,
+    BlockPlaceEvent,
+    BlockSpreadEvent,
+    BlockUpdateEvent,
+    LeavesDecayEvent,
+    SignChangeEvent,
+    StructureGrowEvent};
 use pocketmine\event\Listener;
 use pocketmine\Server;
 

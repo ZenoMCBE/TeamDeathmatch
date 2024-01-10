@@ -1,10 +1,11 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
-use zenogames\TeamDeathmatch;
+use tdm\TeamDeathmatch;
+use tdm\zenogames;
 
 final class ProvidersManager {
 

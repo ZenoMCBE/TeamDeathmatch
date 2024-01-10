@@ -1,8 +1,8 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
-use zenogames\utils\ids\MapIds;
+use tdm\utils\ids\MapIds;
 use pocketmine\entity\Location;
 use pocketmine\player\Player;
 use pocketmine\Server;

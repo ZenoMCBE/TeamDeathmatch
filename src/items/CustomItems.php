@@ -1,10 +1,10 @@
 <?php
 
-namespace zenogames\items;
+namespace tdm\items;
 
 use pocketmine\item\Item;
 use pocketmine\utils\CloningRegistryTrait;
-use zenogames\items\childs\CustomBow;
+use tdm\items\childs\CustomBow;
 
 final class CustomItems {
 
@@ -26,7 +26,6 @@ final class CustomItems {
     /**
      * @return Item[]
      * @phpstan-return array<string, Item>
-     * @noinspection PhpUndefinedClassInspection
      */
     public static function getAll(): array {
         /* @var Item[] $result */

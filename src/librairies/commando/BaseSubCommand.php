@@ -26,7 +26,7 @@
  *
  */
 
-namespace zenogames\librairies\commando;
+namespace tdm\librairies\commando;
 
 use pocketmine\plugin\PluginBase;
 

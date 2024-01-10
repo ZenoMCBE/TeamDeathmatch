@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\simplepackethandler;
+namespace tdm\librairies\simplepackethandler;
 
 use InvalidArgumentException;
-use zenogames\librairies\simplepackethandler\interceptor\IPacketInterceptor;
-use zenogames\librairies\simplepackethandler\interceptor\PacketInterceptor;
-use zenogames\librairies\simplepackethandler\monitor\IPacketMonitor;
-use zenogames\librairies\simplepackethandler\monitor\PacketMonitor;
+use tdm\librairies\simplepackethandler\interceptor\IPacketInterceptor;
+use tdm\librairies\simplepackethandler\interceptor\PacketInterceptor;
+use tdm\librairies\simplepackethandler\monitor\IPacketMonitor;
+use tdm\librairies\simplepackethandler\monitor\PacketMonitor;
 use pocketmine\event\EventPriority;
 use pocketmine\plugin\Plugin;
 

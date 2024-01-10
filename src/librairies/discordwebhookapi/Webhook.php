@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace zenogames\librairies\discordwebhookapi;
+namespace tdm\librairies\discordwebhookapi;
 
-use zenogames\librairies\discordwebhookapi\task\DiscordWebhookSendTask;
+use tdm\librairies\discordwebhookapi\task\DiscordWebhookSendTask;
 use pocketmine\Server;
 
 final class Webhook {

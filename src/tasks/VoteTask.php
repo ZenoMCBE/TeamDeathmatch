@@ -1,13 +1,11 @@
 <?php
 
-namespace zenogames\tasks;
+namespace tdm\tasks;
 
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
-use zenogames\managers\GameManager;
-use zenogames\managers\VoteManager;
-use zenogames\utils\Constants;
-use zenogames\utils\Utils;
+use tdm\managers\{GameManager, VoteManager};
+use tdm\utils\{Constants, Utils};
 
 final class VoteTask extends Task {
 

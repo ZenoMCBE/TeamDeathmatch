@@ -26,9 +26,9 @@
  *
  */
 
-namespace zenogames\librairies\commando\traits;
+namespace tdm\librairies\commando\traits;
 
-use zenogames\librairies\commando\args\BaseArgument;
+use tdm\librairies\commando\args\BaseArgument;
 use pocketmine\command\CommandSender;
 
 interface IArgumentable

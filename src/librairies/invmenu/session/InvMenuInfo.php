@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\session;
+namespace tdm\librairies\invmenu\session;
 
-use zenogames\librairies\invmenu\InvMenu;
-use zenogames\librairies\invmenu\type\graphic\InvMenuGraphic;
+use tdm\librairies\invmenu\InvMenu;
+use tdm\librairies\invmenu\type\graphic\InvMenuGraphic;
 
 final class InvMenuInfo{
 

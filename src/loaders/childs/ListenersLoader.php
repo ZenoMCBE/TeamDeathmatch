@@ -1,17 +1,17 @@
 <?php
 
-namespace zenogames\loaders\childs;
+namespace tdm\loaders\childs;
 
-use zenogames\listeners\PluginListeners;
-use zenogames\TeamDeathmatch;
-use zenogames\listeners\BlockListeners;
-use zenogames\listeners\EntityListeners;
-use zenogames\listeners\InventoryListeners;
-use zenogames\listeners\PlayerListeners;
-use zenogames\listeners\ServerListeners;
-use zenogames\listeners\WorldListeners;
-use zenogames\loaders\Loader;
+use tdm\listeners\{PluginListeners,
+    BlockListeners,
+    EntityListeners,
+    InventoryListeners,
+    PlayerListeners,
+    ServerListeners,
+    WorldListeners};
+use tdm\loaders\Loader;
 use pocketmine\event\Listener;
+use tdm\TeamDeathmatch;
 
 final class ListenersLoader implements Loader {
 
@@ -19,6 +19,7 @@ final class ListenersLoader implements Loader {
      * @return void
      */
     public function onLoad(): void {
+        $plugin = TeamDeathmatch::getInstance();
         $listeners = [
             new BlockListeners(),
             new EntityListeners(),
@@ -29,12 +30,11 @@ final class ListenersLoader implements Loader {
             new WorldListeners()
         ];
         foreach ($listeners as $listener) {
-            $plugin = TeamDeathmatch::getInstance();
             if (isset(class_implements($listener)[Listener::class])) {
                 $plugin->getServer()->getPluginManager()->registerEvents($listener, $plugin);
             }
         }
-        TeamDeathmatch::getInstance()->getLogger()->notice("[Listener] " . count($listeners) . " listener(s) enregistré(s) !");
+        $plugin->getLogger()->notice("[Listener] " . count($listeners) . " listener(s) enregistré(s) !");
     }
 
     /**

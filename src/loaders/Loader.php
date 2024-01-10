@@ -1,6 +1,6 @@
 <?php
 
-namespace zenogames\loaders;
+namespace tdm\loaders;
 
 interface Loader {
 

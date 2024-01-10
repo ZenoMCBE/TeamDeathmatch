@@ -1,18 +1,15 @@
 <?php
 
-namespace zenogames\listeners;
+namespace tdm\listeners;
 
 use pocketmine\block\inventory\BlockInventory;
-use pocketmine\event\inventory\InventoryOpenEvent;
-use zenogames\librairies\invmenu\inventory\InvMenuInventory;
-use zenogames\managers\GameManager;
-use pocketmine\event\inventory\CraftItemEvent;
-use pocketmine\event\inventory\InventoryTransactionEvent;
+use tdm\librairies\invmenu\inventory\InvMenuInventory;
+use tdm\managers\GameManager;
+use pocketmine\event\inventory\{InventoryOpenEvent, CraftItemEvent, InventoryTransactionEvent};
 use pocketmine\event\Listener;
 use pocketmine\inventory\PlayerCursorInventory;
 use pocketmine\inventory\PlayerInventory;
-use pocketmine\inventory\transaction\action\DropItemAction;
-use pocketmine\inventory\transaction\action\SlotChangeAction;
+use pocketmine\inventory\transaction\action\{DropItemAction, SlotChangeAction};
 use pocketmine\player\GameMode;
 use pocketmine\Server;
 

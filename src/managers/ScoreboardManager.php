@@ -1,9 +1,9 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
-use zenogames\utils\ids\ScoreboardTypeIds;
-use zenogames\utils\Utils;
+use tdm\utils\ids\ScoreboardTypeIds;
+use tdm\utils\Utils;
 use pocketmine\network\mcpe\protocol\RemoveObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetDisplayObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetScorePacket;

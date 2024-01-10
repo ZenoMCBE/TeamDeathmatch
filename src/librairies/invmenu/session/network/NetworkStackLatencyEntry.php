@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\session\network;
+namespace tdm\librairies\invmenu\session\network;
 
 use Closure;
 

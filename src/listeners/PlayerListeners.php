@@ -1,52 +1,42 @@
 <?php
 
-namespace zenogames\listeners;
+namespace tdm\listeners;
 
-use pocketmine\block\BaseSign;
-use pocketmine\event\entity\EntityDamageByChildEntityEvent;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\player\PlayerMoveEvent;
-use pocketmine\event\player\PlayerPreLoginEvent;
-use pocketmine\item\enchantment\ItemFlags;
+use pocketmine\event\entity\{EntityDamageByChildEntityEvent, EntityDamageByEntityEvent};
+use pocketmine\event\player\{PlayerMoveEvent,
+    PlayerPreLoginEvent,
+    PlayerChatEvent,
+    PlayerDropItemEvent,
+    PlayerExhaustEvent,
+    PlayerInteractEvent,
+    PlayerItemConsumeEvent,
+    PlayerItemEnchantEvent,
+    PlayerItemUseEvent,
+    PlayerJoinEvent,
+    PlayerLoginEvent,
+    PlayerMissSwingEvent,
+    PlayerQuitEvent,
+    PlayerToggleSwimEvent};
 use pocketmine\player\Player;
-use zenogames\forms\GameManagementForm;
-use zenogames\forms\MatchSummaryForm;
-use zenogames\forms\VoteForms;
-use zenogames\managers\AssistManager;
-use zenogames\managers\ChatManager;
-use zenogames\managers\GameManager;
-use zenogames\managers\KitManager;
-use zenogames\managers\MapManager;
-use zenogames\managers\RankManager;
-use zenogames\managers\ScoreboardManager;
-use zenogames\managers\StatsManager;
-use zenogames\utils\Constants;
-use zenogames\utils\ids\KitIds;
-use zenogames\utils\ids\ScoreboardTypeIds;
-use zenogames\utils\ids\StatsIds;
-use zenogames\utils\Utils;
-use pocketmine\block\FenceGate;
-use pocketmine\block\Trapdoor;
+use tdm\forms\{GameManagementForm, MatchSummaryForm, SpectatorForms, VoteForms};
+use tdm\managers\{AssistManager,
+    ChatManager,
+    GameManager,
+    KitManager,
+    MapManager,
+    RankManager,
+    ScoreboardManager,
+    StatsManager};
+use tdm\TeamDeathmatch;
+use tdm\utils\Constants;
+use tdm\utils\ids\{KitIds, ScoreboardTypeIds, StatsIds};
+use tdm\utils\Utils;
+use pocketmine\block\{BaseSign, FenceGate, Trapdoor};
 use pocketmine\entity\animation\ArmSwingAnimation;
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerChatEvent;
-use pocketmine\event\player\PlayerDropItemEvent;
-use pocketmine\event\player\PlayerExhaustEvent;
-use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\event\player\PlayerItemConsumeEvent;
-use pocketmine\event\player\PlayerItemEnchantEvent;
-use pocketmine\event\player\PlayerItemUseEvent;
-use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\event\player\PlayerLoginEvent;
-use pocketmine\event\player\PlayerMissSwingEvent;
-use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\event\player\PlayerToggleSwimEvent;
-use pocketmine\item\GoldenApple;
-use pocketmine\item\ItemTypeIds;
+use pocketmine\item\{GoldenApple, ItemTypeIds};
 use pocketmine\player\chat\LegacyRawChatFormatter;
 use pocketmine\Server;
-use zenogames\TeamDeathmatch;
 
 final class PlayerListeners implements Listener {
 
@@ -65,10 +55,7 @@ final class PlayerListeners implements Listener {
         if (!$server->isWhitelisted($playerName)) {
             $event->setKickFlag(PlayerPreLoginEvent::KICK_FLAG_SERVER_WHITELISTED, "§l§q» §r§aServeur sous liste blanche §l§q«");
         }
-        if (
-            ($gameApi->isLaunched() && !$gameApi->hasPlayerTeam($playerName)) ||
-            $gameApi->isEnded()
-        ) {
+        if ($gameApi->isEnded()) {
             $event->setKickFlag(PlayerPreLoginEvent::KICK_FLAG_PLUGIN, "§l§q» §r§aUne partie est déjà en cours §l§q«");
         }
     }
@@ -93,8 +80,8 @@ final class PlayerListeners implements Listener {
                     MapManager::getInstance()->teleportToTeamSpawn($player);
                     $kitApi->send($player, KitIds::GAME);
                 } else {
-                    // TODO: Système de spec
-                    $event->cancel();
+                    $gameApi->addSpectator($player);
+                    $kitApi->send($player, KitIds::SPECTATOR);
                 }
                 break;
             case $gameApi::END_STATUS:
@@ -123,11 +110,17 @@ final class PlayerListeners implements Listener {
             $assistApi->create($player);
             $statsApi->create($player);
             $event->setJoinMessage(Constants::PREFIX . "§a" . $player->getName() . " §fa rejoint la partie ! §8(§7" . count(Server::getInstance()->getOnlinePlayers()) . "/" . Server::getInstance()->getQueryInformation()->getMaxPlayerCount() . "§8)");
-        } else {
+        } else if ($gameApi->isLaunched()) {
+            $scoreboardApi->sendScoreboard($player, ScoreboardTypeIds::LAUNCH);
             if ($gameApi->hasPlayerTeam($player)) {
                 $gameApi->updateNametag($player);
-                $scoreboardApi->sendScoreboard($player, ScoreboardTypeIds::LAUNCH);
                 $event->setJoinMessage(Constants::PREFIX . "§a" . $player->getName() . " §fest revenu dans la partie !");
+            } else {
+                $mapApi = MapManager::getInstance();
+                $map = $gameApi->getMap();
+                $randomTeam = mt_rand(1, 2);
+                $player->teleport($mapApi->getMapSpawnPosition($map, $randomTeam), $mapApi->getMapPositionYaw($map, $randomTeam), $mapApi->getMapPositionPitch($map, $randomTeam));
+                $event->setJoinMessage(Constants::PREFIX . "§a" . $player->getName() . " §fa rejoint la partie en tant que spectateur !");
             }
         }
     }
@@ -156,6 +149,7 @@ final class PlayerListeners implements Listener {
                 if ($gameApi->hasPlayerTeam($player)) {
                     $event->setQuitMessage(Constants::PREFIX . "§a" . $player->getName() . " §fa quitté la partie ! Il peut se reconnecter tant que la partie ne s'est pas finie !");
                 } else {
+                    $gameApi->removeSpectator($player);
                     $event->setQuitMessage("");
                 }
                 break;
@@ -200,6 +194,9 @@ final class PlayerListeners implements Listener {
                             $gameApi->sendMessageToAllTeamPlayers($playerTeam, $player, $message);
                             $event->cancel();
                         }
+                    } else {
+                        $gameApi->sendMessageToAllSpectator($player, $message);
+                        $event->cancel();
                     }
                     break;
             }
@@ -224,7 +221,7 @@ final class PlayerListeners implements Listener {
         ) {
             if ($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
                 if (
-                    !Server::getInstance()->isOp($player->getName()) &&
+                    !Server::getInstance()->isOp($player->getName()) ||
                     !$player->isCreative()
                 ) {
                     $event->cancel();
@@ -255,6 +252,9 @@ final class PlayerListeners implements Listener {
                 break;
             case ItemTypeIds::BOOK:
                 $player->sendForm(MatchSummaryForm::getInstance()->getMainForm());
+                break;
+            case ItemTypeIds::CLOCK:
+                $player->sendForm(SpectatorForms::getInstance()->getTeleportForm());
                 break;
         }
     }
@@ -311,7 +311,7 @@ final class PlayerListeners implements Listener {
         $gameApi = GameManager::getInstance();
         $player = $event->getPlayer();
         $to = $event->getTo();
-        if ($gameApi->isLaunched()) {
+        if ($gameApi->isLaunched() && $gameApi->hasPlayerTeam($player)) {
             if ($to->y <= 0) {
                 $lastDamageCause = $player->getLastDamageCause();
                 if (!is_null($lastDamageCause)) {

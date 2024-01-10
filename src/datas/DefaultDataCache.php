@@ -1,6 +1,6 @@
 <?php
 
-namespace zenogames\datas;
+namespace tdm\datas;
 
 use pocketmine\player\Player;
 

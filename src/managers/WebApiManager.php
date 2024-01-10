@@ -1,10 +1,10 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
 use pocketmine\utils\SingletonTrait;
-use zenogames\utils\Constants;
-use zenogames\TeamDeathmatch;
+use tdm\TeamDeathmatch;
+use tdm\utils\Constants;
 
 final class WebApiManager {
 

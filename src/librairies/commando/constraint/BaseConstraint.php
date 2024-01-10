@@ -27,9 +27,9 @@
  *
  */
 
-namespace zenogames\librairies\commando\constraint;
+namespace tdm\librairies\commando\constraint;
 
-use zenogames\librairies\commando\IRunnable;
+use tdm\librairies\commando\IRunnable;
 use pocketmine\command\CommandSender;
 
 abstract class BaseConstraint

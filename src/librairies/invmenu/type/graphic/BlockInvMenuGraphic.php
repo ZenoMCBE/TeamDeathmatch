@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\type\graphic;
+namespace tdm\librairies\invmenu\type\graphic;
 
-use zenogames\librairies\invmenu\type\graphic\network\InvMenuGraphicNetworkTranslator;
+use tdm\librairies\invmenu\type\graphic\network\InvMenuGraphicNetworkTranslator;
 use pocketmine\block\Block;
 use pocketmine\block\tile\Spawnable;
 use pocketmine\inventory\Inventory;

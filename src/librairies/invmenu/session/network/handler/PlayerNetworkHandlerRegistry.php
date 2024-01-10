@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace zenogames\librairies\invmenu\session\network\handler;
+namespace tdm\librairies\invmenu\session\network\handler;
 
 use Closure;
-use zenogames\librairies\invmenu\session\network\NetworkStackLatencyEntry;
+use tdm\librairies\invmenu\session\network\NetworkStackLatencyEntry;
 use pocketmine\network\mcpe\protocol\types\DeviceOS;
 use function mt_rand;
 

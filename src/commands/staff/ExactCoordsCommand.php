@@ -1,16 +1,15 @@
 <?php
 
-namespace zenogames\commands\staff;
+namespace tdm\commands\staff;
 
-use zenogames\managers\RankManager;
-use zenogames\TeamDeathmatch;
-use zenogames\librairies\commando\BaseCommand;
-use zenogames\librairies\commando\constraint\InGameRequiredConstraint;
-use zenogames\utils\Constants;
+use tdm\managers\RankManager;
+use tdm\librairies\commando\BaseCommand;
+use tdm\librairies\commando\constraint\InGameRequiredConstraint;
+use tdm\TeamDeathmatch;
+use tdm\utils\Constants;
 use pocketmine\command\CommandSender;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\Player;
-use pocketmine\Server;
 
 final class ExactCoordsCommand extends BaseCommand {
 

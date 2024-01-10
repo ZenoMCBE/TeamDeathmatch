@@ -1,9 +1,9 @@
 <?php
 
-namespace zenogames\managers;
+namespace tdm\managers;
 
-use zenogames\utils\ids\StatsIds;
-use zenogames\utils\Utils;
+use tdm\utils\ids\StatsIds;
+use tdm\utils\Utils;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
@@ -217,7 +217,6 @@ final class StatsManager {
         $death = $this->get($player, StatsIds::DEATH);
         $killstreak = $this->get($player, StatsIds::KILLSTREAK);
         $bestKillstreak = $this->get($player, StatsIds::BEST_KILLSTREAK);
-
         $player->sendPopup("§r§l§8» §r§fK§7: §a" . $kill . " §8| §fA§7: §b" . $assist . " §8| §fD§7: §c" . $death . " §8| §fKS§7: §a" . $killstreak . " §8| §fBKS§7: §a" . $bestKillstreak . " §l§8«");
     }
 
@@ -270,14 +269,13 @@ final class StatsManager {
     }
 
     /**
-     * @param Player $player
      * @return void
      * @noinspection PhpDeprecationInspection
      */
-    public function showScoreMessage(Player $player): void {
+    public function showScoreMessage(): void {
         $gameApi = GameManager::getInstance();
         $leaderboard = $this->getTopScore();
-        $player->sendMessage("§r§l§q» §r§aTableau des scores §l§q«");
+        $scoreMessage = "§r§l§q» §r§aTableau des scores §l§q«";
         foreach ($leaderboard as $playerName => $score) {
             $playerName = Utils::getPlayerName($playerName, true);
             if ($gameApi->hasPlayerTeam($playerName)) {
@@ -291,9 +289,10 @@ final class StatsManager {
                 $bestKillstreak = $this->get($playerName, StatsIds::BEST_KILLSTREAK);
                 $damageDealed = $this->get($playerName, StatsIds::DAMAGE_DEALED);
                 $formattedStats = "§8[§a" . $kill . " §8| §b" . $assist . " §8| §c" . $death . " §8| §a" . $killstreak . " §8| §a" . $bestKillstreak . " §8| §e" . $damageDealed . "§8]";
-                $player->sendMessage("§l§q| §r" . $playerTeamMinecraftTeamColor . Utils::getPlayerName($playerName, false) . " §8(§7" . $this->getPlayerScore($playerName) . "§8) " . $formattedStats);
+                $scoreMessage .= "\n§l§q| §r" . $playerTeamMinecraftTeamColor . Utils::getPlayerName($playerName, false) . " §8(§7" . $this->getPlayerScore($playerName) . "§8) " . $formattedStats;
             }
         }
+        Server::getInstance()->broadcastMessage($scoreMessage);
     }
 
     /**

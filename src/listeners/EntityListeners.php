@@ -8,7 +8,6 @@ use tdm\TeamDeathmatch;
 use tdm\utils\Constants;
 use tdm\utils\ids\StatsIds;
 use tdm\utils\Utils;
-use pocketmine\entity\animation\HurtAnimation;
 use pocketmine\entity\Living;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\event\entity\{EntityItemPickupEvent,
@@ -24,7 +23,6 @@ use pocketmine\event\entity\{EntityItemPickupEvent,
     ItemSpawnEvent,
     ProjectileLaunchEvent};
 use pocketmine\event\Listener;
-use pocketmine\network\mcpe\NetworkBroadcastUtils;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
@@ -125,7 +123,7 @@ final class EntityListeners implements Listener {
                 $event->setKnockBack(Living::DEFAULT_KNOCKBACK_FORCE);
                 $event->setVerticalKnockBackLimit(Living::DEFAULT_KNOCKBACK_VERTICAL_LIMIT);
                 $event->setAttackCooldown(10);
-                $event->setBaseDamage(round($event->getBaseDamage() * 0.63, 2));
+                $event->setBaseDamage(round($event->getBaseDamage() * 0.85, 2));
                 $finalDamage = $event->getFinalDamage();
                 $assistApi = AssistManager::getInstance();
                 $statsApi = StatsManager::getInstance();
@@ -168,9 +166,9 @@ final class EntityListeners implements Listener {
             if (!$event->isCancelled()) {
                 $assistApi = AssistManager::getInstance();
                 if ($child instanceof Arrow) {
-                    Utils::simulateProjectileHit($entity, $damager, $child);
                     if (!$isSamePlayer) {
                         if (!$gameApi->isInSameTeam($entity, $damager)) {
+                            Utils::simulateProjectileHit($entity, $damager, $child);
                             StatsManager::getInstance()->add($damager, StatsIds::ARROW_HIT);
                             Utils::playSound($damager, "note.bell");
                             if ($entity->getName() !== $damager->getName()) {
@@ -180,7 +178,7 @@ final class EntityListeners implements Listener {
                             if ($event->getModifier(EntityDamageEvent::MODIFIER_ABSORPTION) < 0) {
                                 $event->setModifier(0.0, EntityDamageEvent::MODIFIER_ABSORPTION);
                             }
-                            $event->setBaseDamage(round($event->getBaseDamage() * 0.70, 2));
+                            $event->setBaseDamage(round($event->getBaseDamage() * 0.80, 2));
                             $finalDamage = $event->getFinalDamage();
                             if ($finalDamage < $entity->getHealth()) {
                                 $entity->setHealth($entity->getHealth() - $finalDamage);
@@ -202,6 +200,7 @@ final class EntityListeners implements Listener {
                             }
                         }
                     } else {
+                        Utils::simulateProjectileHit($entity, $damager, $child);
                         $projectileMotion = $child->getMotion();
                         $horizontalSpeed = sqrt($projectileMotion->x ** 2*2 + $projectileMotion->z ** 2*2);
                         if ($horizontalSpeed > 0) {

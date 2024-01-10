@@ -341,15 +341,11 @@ final class GameManager {
         MapManager::getInstance()->teleportToTeamSpawn($entity);
         $entity->broadcastSound(new EntityAttackSound());
         foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
-            if ($onlinePlayer instanceof Player) {
-                $onlinePlayer->hidePlayer($entity);
-            }
+            $onlinePlayer->hidePlayer($entity);
         }
         $assistApi->reinitialize($entity);
-        KitManager::getInstance()->send($entity, KitIds::GAME);
         TeamDeathmatch::getInstance()->getScheduler()->scheduleRepeatingTask(new DeathTask($entity), 20);
     }
-
 
     /**
      * @return string|null

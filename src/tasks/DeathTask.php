@@ -3,6 +3,8 @@
 namespace tdm\tasks;
 
 use tdm\managers\GameManager;
+use tdm\managers\KitManager;
+use tdm\utils\ids\KitIds;
 use tdm\utils\Utils;
 use pocketmine\entity\effect\{EffectInstance, VanillaEffects};
 use pocketmine\player\Player;
@@ -38,11 +40,7 @@ final class DeathTask extends Task {
                     if ($this->player->getEffects()->has(VanillaEffects::BLINDNESS())) {
                         $this->player->getEffects()->remove(VanillaEffects::BLINDNESS());
                     }
-                    foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
-                        if ($onlinePlayer instanceof Player) {
-                            $onlinePlayer->showPlayer($this->player);
-                        }
-                    }
+                    KitManager::getInstance()->send($this->player, KitIds::GAME);
                     $this->player->sendTitle("§l§q» §r§aVous êtes réapparu §l§q«", stay: 60);
                     $this->getHandler()?->cancel();
                 } else {
@@ -58,9 +56,7 @@ final class DeathTask extends Task {
                     $this->player->getEffects()->remove(VanillaEffects::BLINDNESS());
                 }
                 foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
-                    if ($onlinePlayer instanceof Player) {
-                        $onlinePlayer->showPlayer($this->player);
-                    }
+                    $onlinePlayer->showPlayer($this->player);
                 }
                 Utils::teleportToEndedMap($this->player);
                 $this->getHandler()?->cancel();

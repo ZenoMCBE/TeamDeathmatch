@@ -5,5 +5,5 @@ src-namespace-prefix: tdm
 
 author: Myma
 api: [ 5.5.0 ]
-version: 1.2.0
+version: 1.2.1
 depend: [ ZenoStats ]

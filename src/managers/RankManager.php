@@ -24,10 +24,7 @@ final class RankManager implements DataCache, DefaultDataCache {
      * @return void
      */
     public function loadCache(): void {
-        $providerData = $this->getProvider()->getAll();
-        foreach ($providerData as $key => $value) {
-            $this->cache[$key] = $value;
-        }
+        $this->cache = $this->getProvider()->getAll();
     }
 
     /**
@@ -194,10 +191,7 @@ final class RankManager implements DataCache, DefaultDataCache {
      */
     public function unloadCache(): void {
         $provider = $this->getProvider();
-        $provider->setAll([]);
-        foreach ($this->getCache() as $key => $value) {
-            $provider->set($key, $value);
-        }
+        $provider->setAll($this->getCache());
         $provider->save();
     }
 

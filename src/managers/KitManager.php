@@ -54,11 +54,6 @@ final class KitManager {
                 $teamColorString = $gameApi->getTeamColor($playerTeam);
                 $teamColor = $gameApi->getColorByColorId($teamColorString);
 
-                /*$helmet = VanillaItems::IRON_HELMET()->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROJECTILE_PROTECTION(), 3))->setUnbreakable();
-                $chestplate = VanillaItems::LEATHER_TUNIC()->setCustomColor($teamColor)->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), 2))->setUnbreakable();
-                $leggings = VanillaItems::CHAINMAIL_LEGGINGS()->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROJECTILE_PROTECTION(), 3))->setUnbreakable();
-                $boots = VanillaItems::IRON_BOOTS()->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), 2))->setUnbreakable();*/
-
                 $helmet = VanillaItems::IRON_HELMET()->setUnbreakable();
                 $chestplate = VanillaItems::LEATHER_TUNIC()->setCustomColor($teamColor)->setUnbreakable();
                 $leggings = VanillaItems::CHAINMAIL_LEGGINGS()->setUnbreakable();
